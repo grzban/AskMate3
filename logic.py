@@ -3,17 +3,16 @@ import database_common
 import util
 
 
-def make_question(dictionary):
-
+def make_question(title, message, image=""):
     result = {
         'id': generate_id(persistence.get_dicts_from_file("question")),
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
         'view_number': 0,
         'vote_number': 0,
+        'title': title,
+        'message': message,
+        'image': image,
     }
-    result['title'] = dictionary['title']
-    result['message'] = dictionary['message']
-    result['image'] = dictionary['image']
     return result
 
 

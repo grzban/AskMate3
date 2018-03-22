@@ -25,6 +25,7 @@ def index():
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
     list_of_questions = persistence.get_dicts_from_file("question")
+
     return render_template('list.html', list_of_questions=list_of_questions)
 
 
@@ -36,12 +37,9 @@ def delete_question(question_id):
     return redirect('/questions')
 
 
-@app.route('/new_question', methods=['POST'])
+@app.route('/new_question', methods=['POST', 'GET'])
 def new_question():
-    print(request.form)
-    # new_question = logic.make_question(request.form)
-    # print(new_question)
-
+    
     return render_template('newQuestion.html')
 
 
@@ -61,6 +59,15 @@ def show_question(question_id):
     return render_template('question.html',
                            question=question,
                            anserws=anserws)
+
+
+@app.route('/data_handler', methods=['POST', 'GET'])
+def data_handler():
+    question = logic.make_question(request.form['title'],
+                                   request.form['message'],
+                                   request.form['image'])
+    persistence.add_new_question(question)
+    return redirect(url_for('questions'))
 
 
 @app.route('/tags')

@@ -58,3 +58,18 @@ def write_dicts_to_file(table, tuple_new_values):
                VALUES {new_values};
             """.format(table, tuple_new_values)
     cursor.execute(query)
+
+
+@database_common.connection_handler
+def add_new_question(cursor, new_question):
+    value = (new_question['id'],
+             new_question['submission_time'],
+             new_question['view_number'],
+             new_question['vote_number'],
+             new_question['title'],
+             new_question['message'],
+             new_question['image'])
+    cursor.execute("""
+                    INSERT INTO question
+                    VALUES {value};
+                   """.format(value=value))

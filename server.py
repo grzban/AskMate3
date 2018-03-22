@@ -44,16 +44,15 @@ def new_question():
 
 @app.route('/question/edit/<question_id>', methods=['POST', 'GET'])
 def edit_question(question_id):
-    logic.edit_question(request.form)
+    question = logic.get_question(question_id)
 
-    return render_template('newQuestion.html')
+    return render_template('newQuestion.html', question=question[0])
 
 
 @app.route('/question/<question_id>')
 def show_question(question_id):
     question = logic.get_question(question_id)
     anserws = logic.get_answers_to_question(question_id)
-    print(anserws)
 
     return render_template('question.html',
                            question=question,
@@ -62,10 +61,14 @@ def show_question(question_id):
 
 @app.route('/data_handler', methods=['POST', 'GET'])
 def data_handler():
-    question = logic.make_question(request.form['title'],
-                                   request.form['message'],
-                                   request.form['image'])
-    persistence.add_new_question(question)
+    if 'id' in request.form:
+        question = logic.edit_question(request.form)
+    else:
+        question = logic.make_question(request.form['title'],
+                                       request.form['message'],
+                                       request.form['image'])
+        persistence.add_new_question(question)
+
     return redirect(url_for('questions'))
 
 

@@ -150,12 +150,12 @@ def max_from(cursor, table_name, value):
 def edit_question(cursor, dictionary):
     cursor.execute("""
                     UPDATE question
-                    SET submission_time = {submission_time},
+                    SET submission_time = '{submission_time}',
                         view_number = {view_number},
                         vote_number = {vote_number},
-                        title = {title},
-                        message = {message},
-                        image = {image}
+                        title = '{title}',
+                        message = '{message}',
+                        image = '{image}'
                     WHERE id = {id};
                    """.format(submission_time=util.decode_time_for_human(util.get_current_timestamp()),
                               view_number=dictionary['view_number'],
@@ -165,7 +165,6 @@ def edit_question(cursor, dictionary):
                               image=dictionary['image'],
                               id=dictionary['id']
                               ))
-    return cursor.fetchall()
 
 
 def delete_question():

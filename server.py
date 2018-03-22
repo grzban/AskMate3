@@ -28,13 +28,12 @@ def questions():
     return render_template('list.html', list_of_questions=list_of_questions)
 
 
-@app.route('/question/delete', methods=['POST'])
-def delete_question():
+@app.route('/question/<int:question_id>', methods=['GET'])
+def delete_question(question_id):
 
-    question_id = int(request.form['id'])
-    logic.delete_question(question_id)
+    logic.delete_table('question', question_id)
 
-    return redirect(url_for('questions'))
+    return redirect('/questions')
 
 
 @app.route('/new_question', methods=['POST'])

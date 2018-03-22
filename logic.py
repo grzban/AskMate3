@@ -4,7 +4,7 @@ import util
 
 
 def make_question(dictionary):
-    
+
     result = {
         'id': generate_id(persistence.get_dicts_from_file("question")),
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
@@ -93,9 +93,11 @@ def update_table(cursor, table_name, column_name, update_value, condition):
 
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):
+    print(table_name)
+    print(condition)
     cursor.execute("""
                     DELETE FROM {table_name}
-                    WHERE {condition};
+                    WHERE id = {condition};
                    """.format(table_name=table_name,
                               condition=condition))
 

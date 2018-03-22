@@ -78,46 +78,34 @@ def search_answer(answer_id):
     return answer
 
 
-def update_view_number(question_id):
+def update_view_number(question_id, amount=1):
     question = search_question(question_id)
     views_number = int(question['view_number'])
-    views_number += 1
-    persistence.update('question', question_id, 'view_number', str(views_number))
+    views_number += amount
+    persistence.update('question', question_id, 'view_number', views_number)
 
 
 def voting(question_id, answer_id, vote):
     if answer_id == 'None':  # if voting on question:
-        ques = search_question(question_id)
-        votes = int(ques.get('vote_number'))
+        questions = search_question(int(question_id))
+        votes = int(questions.get('vote_number'))
         if vote == 'plus':
             votes += 1
         else:
             votes -= 1
-        persistence.update('question', question_id, 'vote_number', str(votes))
+        persistence.update('question', question_id, 'vote_number', votes)
 
     else:  # if voting on answer:
-        answers = search_answer(answer_id)
+        answers = search_answer(int(answer_id))
         votes = int(answers.get('vote_number'))
         if vote == 'plus':
             votes += 1
         else:
             votes -= 1
-        persistence.update('answer', answer_id, 'vote_number', str(votes))
+        persistence.update('answer', int(answer_id), 'vote_number', votes)
 
 
 # ----------------- ACTION ON TABLE -------------------
-@database_common.connection_handler
-def update_table(cursor, table_name, column_name, update_value, condition):
-    cursor.execute("""
-                    UPDATE {table_name}
-                    SET {column_name} = '{update_value}'
-                    WHERE {condition};
-                   """.format(table_name=table_name,
-                              column_name=column_name,
-                              update_value=update_value,
-                              condition=condition))
-
-
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):
     cursor.execute("""

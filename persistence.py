@@ -46,8 +46,8 @@ def del_row_in_questions(cursor, id_questions):
 @database_common.connection_handler
 def update(cursor, table, id_row, column, new_value):
     query = """UPDATE {}
-              SET {}={}
-              WHERE id = {};""".format(table, column, new_value, id_row)
+              SET {}='{}'
+              WHERE id = '{}';""".format(table, column, new_value, id_row)
     cursor.execute(query)
 
 

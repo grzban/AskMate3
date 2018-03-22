@@ -18,6 +18,21 @@ def make_answer(message, image, question_id, answer_id=None):
     }
     return result
 
+def make_comment(message, question_id, comment_id=None):
+    if comment_id is None:
+        id_ = generate_id(persistence.get_dicts_from_file("comment"))
+    else:
+        id_ = comment_id
+    result = {
+        'id': id_,
+        'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
+        'edited_count': 0,
+        'message': message,
+        'question_id': question_id,
+        'answer_id': 0,
+    }
+    return result
+
 
 def make_question(title, message, image=""):
     result = {
@@ -149,6 +164,14 @@ def get_answers_to_question(cursor, question_id):
                    """, [question_id])
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_comment_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %s;
+                   """, [question_id])
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def last_five_questions(cursor):

@@ -45,15 +45,19 @@ def edit_question(question_id):
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
-def show_question(question_id, answer_id=None):
+def show_question(question_id, answer_id=None, comment_id=None):
     answer_id = request.args.get("answer_id")
+    comment_id = request.args.get("comment_id")
     question = logic.get_question(question_id)
     answers = logic.get_answers_to_question(question_id)
+    comment = logic.get_comment_to_question(question_id)
     return render_template('question.html',
                            question=question,
                            answers=answers,
+                           comment=comment,
                            question_id=question_id,
-                           answer_id=answer_id)
+                           answer_id=answer_id,
+                           comment_id=comment_id)
 
 
 @app.route('/data_handler', methods=['POST', 'GET'])
@@ -113,6 +117,18 @@ def search():
 def vote(question_id, answer_id, vote):
     logic.voting(question_id, answer_id, vote)
     return redirect('/question/{}'.format(question_id))
+
+
+
+
+@app.route('/question/<int:question_id>/new-comment', methods=['POST', 'GET'])
+def post_comment(question_id):
+    print(request.form)
+    new_comment = logic.make_comment(request.form['message'],
+                                   question_id)
+    persistence.add_new_comment(new_comment)
+    return redirect(url_for('show_question', question_id=question_id))
+
 
 
 if __name__ == '__main__':

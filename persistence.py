@@ -109,6 +109,20 @@ def add_new_answer(cursor, new_answer):
                     VALUES {value};
                    """.format(value=value))
 
+@database_common.connection_handler
+def add_new_comment(cursor, new_comment):
+    value = (new_comment['id'],
+             new_comment['message'],
+             new_comment['submission_time'],
+             new_comment['edited_count'],
+             new_comment['question_id'],
+            )
+
+    cursor.execute("""
+                    INSERT INTO comment (id, message, submission_time, edited_count, question_id)
+                    VALUES {value};
+                   """.format(value=value))
+
 
 @database_common.connection_handler
 def edit_answer(cursor, dictionary):

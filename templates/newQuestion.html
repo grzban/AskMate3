@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="newQuestion">
-        <form action="{{ url_for('data_handler') }}" method="POST">
+        <form action="{{ url_for('data_handler') }}" method="GET">
             <h2>Title</h2>
             <input type="text" name="title" class="input">
             <br>

@@ -113,6 +113,13 @@
                 Added: {{ answer.submission_time}}
                 <br>
                 Vote number: {{ answer.vote_number}}
+                <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
+                    <button type="submit" name="qplus" value="+">+ vote</button>
+                </form>
+                <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='minus')}} method="POST">
+                    <button type="submit" name="qminus" value="-">- vote</button>
+                </form>
+
             </nav>
 
             {% if answer.image is in [''] %}

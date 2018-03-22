@@ -86,7 +86,7 @@ def update_view_number(question_id):
 
 
 def voting(question_id, answer_id, vote):
-    if answer_id == 'None':
+    if answer_id == 'None':  # if voting on question:
         ques = search_question(question_id)
         votes = int(ques.get('vote_number'))
         if vote == 'plus':
@@ -95,7 +95,7 @@ def voting(question_id, answer_id, vote):
             votes -= 1
         persistence.update('question', question_id, 'vote_number', str(votes))
 
-    else:
+    else:  # if voting on answer:
         answers = search_answer(answer_id)
         votes = int(answers.get('vote_number'))
         if vote == 'plus':

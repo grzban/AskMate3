@@ -140,3 +140,20 @@ def edit_answer(cursor, dictionary):
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))
+
+@database_common.connection_handler
+def edit_coment(cursor, dictionary):
+    cursor.execute("""
+                    UPDATE comment
+                    SET submission_time = '{submission_time}',
+                        vote_number = {vote_number},
+                        message = '{message}',
+                        image = '{image}'
+                    WHERE question_id = {question_id} AND id = {id};
+                   """.format(submission_time=dictionary['submission_time'],
+                              vote_number=dictionary['vote_number'],
+                              message=dictionary['message'],
+                              
+                              question_id=dictionary['question_id'],
+                              id=dictionary['id']
+                              ))

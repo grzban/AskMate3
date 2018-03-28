@@ -40,7 +40,7 @@ def del_row_in_questions(cursor, id_questions):
                    DELETE FROM answer
                    WHERE question_id = %(id_questions)s;
                   """,
-                  {'id_questions': id_questions})
+                   {'id_questions': id_questions})
 
 
 @database_common.connection_handler

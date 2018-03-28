@@ -3,6 +3,20 @@
 {% block content %}
     <div id="newQuestion">
         <form action="{{ url_for('data_handler') }}" method="POST">
+            {% if question %}
+            <h2>Title</h2>
+            <input type="text" name="title" class="input" value="{{ question.title }}">
+            <br>
+            <h2>Message</h2>
+            <textarea name="message" rows="5" cols="30" class="input">{{ question.message }}</textarea>
+            <br>
+            <h2>Image address</h2>
+            <input type="text" name="image" class="input" value="{{ question.image }}">
+            <input type="value" name="view_number" style="display: none" value="{{ question.view_number }}">
+            <input type="value" name="vote_number" style="display: none" value="{{ question.vote_number }}">
+            <input type="value" name="id" style="display: none" value="{{ question.id }}">
+            <button type="submit">Update</button>
+            {% else %}
             <h2>Title</h2>
             <input type="text" name="title" class="input">
             <br>
@@ -11,7 +25,9 @@
             <br>
             <h2>Image address</h2>
             <input type="text" name="image" class="input">
-            <button type="submit" >Ask</button>
+            <button type="submit">Ask</button>
+            {% endif %}
+            
         </form>
     </div>
 

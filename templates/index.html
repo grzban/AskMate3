@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="index_question">
+        <h1>Lastes question</h1>
+        <h2>
+            <a href="{{ url_for('show_question', question_id=lastes_question[0].id) }}">{{ lastes_question[0].title }}</a>
+        </h2>
+        <p>
+            {{ lastes_question[0].message }}
+        </p>
+    </div>
+    <div class="index_question">
+    <h1>Most viewed question</h1>
+        <h2>
+            <a href="{{ url_for('show_question', question_id=most_viewed_question[0].id) }}">{{ most_viewed_question[0].title }}</a>
+        </h2>
+        <p>
+            {{ most_viewed_question[0].message }}
+        </p>
+    </div>
+    <div class="index_question">
+    <h1>Most voted question</h1>
+        <h2>
+            <a href="{{ url_for('show_question', question_id=most_voted_question[0].id) }}">{{ most_voted_question[0].title }}</a>
+        </h2>
+        <p>
+            {{ most_voted_question[0].message }}
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Askmate2</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="navbar">
+            <img src="/static/images/logo.png" class="logo"/>
+            <a href="{{ url_for('index') }}">Main</a>
+            <a href="{{ url_for('questions') }}">Questions</a>
+            <a href="{{ url_for('tags') }}">Tags</a>
+        </div>
+        <div class="main">
+            {% block content %} {% endblock %}
+        </div>
+        <footer>
+            <h3>&copyTakich 3</h3>
+        </footer>
+    </body>
+</html>

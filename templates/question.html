@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="question">
+        <nav class="question_data">
+            <h2>Data</h2>
+            Submission time: {{ question[0].submission_time }}<br>
+            Vote number: {{ question[0].vote_number }}<br>
+            View number: {{ question[0].view_number }}<br>
+        </nav>
+        <div class="question_title">
+            <h1>{{ question[0].title }}</h1>
+        </div>
+        <div class="question_message">
+            <p>
+                {{ question[0].message }}
+            </p>
+        </div>
+        <hr size="2" color="black"/>
+        <div class="anserws">
+        {% for anserw in anserws %}
+            <p>{{ anserw.message }}</p>
+            <hr size="1" color="black" />
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

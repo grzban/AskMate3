@@ -105,8 +105,6 @@ def update_table(cursor, table_name, column_name, update_value, condition):
 
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):
-    print(table_name)
-    print(condition)
     cursor.execute("""
                     DELETE FROM {table_name}
                     WHERE id = {condition};
@@ -122,6 +120,15 @@ def insert_table(cursor, table_name, columns, value):
                    """.format(table_name=table_name,
                               columns=columns,
                               value=value))
+
+@database_common.connection_handler
+def search_table(cursor, search_word):
+    cursor.execute("""
+                    SELECT id, title FROM question
+                    WHERE title LIKE '%{search_word}%';
+                   """.format(search_word=search_word))
+    return cursor.fetchall()
+
 
 
 # -------------------- SQL FUNCTIONS -----------------

@@ -26,7 +26,6 @@ def questions():
 
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def delete_question(question_id):
-
     logic.delete_table('question', question_id)
 
     return redirect('/questions')
@@ -34,6 +33,7 @@ def delete_question(question_id):
 
 @app.route('/new_question', methods=['POST', 'GET'])
 def new_question():
+
     return render_template('newQuestion.html')
 
 
@@ -80,6 +80,12 @@ def post_answer(question_id):
 @app.route('/tags')
 def tags():
     return render_template('tags.html')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    list_of_titles = logic.search_table(request.form['word'])
+
+    return render_template('search.html', list_of_titles=list_of_titles)
 
 
 if __name__ == '__main__':

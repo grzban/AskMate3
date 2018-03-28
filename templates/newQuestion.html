@@ -2,14 +2,16 @@
 
 {% block content %}
     <div id="newQuestion">
-        <form action="/new_question" method="POST">
+        <form action="{{ url_for('data_handler') }}" method="POST">
             <h2>Title</h2>
             <input type="text" name="title" class="input">
             <br>
             <h2>Message</h2>
             <textarea name="message" rows="5" cols="30" class="input"></textarea>
-
-            <button type="submit" formaction="{{ url_for('questions') }}">Ask</button>
+            <br>
+            <h2>Image address</h2>
+            <input type="text" name="image" class="input">
+            <button type="submit" >Ask</button>
         </form>
     </div>
 

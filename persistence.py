@@ -73,3 +73,17 @@ def add_new_question(cursor, new_question):
                     INSERT INTO question
                     VALUES {value};
                    """.format(value=value))
+
+
+@database_common.connection_handler
+def add_new_answer(cursor, new_answer):
+    value = (new_answer['id'],
+             new_answer['submission_time'],
+             new_answer['vote_number'],
+             new_answer['question_id'],
+             new_answer['message'],
+             new_answer['image'])
+    cursor.execute("""
+                    INSERT INTO answer
+                    VALUES {value};
+                   """.format(value=value))

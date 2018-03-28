@@ -11,14 +11,9 @@ app = Flask(__name__, static_url_path='/static')
 # -------------- INDEX ---------------
 @app.route('/')
 def index():
-    lastes_question = logic.max_from("question", "submission_time")
-    most_viewed_question = logic.max_from("question", "view_number")
-    most_voted_question = logic.max_from("question", "vote_number")
+    lastes_questions = logic.last_five_questions()
 
-    return render_template('index.html',
-                           lastes_question=lastes_question,
-                           most_viewed_question=most_viewed_question,
-                           most_voted_question=most_voted_question)
+    return render_template('index.html', lastes_questions=lastes_questions)
 
 
 # -------------- QUESTIONS ----------------
@@ -56,7 +51,8 @@ def show_question(question_id):
 
     return render_template('question.html',
                            question=question,
-                           anserws=anserws)
+                           anserws=anserws,
+                           question_id=question_id)
 
 
 @app.route('/data_handler', methods=['POST', 'GET'])
@@ -70,6 +66,15 @@ def data_handler():
         persistence.add_new_question(question)
 
     return redirect(url_for('questions'))
+
+
+@app.route('/question/<int:question_id>/new-answer', methods=['POST', 'GET'])
+def post_answer(question_id):
+    new_answer = logic.make_answer(request.form['message'],
+                                   request.form['image'],
+                                   question_id)
+    persistence.add_new_answer(new_answer)
+    return redirect(url_for('show_question', question_id=question_id))
 
 
 @app.route('/tags')

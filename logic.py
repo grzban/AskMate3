@@ -3,6 +3,19 @@ import database_common
 import util
 
 
+def make_answer(message, image, question_id):
+    result = {
+        'id': generate_id(persistence.get_dicts_from_file("answer")),
+        'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
+        'vote_number': 0,
+        'message': message,
+        'question_id': question_id,
+        'image': image,
+        'question_id': question_id
+    }
+    return result
+
+
 def make_question(title, message, image=""):
     result = {
         'id': generate_id(persistence.get_dicts_from_file("question")),
@@ -160,5 +173,11 @@ def edit_question(cursor, dictionary):
                               ))
 
 
-def delete_question():
-    pass
+@database_common.connection_handler
+def last_five_questions(cursor):
+    cursor.execute("""
+                    SELECT id, title, message FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5;
+                   """)
+    return cursor.fetchall()

@@ -8,15 +8,30 @@
             Vote number: {{ question[0].vote_number }}<br>
             View number: {{ question[0].view_number }}<br>
         </nav>
+
         <div class="question_title">
             <h1>{{ question[0].title }}</h1>
         </div>
+
         <div class="question_message">
             <p>
                 {{ question[0].message }}
             </p>
         </div>
+        <hr size="1" color="black" />
+        <div class="add_answer">
+            <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
+                <h2>Answer</h2>
+                <textarea name="message" rows="2" cols="50" class="input"></textarea>
+                <h2>Image address</h2>
+                <input type="text" name="image" class="input">
+                <button type="submit">Post anserw</button>
+            </form>
+        </div>
+
         <hr size="2" color="black"/>
+        
+
         <div class="anserws">
         {% for anserw in anserws %}
             <p>{{ anserw.message }}</p>

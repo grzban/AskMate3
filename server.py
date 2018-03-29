@@ -69,6 +69,12 @@ def data_handler():
     return redirect(url_for('questions'))
 
 
+@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
+def vote(question_id, answer_id, vote):
+    logic.voting(question_id, answer_id, vote)
+    return redirect('/question/{}'.format(question_id))
+
+
 # -------------- ANSWERS -----------
 @app.route('/question/<int:question_id>/new-answer', methods=['POST', 'GET'])
 def post_answer(question_id):
@@ -107,12 +113,6 @@ def search():
     list_of_titles = logic.search_table(request.form['word'])
 
     return render_template('search.html', list_of_titles=list_of_titles)
-
-
-@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
-def vote(question_id, answer_id, vote):
-    logic.voting(question_id, answer_id, vote)
-    return redirect('/question/{}'.format(question_id))
 
 
 if __name__ == '__main__':

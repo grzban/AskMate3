@@ -42,12 +42,11 @@
                 {{ comment.message }}
             </div>
 
-            <nav class="answer_data">
+            <nav  class="comment_data">
                 Added: {{ comment.submission_time}}
                 <br>
                 Edited count: {{comment.edited_count}}
             </nav>
-
 
 
 
@@ -60,13 +59,13 @@
         <div class="add_comment">
             {% if coment_id %}
             <form action="{{ url_for('edit_coment', question_id=question_id, comment_id=coment_id) }}" method="POST">
-                    <h2>Comment</h2>
+                    <h3>Comment</h3>
                     <textarea name="message" rows="1" cols="50" class="input"></textarea>
                     <button type="submit">Edit comment</button>
             </form>
             {% else %}
             <form action="{{ url_for('post_comment', question_id=question_id) }}" method="POST">
-                    <h2>Comment</h2>
+                    <h3>Comment</h3>
                     <textarea name="message" rows="1" cols="50" class="input"></textarea>
                     <button type="submit">Post comment</button>
             </form>
@@ -84,7 +83,7 @@
             {% if answer_id %}
             <form action="{{ url_for('edit_answer', question_id=question_id, answer_id=answer_id) }}" method="POST">
                     <h2>Answer</h2>
-                    <textarea name="message" rows="2" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="4" cols="50" class="input"></textarea>
                     <h2>Image address</h2>
                     <input type="text" name="image" class="input">
                     <button type="submit">Edit answer</button>
@@ -92,7 +91,7 @@
             {% else %}
             <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
                     <h2>Answer</h2>
-                    <textarea name="message" rows="2" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="4" cols="50" class="input"></textarea>
                     <h2>Image address</h2>
                     <input type="text" name="image" class="input">
                     <button type="submit">Post answer</button>
@@ -108,7 +107,7 @@
             <div>
                 {{ answer.message }}
             </div>
-
+            <br>
             <nav class="answer_data">
                 Added: {{ answer.submission_time}}
                 <br>

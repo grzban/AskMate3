@@ -136,4 +136,23 @@ h2 * {
     align-items: flex-end;
     display: flex;
     width: 150px;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+/* COMMENT */
+.comment {
+    text-align: right;
+    margin: 20px;
+    font-size: 0.9em;
+}
+
+.comment_data {
+    text-align: right;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.add_comment {
+    text-align: right;
 }

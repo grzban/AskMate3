@@ -76,6 +76,27 @@ def add_new_question(cursor, new_question):
 
 
 @database_common.connection_handler
+def edit_question(cursor, dictionary):
+    cursor.execute("""
+                    UPDATE question
+                    SET submission_time = '{submission_time}',
+                        view_number = {view_number},
+                        vote_number = {vote_number},
+                        title = '{title}',
+                        message = '{message}',
+                        image = '{image}'
+                    WHERE id = {id};
+                   """.format(submission_time=util.decode_time_for_human(util.get_current_timestamp()),
+                              view_number=dictionary['view_number'],
+                              vote_number=dictionary['vote_number'],
+                              title=dictionary['title'],
+                              message=dictionary['message'],
+                              image=dictionary['image'],
+                              id=dictionary['id']
+                              ))
+
+
+@database_common.connection_handler
 def add_new_answer(cursor, new_answer):
     value = (new_answer['id'],
              new_answer['submission_time'],
@@ -87,3 +108,21 @@ def add_new_answer(cursor, new_answer):
                     INSERT INTO answer
                     VALUES {value};
                    """.format(value=value))
+
+
+@database_common.connection_handler
+def edit_answer(cursor, dictionary):
+    cursor.execute("""
+                    UPDATE answer
+                    SET submission_time = '{submission_time}',
+                        vote_number = {vote_number},
+                        message = '{message}',
+                        image = '{image}'
+                    WHERE question_id = {question_id} AND id = {id};
+                   """.format(submission_time=dictionary['submission_time'],
+                              vote_number=dictionary['vote_number'],
+                              message=dictionary['message'],
+                              image=dictionary['image'],
+                              question_id=dictionary['question_id'],
+                              id=dictionary['id']
+                              ))

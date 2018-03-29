@@ -110,6 +110,30 @@ h2 * {
     font-size: 1.7em;
 }
 
-.anserws {
+/* IMG */
+
+.question_image {
+    max-width: 400px;
+    height: auto;
+}
+
+.answer_image {
+    max-width: 200px;
+    height: auto;
+}
+
+/* ANSWER */
+
+.answer {
+    margin: 15px;
+}
+
+.answer_message {
     font-size: 1.5em;
+}
+
+.answer_data {
+    align-items: flex-end;
+    display: flex;
+    width: 150px;
 }

@@ -52,6 +52,8 @@ def show_question(question_id, answer_id=None, comment_id=None):
     question = logic.get_question(question_id)
     answers = logic.get_answers_to_question(question_id)
     comment = logic.get_comment_to_question(question_id)
+    logic.update_view_number(question_id)
+    
     return render_template('question.html',
                            question=question,
                            answers=answers,

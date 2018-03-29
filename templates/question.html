@@ -18,8 +18,10 @@
                 {{ question[0].message }}
             </p>
         </div>
-
-        <img src="{{ question[0].image }}" class="question_image">
+        {% if question[0].image is in [''] %}
+            <img src="{{ question[0].image }}" class="question_image">
+        {% endif %}
+        
     </div>
 
     <div class="add_answer">
@@ -60,7 +62,9 @@
                 Vote number: {{ answer.vote_number}}
             </nav>
 
-            <img src="{{ answer.image }}" class="answer_image">
+            {% if answer.image is in [''] %}
+                <img src="{{ answer.image }}" class="answer_image">
+            {% endif %}
 
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
             <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>

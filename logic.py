@@ -3,9 +3,13 @@ import database_common
 import util
 
 
-def make_answer(message, image, question_id):
+def make_answer(message, image, question_id, answer_id=None):
+    if answer_id is None:
+        id_ = generate_id(persistence.get_dicts_from_file("answer"))
+    else:
+        id_ = answer_id
     result = {
-        'id': generate_id(persistence.get_dicts_from_file("answer")),
+        'id': id_,
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
         'vote_number': 0,
         'message': message,
@@ -103,7 +107,7 @@ def update_table(cursor, table_name, column_name, update_value, condition):
 def delete_table(cursor, table_name, condition):
     cursor.execute("""
                     DELETE FROM {table_name}
-                    WHERE id = {condition};
+                    WHERE {condition};
                    """.format(table_name=table_name,
                               condition=condition))
 
@@ -144,36 +148,6 @@ def get_answers_to_question(cursor, question_id):
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
-
-
-@database_common.connection_handler
-def max_from(cursor, table_name, value):
-    cursor.execute("""
-                    SELECT * FROM {table_name}
-                    WHERE {value} = (SELECT MAX({value}) FROM {table_name});
-                   """.format(table_name=table_name, value=value))
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def edit_question(cursor, dictionary):
-    cursor.execute("""
-                    UPDATE question
-                    SET submission_time = '{submission_time}',
-                        view_number = {view_number},
-                        vote_number = {vote_number},
-                        title = '{title}',
-                        message = '{message}',
-                        image = '{image}'
-                    WHERE id = {id};
-                   """.format(submission_time=util.decode_time_for_human(util.get_current_timestamp()),
-                              view_number=dictionary['view_number'],
-                              vote_number=dictionary['vote_number'],
-                              title=dictionary['title'],
-                              message=dictionary['message'],
-                              image=dictionary['image'],
-                              id=dictionary['id']
-                              ))
 
 
 @database_common.connection_handler

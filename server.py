@@ -16,7 +16,7 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions)
 
 
-# -------------- QUESTIONS ----------------
+# -------------- QUESTIONS -----------
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
     list_of_questions = persistence.get_dicts_from_file("question")
@@ -26,7 +26,7 @@ def questions():
 
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def delete_question(question_id):
-    logic.delete_table('question', question_id)
+    logic.delete_table('question', 'id = {question_id}'.format(question_id=question_id))
 
     return redirect('/questions')
 
@@ -44,21 +44,22 @@ def edit_question(question_id):
     return render_template('newQuestion.html', question=question[0])
 
 
-@app.route('/question/<question_id>')
-def show_question(question_id):
+@app.route('/question/<question_id>', methods=['POST', 'GET'])
+def show_question(question_id, answer_id=None):
+    answer_id = request.args.get("answer_id")
     question = logic.get_question(question_id)
-    anserws = logic.get_answers_to_question(question_id)
-
+    answers = logic.get_answers_to_question(question_id)
     return render_template('question.html',
                            question=question,
-                           anserws=anserws,
-                           question_id=question_id)
+                           answers=answers,
+                           question_id=question_id,
+                           answer_id=answer_id)
 
 
 @app.route('/data_handler', methods=['POST', 'GET'])
 def data_handler():
     if 'id' in request.form:
-        question = logic.edit_question(request.form)
+        question = persistence.edit_question(request.form)
     else:
         question = logic.make_question(request.form['title'],
                                        request.form['message'],
@@ -68,6 +69,7 @@ def data_handler():
     return redirect(url_for('questions'))
 
 
+# -------------- ANSWERS -----------
 @app.route('/question/<int:question_id>/new-answer', methods=['POST', 'GET'])
 def post_answer(question_id):
     new_answer = logic.make_answer(request.form['message'],
@@ -77,11 +79,29 @@ def post_answer(question_id):
     return redirect(url_for('show_question', question_id=question_id))
 
 
+@app.route('/question/<int:question_id>/edit-answer/<int:answer_id>', methods=['POST', 'GET'])
+def edit_answer(question_id, answer_id):
+    new_answer = logic.make_answer(request.form['message'],
+                                   request.form['image'],
+                                   question_id,
+                                   answer_id)
+    persistence.edit_answer(new_answer)
+    return redirect(url_for('show_question', question_id=question_id))
+
+
+@app.route('/delete-answer', methods=['GET'])
+def delete_answer():
+    logic.delete_table('answer', 'id = {answer_id}'.format(answer_id=request.args.get("answer_id")))
+
+    return redirect(url_for('show_question', question_id=request.args.get("question_id")))
+
+
 @app.route('/tags')
 def tags():
     return render_template('tags.html')
 
 
+# -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     list_of_titles = logic.search_table(request.form['word'])

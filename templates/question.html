@@ -4,22 +4,22 @@
     <div class="question">
         <nav class="question_data">
             <h2>Data</h2>
-            Submission time: {{ question[0].submission_time }}<br>
-            Vote number: {{ question[0].vote_number }}<br>
-            View number: {{ question[0].view_number }}<br>
+            Submission time: {{ question.submission_time }}<br>
+            Vote number: {{ question.vote_number }}<br>
+            View number: {{ question.view_number }}<br>
         </nav>
 
         <div class="question_title">
-            <h1>{{ question[0].title }}</h1>
+            <h1>{{ question.title }}</h1>
         </div>
 
         <div class="question_message">
             <p>
-                {{ question[0].message }}
+                {{ question.message }}
             </p>
         </div>
-        {% if question[0].image is in [''] %}
-            <img src="{{ question[0].image }}" class="question_image">
+        {% if question.image is in [''] %}
+            <img src="{{ question.image }}" class="question_image">
         {% endif %}
         
     </div>

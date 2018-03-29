@@ -141,7 +141,7 @@ def get_question(cursor, question_id):
                     SELECT * FROM question
                     WHERE id = %s;
                    """, [question_id])
-    return cursor.fetchall()
+    return cursor.fetchall()[0]
 
 
 @database_common.connection_handler

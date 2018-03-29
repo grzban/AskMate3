@@ -2,6 +2,7 @@
 
 {% block content %}
     {% set QUES_HEADER = ['view_number', 'vote_number', 'title', 'submission_time'] %}
+    
     <div id="mentors">
         <table>
             <tr>
@@ -26,7 +27,7 @@
                     {% endfor %}
                     <td>
                         <form>
-                            <button type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
+                            <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
                                 name="question_id" value="{{ question.id }}">DELETE</button>
                             <button type="submit" formaction="{{ url_for('edit_question', question_id=question.id) }}"
                                 name="question_id" value="{{ question.id }}">EDIT</button>
@@ -38,7 +39,7 @@
         <form method="POST">
             <button type="submit" formaction="{{ url_for('new_question') }}">NEW QUESTION</button>
         </form>
-        
+
     </div>
 
 {% endblock %}

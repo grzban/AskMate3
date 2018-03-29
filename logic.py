@@ -14,7 +14,22 @@ def make_answer(message, image, question_id, answer_id=None):
         'vote_number': 0,
         'message': message,
         'question_id': question_id,
-        'image': image,
+        'image': image
+    }
+    return result
+
+def make_comment(message, question_id, comment_id=None):
+    if comment_id is None:
+        id_ = generate_id(persistence.get_dicts_from_file("comment"))
+    else:
+        id_ = comment_id
+    result = {
+        'id': id_,
+        'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
+        'edited_count': 0,
+        'message': message,
+        'question_id': question_id,
+        'answer_id': 0,
     }
     return result
 
@@ -41,7 +56,7 @@ def generate_id(table):
 
 
 def search_question(question_id):
-    list_of_questions = persistence.get_dicts_from_file('sample_data/question.csv', 'que')
+    list_of_questions = persistence.get_dicts_from_file('question')
     for question in list_of_questions:
         if question['id'] == question_id:
             break
@@ -49,63 +64,48 @@ def search_question(question_id):
 
 
 def search_list_of_answers_for_ques(question_id):
-    list_of_all_answers = persistence.get_dicts_from_file('sample_data/answer.csv', 'ans')
-    answers_for_ques = [answer for answer in list_of_all_answers
-                        if answer['question_id'] == question_id]
-    return answers_for_ques
+    list_of_all_answers = persistence.get_dicts_from_file('answer')
+    answers_for_question = [answer for answer in list_of_all_answers
+                            if answer['question_id'] == question_id]
+    return answers_for_question
 
 
 def search_answer(answer_id):
-    list_of_answers = persistence.get_dicts_from_file('sample_data/answer.csv', 'ans')
+    list_of_answers = persistence.get_dicts_from_file('answer')
     for answer in list_of_answers:
         if answer['id'] == answer_id:
             break
     return answer
 
 
-def update_view_number(question_id):
+def update_view_number(question_id, amount=1):
     question = search_question(question_id)
-    view_number = int(question['view_number'])
-    view_number += 1
-    persistence.update('sample_data/question.csv', question_id, 'view_number',
-                       str(view_number), persistence.QUES_HEADER, 'que')
+    views_number = int(question['view_number'])
+    views_number += amount
+    persistence.update('question', question_id, 'view_number', views_number)
 
 
 def voting(question_id, answer_id, vote):
-    if answer_id == 'None':
-        ques = search_question(question_id)
-        votes = int(ques.get('vote_number'))
+    if answer_id == 'None':  # if voting on question:
+        questions = search_question(int(question_id))
+        votes = int(questions.get('vote_number'))
         if vote == 'plus':
             votes += 1
         else:
             votes -= 1
-        persistence.update('sample_data/question.csv', question_id, 'vote_number',
-                           str(votes), persistence.QUES_HEADER, 'que')
+        persistence.update('question', question_id, 'vote_number', votes)
 
-    else:
-        ans = search_answer(answer_id)
-        votes = int(ans.get('vote_number'))
+    else:  # if voting on answer:
+        answers = search_answer(int(answer_id))
+        votes = int(answers.get('vote_number'))
         if vote == 'plus':
             votes += 1
         else:
             votes -= 1
-        persistence.update('sample_data/answer.csv', answer_id, 'vote_number',
-                           str(votes), persistence.ANS_HEADER, 'ans')
+        persistence.update('answer', int(answer_id), 'vote_number', votes)
 
 
 # ----------------- ACTION ON TABLE -------------------
-@database_common.connection_handler
-def update_table(cursor, table_name, column_name, update_value, condition):
-    cursor.execute("""
-                    UPDATE {table_name}
-                    SET {column_name} = '{update_value}'
-                    WHERE {condition};
-                   """.format(table_name=table_name,
-                              column_name=column_name,
-                              update_value=update_value,
-                              condition=condition))
-
-
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):
     cursor.execute("""
@@ -152,6 +152,14 @@ def get_answers_to_question(cursor, question_id):
                    """, [question_id])
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_comment_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %s;
+                   """, [question_id])
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def last_five_questions(cursor):

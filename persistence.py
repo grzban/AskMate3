@@ -47,8 +47,8 @@ def del_row_in_questions(cursor, id_questions):
 @database_common.connection_handler
 def update(cursor, table, id_row, column, new_value):
     query = """UPDATE {}
-              SET {}={}
-              WHERE id = {};""".format(table, column, new_value, id_row)
+              SET {}='{}'
+              WHERE id = '{}';""".format(table, column, new_value, id_row)
     cursor.execute(query)
 
 
@@ -110,6 +110,20 @@ def add_new_answer(cursor, new_answer):
                     VALUES {value};
                    """.format(value=value))
 
+@database_common.connection_handler
+def add_new_comment(cursor, new_comment):
+    value = (new_comment['id'],
+             new_comment['message'],
+             new_comment['submission_time'],
+             new_comment['edited_count'],
+             new_comment['question_id'],
+            )
+
+    cursor.execute("""
+                    INSERT INTO comment (id, message, submission_time, edited_count, question_id)
+                    VALUES {value};
+                   """.format(value=value))
+
 
 @database_common.connection_handler
 def edit_answer(cursor, dictionary):
@@ -124,6 +138,23 @@ def edit_answer(cursor, dictionary):
                               vote_number=dictionary['vote_number'],
                               message=dictionary['message'],
                               image=dictionary['image'],
+                              question_id=dictionary['question_id'],
+                              id=dictionary['id']
+                              ))
+
+@database_common.connection_handler
+def edit_coment(cursor, dictionary):
+    cursor.execute("""
+                    UPDATE comment
+                    SET submission_time = '{submission_time}',
+                        vote_number = {vote_number},
+                        message = '{message}',
+                        image = '{image}'
+                    WHERE question_id = {question_id} AND id = {id};
+                   """.format(submission_time=dictionary['submission_time'],
+                              vote_number=dictionary['vote_number'],
+                              message=dictionary['message'],
+                              
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))

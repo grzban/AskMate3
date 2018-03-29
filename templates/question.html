@@ -17,21 +17,73 @@
             <p>
                 {{ question.message }}
             </p>
+            <p>
+                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+                    <button type="submit" name="qplus" value="+">+ vote</button>
+                </form>
+                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+                    <button type="submit" name="qminus" value="-">- vote</button>
+                </form>
+            </p>
         </div>
         {% if question.image is in [''] %}
             <img src="{{ question.image }}" class="question_image">
         {% endif %}
-        
+
     </div>
+
+
+    {% for comment in comment %}
+    {% set comment_id = comment.id %}
+
+        <div class="comment">
+            <hr size="1" color="black" />
+            <div>
+                {{ comment.message }}
+            </div>
+
+            <nav  class="comment_data">
+                Added: {{ comment.submission_time}}
+                <br>
+                Edited count: {{comment.edited_count}}
+            </nav>
+
+
+
+        </div>
+    {% endfor %}
+
+    <div class="add_comment">
+        <hr size="1" color="black" />
+
+        <div class="add_comment">
+            {% if coment_id %}
+            <form action="{{ url_for('edit_coment', question_id=question_id, comment_id=coment_id) }}" method="POST">
+                    <h3>Comment</h3>
+                    <textarea name="message" rows="1" cols="50" class="input"></textarea>
+                    <button type="submit">Edit comment</button>
+            </form>
+            {% else %}
+            <form action="{{ url_for('post_comment', question_id=question_id) }}" method="POST">
+                    <h3>Comment</h3>
+                    <textarea name="message" rows="1" cols="50" class="input"></textarea>
+                    <button type="submit">Post comment</button>
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+
+
 
     <div class="add_answer">
         <hr size="1" color="black" />
-        
+
         <div class="add_answer">
             {% if answer_id %}
             <form action="{{ url_for('edit_answer', question_id=question_id, answer_id=answer_id) }}" method="POST">
                     <h2>Answer</h2>
-                    <textarea name="message" rows="2" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="4" cols="50" class="input"></textarea>
                     <h2>Image address</h2>
                     <input type="text" name="image" class="input">
                     <button type="submit">Edit answer</button>
@@ -39,7 +91,7 @@
             {% else %}
             <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
                     <h2>Answer</h2>
-                    <textarea name="message" rows="2" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="4" cols="50" class="input"></textarea>
                     <h2>Image address</h2>
                     <input type="text" name="image" class="input">
                     <button type="submit">Post answer</button>
@@ -55,11 +107,18 @@
             <div>
                 {{ answer.message }}
             </div>
-
+            <br>
             <nav class="answer_data">
                 Added: {{ answer.submission_time}}
                 <br>
                 Vote number: {{ answer.vote_number}}
+                <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
+                    <button type="submit" name="qplus" value="+">+ vote</button>
+                </form>
+                <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='minus')}} method="POST">
+                    <button type="submit" name="qminus" value="-">- vote</button>
+                </form>
+
             </nav>
 
             {% if answer.image is in [''] %}
@@ -72,4 +131,10 @@
             <hr size="1" color="black" />
         </div>
     {% endfor %}
+
+
+
+
+
+
 {% endblock %}

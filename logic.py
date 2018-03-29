@@ -110,7 +110,7 @@ def update_table(cursor, table_name, column_name, update_value, condition):
 def delete_table(cursor, table_name, condition):
     cursor.execute("""
                     DELETE FROM {table_name}
-                    WHERE id = {condition};
+                    WHERE {condition};
                    """.format(table_name=table_name,
                               condition=condition))
 

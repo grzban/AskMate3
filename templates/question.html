@@ -27,7 +27,6 @@
         
         <div class="add_answer">
             {% if answer_id %}
-            {{ answer_id }}
             <form action="{{ url_for('edit_answer', question_id=question_id, answer_id=answer_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="2" cols="50" class="input"></textarea>
@@ -64,6 +63,7 @@
             <img src="{{ answer.image }}" class="answer_image">
 
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
+            <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>
 
             <hr size="1" color="black" />
         </div>

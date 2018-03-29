@@ -16,7 +16,7 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions)
 
 
-# -------------- QUESTIONS ----------------
+# -------------- QUESTIONS -----------
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
     list_of_questions = persistence.get_dicts_from_file("question")
@@ -26,7 +26,7 @@ def questions():
 
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def delete_question(question_id):
-    logic.delete_table('question', question_id)
+    logic.delete_table('question', 'id = {question_id}'.format(question_id=question_id))
 
     return redirect('/questions')
 
@@ -69,6 +69,7 @@ def data_handler():
     return redirect(url_for('questions'))
 
 
+# -------------- ANSWERS -----------
 @app.route('/question/<int:question_id>/new-answer', methods=['POST', 'GET'])
 def post_answer(question_id):
     new_answer = logic.make_answer(request.form['message'],
@@ -88,11 +89,19 @@ def edit_answer(question_id, answer_id):
     return redirect(url_for('show_question', question_id=question_id))
 
 
+@app.route('/delete-answer', methods=['GET'])
+def delete_answer():
+    logic.delete_table('answer', 'id = {answer_id}'.format(answer_id=request.args.get("answer_id")))
+
+    return redirect(url_for('show_question', question_id=request.args.get("question_id")))
+
+
 @app.route('/tags')
 def tags():
     return render_template('tags.html')
 
 
+# -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     list_of_titles = logic.search_table(request.form['word'])

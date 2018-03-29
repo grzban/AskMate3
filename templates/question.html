@@ -17,6 +17,14 @@
             <p>
                 {{ question[0].message }}
             </p>
+            <p>
+                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+                    <button type="submit" name="qplus" value="+">+ vote</button>
+                </form>
+                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+                    <button type="submit" name="qminus" value="-">- vote</button>
+                </form>
+            </p>
         </div>
         <hr size="1" color="black" />
         <div class="add_answer">

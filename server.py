@@ -81,11 +81,18 @@ def post_answer(question_id):
 def tags():
     return render_template('tags.html')
 
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     list_of_titles = logic.search_table(request.form['word'])
 
     return render_template('search.html', list_of_titles=list_of_titles)
+
+
+@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
+def vote(question_id, answer_id, vote):
+    logic.voting(question_id, answer_id, vote)
+    return redirect('/question/{}'.format(question_id))
 
 
 if __name__ == '__main__':

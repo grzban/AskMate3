@@ -10,8 +10,7 @@ def make_answer(message, image, question_id):
         'vote_number': 0,
         'message': message,
         'question_id': question_id,
-        'image': image,
-        'question_id': question_id
+        'image': image
     }
     return result
 
@@ -38,7 +37,7 @@ def generate_id(table):
 
 
 def search_question(question_id):
-    list_of_questions = persistence.get_dicts_from_file('sample_data/question.csv', 'que')
+    list_of_questions = persistence.get_dicts_from_file('question')
     for question in list_of_questions:
         if question['id'] == question_id:
             break
@@ -46,14 +45,14 @@ def search_question(question_id):
 
 
 def search_list_of_answers_for_ques(question_id):
-    list_of_all_answers = persistence.get_dicts_from_file('sample_data/answer.csv', 'ans')
-    answers_for_ques = [answer for answer in list_of_all_answers
-                        if answer['question_id'] == question_id]
-    return answers_for_ques
+    list_of_all_answers = persistence.get_dicts_from_file('answer')
+    answers_for_question = [answer for answer in list_of_all_answers
+                            if answer['question_id'] == question_id]
+    return answers_for_question
 
 
 def search_answer(answer_id):
-    list_of_answers = persistence.get_dicts_from_file('sample_data/answer.csv', 'ans')
+    list_of_answers = persistence.get_dicts_from_file('answer')
     for answer in list_of_answers:
         if answer['id'] == answer_id:
             break
@@ -62,10 +61,9 @@ def search_answer(answer_id):
 
 def update_view_number(question_id):
     question = search_question(question_id)
-    view_number = int(question['view_number'])
-    view_number += 1
-    persistence.update('sample_data/question.csv', question_id, 'view_number',
-                       str(view_number), persistence.QUES_HEADER, 'que')
+    views_number = int(question['view_number'])
+    views_number += 1
+    persistence.update('question', question_id, 'view_number', str(views_number))
 
 
 def voting(question_id, answer_id, vote):
@@ -76,18 +74,16 @@ def voting(question_id, answer_id, vote):
             votes += 1
         else:
             votes -= 1
-        persistence.update('sample_data/question.csv', question_id, 'vote_number',
-                           str(votes), persistence.QUES_HEADER, 'que')
+        persistence.update('question', question_id, 'vote_number', str(votes))
 
     else:
-        ans = search_answer(answer_id)
-        votes = int(ans.get('vote_number'))
+        answers = search_answer(answer_id)
+        votes = int(answers.get('vote_number'))
         if vote == 'plus':
             votes += 1
         else:
             votes -= 1
-        persistence.update('sample_data/answer.csv', answer_id, 'vote_number',
-                           str(votes), persistence.ANS_HEADER, 'ans')
+        persistence.update('answer', answer_id, 'vote_number', str(votes))
 
 
 # ----------------- ACTION ON TABLE -------------------
@@ -121,6 +117,7 @@ def insert_table(cursor, table_name, columns, value):
                               columns=columns,
                               value=value))
 
+
 @database_common.connection_handler
 def search_table(cursor, search_word):
     cursor.execute("""
@@ -128,7 +125,6 @@ def search_table(cursor, search_word):
                     WHERE title LIKE '%{search_word}%';
                    """.format(search_word=search_word))
     return cursor.fetchall()
-
 
 
 # -------------------- SQL FUNCTIONS -----------------

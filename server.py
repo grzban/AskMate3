@@ -121,27 +121,19 @@ def search():
     return render_template('search.html', list_of_titles=list_of_titles)
 
 
-@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
-def vote(question_id, answer_id, vote):
-    logic.voting(question_id, answer_id, vote)
-    return redirect('/question/{}'.format(question_id))
-
-
-
-
 @app.route('/question/<int:question_id>/new-comment', methods=['POST', 'GET'])
 def post_comment(question_id):
     print(request.form)
     new_comment = logic.make_comment(request.form['message'],
-                                   question_id)
+                                     question_id)
     persistence.add_new_comment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
+
 
 @app.route('/question/<int:question_id>/edit-comment/<int:comment_id>', methods=['POST', 'GET'])
 def edit_coment(question_id, coment_id):
     new_comment = logic.make_comment(request.form['message'],
-                                   question_id)
-                                   
+                                     question_id)                               
     persistence.edit_coment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
 

@@ -27,6 +27,7 @@ def questions():
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def delete_question(question_id):
     logic.delete_table('question', 'id = {question_id}'.format(question_id=question_id))
+    logic.update_view_number(question_id, -1)
 
     return redirect('/questions')
 
@@ -49,6 +50,7 @@ def show_question(question_id, answer_id=None):
     answer_id = request.args.get("answer_id")
     question = logic.get_question(question_id)
     answers = logic.get_answers_to_question(question_id)
+    logic.update_view_number(int(question_id), 1)
     return render_template('question.html',
                            question=question,
                            answers=answers,
@@ -72,6 +74,7 @@ def data_handler():
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
 def vote(question_id, answer_id, vote):
     logic.voting(question_id, answer_id, vote)
+    logic.update_view_number(int(question_id), -1)
     return redirect('/question/{}'.format(question_id))
 
 

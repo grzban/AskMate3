@@ -110,6 +110,7 @@ def add_new_answer(cursor, new_answer):
                     VALUES {value};
                    """.format(value=value))
 
+
 @database_common.connection_handler
 def add_new_comment(cursor, new_comment):
     value = (new_comment['id'],
@@ -141,6 +142,7 @@ def edit_answer(cursor, dictionary):
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))
+
 
 @database_common.connection_handler
 def edit_coment(cursor, dictionary):

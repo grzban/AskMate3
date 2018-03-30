@@ -26,8 +26,10 @@
                 </form>
             </p>
         </div>
-        {% if question.image is in [''] %}
-            <img src="{{ question.image }}" class="question_image">
+        {% if question.image is not in [''] %}
+            {% if question.image %}
+                <img src="{{ question.image }}" class="question_image" alt="">
+            {% endif %}
         {% endif %}
 
     </div>
@@ -121,8 +123,8 @@
 
             </nav>
 
-            {% if answer.image is in [''] %}
-                <img src="{{ answer.image }}" class="answer_image">
+            {% if answer.image is not in [''] %}
+                <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
 
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>

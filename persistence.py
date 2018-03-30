@@ -7,26 +7,6 @@ import database_common
 import util
 
 
-# ------------------------ BASE64 ------------------------
-def encode(dic, ans_que):
-    '''ans_que = 'ans' or 'que' , it depends on what you want to encode'''
-    if ans_que == 'que':
-        dic['title'] = base64.b64encode(bytes(dic['title'], 'UTF-8')).decode('UTF-8')
-    dic['message'] = base64.b64encode(bytes(dic['message'], 'UTF-8')).decode('UTF-8')
-    dic['image'] = base64.b64encode(bytes(dic['image'], 'UTF-8')).decode('UTF-8')  # bez b'
-    return dic
-
-
-def decode(dic, ans_que):
-    '''ans_que = 'ans' or 'que' , it depends on what you want to encode'''
-    if ans_que == 'que':
-        dic['title'] = base64.b64decode(dic['title']).decode('UTF-8')
-    dic['message'] = base64.b64decode(dic['message']).decode('UTF-8')
-    dic['image'] = base64.b64decode(dic['image']).decode('UTF-8')
-    return dic
-
-
-# ------------------------- DATA HANDLER -------------------------
 @database_common.connection_handler
 def get_dicts_from_file(cursor, database_name):
     query = """SELECT * FROM {};""".format(database_name)
@@ -36,28 +16,10 @@ def get_dicts_from_file(cursor, database_name):
 
 
 @database_common.connection_handler
-def del_row_in_questions(cursor, id_questions):
-    cursor.execute("""
-                   DELETE FROM answer
-                   WHERE question_id = %(id_questions)s;
-                  """,
-                   {'id_questions': id_questions})
-
-
-@database_common.connection_handler
 def update(cursor, table, id_row, column, new_value):
     query = """UPDATE {}
               SET {}='{}'
               WHERE id = '{}';""".format(table, column, new_value, id_row)
-    cursor.execute(query)
-
-
-@database_common.connection_handler
-def write_dicts_to_file(table, tuple_new_values):
-    '''new_values is a tuple'''
-    query = """INSERT INTO {table}
-               VALUES {new_values};
-            """.format(table, tuple_new_values)
     cursor.execute(query)
 
 
@@ -117,8 +79,7 @@ def add_new_comment(cursor, new_comment):
              new_comment['message'],
              new_comment['submission_time'],
              new_comment['edited_count'],
-             new_comment['question_id'],
-            )
+             new_comment['question_id'],)
 
     cursor.execute("""
                     INSERT INTO comment (id, message, submission_time, edited_count, question_id)
@@ -156,7 +117,7 @@ def edit_coment(cursor, dictionary):
                    """.format(submission_time=dictionary['submission_time'],
                               vote_number=dictionary['vote_number'],
                               message=dictionary['message'],
-                              
+
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))

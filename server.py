@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__, static_url_path='/static')
 
 
-# -------------- INDEX ---------------
+# -------------- INDEX --------------
 @app.route('/')
 def index():
     lastes_questions = logic.last_five_questions()
@@ -16,7 +16,7 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions,)
 
 
-# -------------- QUESTIONS -----------
+# -------------- QUESTIONS ----------
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
     list_of_questions = persistence.get_dicts_from_file("question")
@@ -83,7 +83,7 @@ def vote(question_id, answer_id, vote):
     return redirect('/question/{}'.format(question_id))
 
 
-# -------------- ANSWERS -----------
+# -------------- ANSWERS ----------
 @app.route('/question/<int:question_id>/new_answer', methods=['POST', 'GET'])
 def post_answer(question_id):
     new_answer = logic.make_answer(request.form['message'],
@@ -110,6 +110,7 @@ def delete_answer():
     return redirect(url_for('show_question', question_id=request.args.get("question_id")))
 
 
+# -------------- TAGS -------------
 @app.route('/tags')
 def tags():
     return render_template('tags.html')
@@ -123,9 +124,9 @@ def search():
     return render_template('search.html', list_of_titles=list_of_titles)
 
 
+# -------------- COMMENTS ---------
 @app.route('/question/<int:question_id>/new-comment', methods=['POST', 'GET'])
 def post_comment(question_id):
-    print(request.form)
     new_comment = logic.make_comment(request.form['message'],
                                      question_id)
     persistence.add_new_comment(new_comment)

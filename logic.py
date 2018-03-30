@@ -83,6 +83,14 @@ def voting(question_id, answer_id, vote):
         persistence.update('answer', int(answer_id), 'vote_number', votes)
 
 
+def search_question(question_id):
+    list_of_questions = persistence.get_dicts_from_file('question')
+    for question in list_of_questions:
+        if question['id'] == question_id:
+            break
+    return question
+
+
 # ----------------- SQL ACTION ON TABLES -------------------
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):

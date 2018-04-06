@@ -18,6 +18,7 @@ def make_answer(message, image, question_id, answer_id=None):
     }
     return result
 
+
 def make_comment(message, question_id, comment_id=None):
     if comment_id is None:
         id_ = generate_id(persistence.get_dicts_from_file("comment"))
@@ -160,6 +161,7 @@ def get_comment_to_question(cursor, question_id):
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def last_five_questions(cursor):

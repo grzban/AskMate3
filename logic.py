@@ -56,29 +56,6 @@ def generate_id(table):
     return new_id
 
 
-def search_question(question_id):
-    list_of_questions = persistence.get_dicts_from_file('question')
-    for question in list_of_questions:
-        if question['id'] == question_id:
-            break
-    return question
-
-
-def search_list_of_answers_for_ques(question_id):
-    list_of_all_answers = persistence.get_dicts_from_file('answer')
-    answers_for_question = [answer for answer in list_of_all_answers
-                            if answer['question_id'] == question_id]
-    return answers_for_question
-
-
-def search_answer(answer_id):
-    list_of_answers = persistence.get_dicts_from_file('answer')
-    for answer in list_of_answers:
-        if answer['id'] == answer_id:
-            break
-    return answer
-
-
 def update_view_number(question_id, amount=1):
     question = search_question(question_id)
     views_number = int(question['view_number'])
@@ -106,7 +83,15 @@ def voting(question_id, answer_id, vote):
         persistence.update('answer', int(answer_id), 'vote_number', votes)
 
 
-# ----------------- ACTION ON TABLE -------------------
+def search_question(question_id):
+    list_of_questions = persistence.get_dicts_from_file('question')
+    for question in list_of_questions:
+        if question['id'] == question_id:
+            break
+    return question
+
+
+# ----------------- SQL ACTION ON TABLES -------------------
 @database_common.connection_handler
 def delete_table(cursor, table_name, condition):
     cursor.execute("""
@@ -114,16 +99,6 @@ def delete_table(cursor, table_name, condition):
                     WHERE {condition};
                    """.format(table_name=table_name,
                               condition=condition))
-
-
-@database_common.connection_handler
-def insert_table(cursor, table_name, columns, value):
-    cursor.execute("""
-                    INSERT INTO {table_name} ({columns})
-                    VALUES ({value});
-                   """.format(table_name=table_name,
-                              columns=columns,
-                              value=value))
 
 
 @database_common.connection_handler
@@ -142,7 +117,7 @@ def get_question(cursor, question_id):
                     SELECT * FROM question
                     WHERE id = %s;
                    """, [question_id])
-    return cursor.fetchall()
+    return cursor.fetchall()[0]
 
 
 @database_common.connection_handler

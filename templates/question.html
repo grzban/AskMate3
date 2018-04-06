@@ -4,18 +4,18 @@
     <div class="question">
         <nav class="question_data">
             <h2>Data</h2>
-            Submission time: {{ question[0].submission_time }}<br>
-            Vote number: {{ question[0].vote_number }}<br>
-            View number: {{ question[0].view_number }}<br>
+            Submission time: {{ question.submission_time }}<br>
+            Vote number: {{ question.vote_number }}<br>
+            View number: {{ question.view_number }}<br>
         </nav>
 
         <div class="question_title">
-            <h1>{{ question[0].title }}</h1>
+            <h1>{{ question.title }}</h1>
         </div>
 
         <div class="question_message">
             <p>
-                {{ question[0].message }}
+                {{ question.message }}
             </p>
             <p>
                 <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
@@ -26,8 +26,10 @@
                 </form>
             </p>
         </div>
-        {% if question[0].image is in [''] %}
-            <img src="{{ question[0].image }}" class="question_image">
+        {% if question.image is not in [''] %}
+            {% if question.image %}
+                <img src="{{ question.image }}" class="question_image" alt="">
+            {% endif %}
         {% endif %}
 
     </div>
@@ -121,8 +123,8 @@
 
             </nav>
 
-            {% if answer.image is in [''] %}
-                <img src="{{ answer.image }}" class="answer_image">
+            {% if answer.image is not in [''] %}
+                <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
 
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
@@ -131,10 +133,5 @@
             <hr size="1" color="black" />
         </div>
     {% endfor %}
-
-
-
-
-
 
 {% endblock %}

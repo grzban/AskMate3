@@ -8,11 +8,81 @@ import util
 
 
 @database_common.connection_handler
-def get_dicts_from_file(cursor, database_name):
-    query = """SELECT * FROM {};""".format(database_name)
+def get_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE id = '{question_id}';
+                   """.format(question_id=question_id))
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def get_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = '{answer_id}';
+                   """.format(answer_id=answer_id))
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def get_answers_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE question_id = %s;
+                   """, [question_id])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_comment_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %s;
+                   """, [question_id])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def last_five_questions(cursor):
+    cursor.execute("""
+                    SELECT id, title, message FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5;
+                   """)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def delete_table(cursor, table_name, condition):
+    cursor.execute("""
+                    DELETE FROM {table_name}
+                    WHERE {condition};
+                   """.format(table_name=table_name,
+                              condition=condition))
+
+
+@database_common.connection_handler
+def search_table(cursor, search_word):  # in SEARCH feature
+    cursor.execute("""
+                    SELECT id, title FROM question
+                    WHERE title LIKE '%{search_word}%';
+                   """.format(search_word=search_word))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_ids(cursor, table):
+    query = """SELECT id FROM {};""".format(table)
     cursor.execute(query)
     table = cursor.fetchall()
     return table
+
+
+@database_common.connection_handler
+def get_list_of_questions(cursor):
+    cursor.execute("SELECT * FROM question;")
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -117,7 +187,6 @@ def edit_coment(cursor, dictionary):
                    """.format(submission_time=dictionary['submission_time'],
                               vote_number=dictionary['vote_number'],
                               message=dictionary['message'],
-
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))

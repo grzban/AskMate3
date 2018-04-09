@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% set QUES_HEADER = ['view_number', 'vote_number', 'title', 'submission_time'] %}
+    
+    <div id="mentors">
+        <table>
+            <tr>
+                {% for header in QUES_HEADER %}
+                <th>
+                    {{ header }}
+                </th>
+                {% endfor%}
+            </tr>
+            {% for question in list_of_questions %}
+                <tr>
+                    {% for header in QUES_HEADER %}
+                        {% if header == 'title' %}
+                        <td>
+                            <a href="{{ url_for('show_question', question_id=question.id) }}">{{ question[header] }}</a>
+                        </td>
+                        {% else %}
+                        <td>
+                            {{ question[header] }}
+                        </td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>
+                        <form>
+                            <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
+                                name="question_id" value="{{ question.id }}">DELETE</button>
+                            <button type="submit" formaction="{{ url_for('edit_question', question_id=question.id) }}"
+                                name="question_id" value="{{ question.id }}">EDIT</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor%}
+        </table>
+        <form method="POST">
+            <button type="submit" formaction="{{ url_for('new_question') }}">NEW QUESTION</button>
+        </form>
+
+    </div>
+
+{% endblock %}

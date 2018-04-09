@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="index_question">
+        <h1>Lastes questions</h1>
+        <hr size="2" color="black" />
+        {% for question in lastes_questions %}
+        <div class="five_questions">
+            <h2>
+                <a href="{{ url_for('show_question', question_id=question.id) }}">{{ question.title }}</a>
+            </h2>
+            <p>
+                {{ question.message }}
+            </p>
+            <hr size="1" color="black" />
+        </div>
+        
+        {% endfor %}
+    </div>
+{% endblock %}

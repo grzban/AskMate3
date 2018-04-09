@@ -5,7 +5,7 @@ import util
 
 def make_answer(message, image, question_id, answer_id=None):
     if answer_id is None:
-        id_ = generate_id(persistence.get_dicts_from_file("answer"))
+        id_ = generate_id(persistence.get_ids("answer"))
     else:
         id_ = answer_id
     result = {
@@ -21,7 +21,7 @@ def make_answer(message, image, question_id, answer_id=None):
 
 def make_comment(message, question_id, comment_id=None):
     if comment_id is None:
-        id_ = generate_id(persistence.get_dicts_from_file("comment"))
+        id_ = generate_id(persistence.get_ids("comment"))
     else:
         id_ = comment_id
     result = {
@@ -37,7 +37,7 @@ def make_comment(message, question_id, comment_id=None):
 
 def make_question(title, message, image=""):
     result = {
-        'id': generate_id(persistence.get_dicts_from_file("question")),
+        'id': generate_id(persistence.get_ids('question')),
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
         'view_number': 0,
         'vote_number': 0,
@@ -57,7 +57,7 @@ def generate_id(table):
 
 
 def update_view_number(question_id, amount=1):
-    question = search_question(question_id)
+    question = persistence.get_question(question_id)
     views_number = int(question['view_number'])
     views_number += amount
     persistence.update('question', question_id, 'view_number', views_number)
@@ -65,84 +65,13 @@ def update_view_number(question_id, amount=1):
 
 def voting(question_id, answer_id, vote):
     if answer_id == 'None':  # if voting on question:
-        questions = search_question(int(question_id))
+        questions = persistence.get_question(question_id)
         votes = int(questions.get('vote_number'))
-        if vote == 'plus':
-            votes += 1
-        else:
-            votes -= 1
+        votes += 1 if vote == 'plus' else -1
         persistence.update('question', question_id, 'vote_number', votes)
 
     else:  # if voting on answer:
-        answers = search_answer(int(answer_id))
-        votes = int(answers.get('vote_number'))
-        if vote == 'plus':
-            votes += 1
-        else:
-            votes -= 1
+        answer = persistence.get_answer(answer_id)
+        votes = int(answer.get('vote_number'))
+        votes += 1 if vote == 'plus' else -1
         persistence.update('answer', int(answer_id), 'vote_number', votes)
-
-
-def search_question(question_id):
-    list_of_questions = persistence.get_dicts_from_file('question')
-    for question in list_of_questions:
-        if question['id'] == question_id:
-            break
-    return question
-
-
-# ----------------- SQL ACTION ON TABLES -------------------
-@database_common.connection_handler
-def delete_table(cursor, table_name, condition):
-    cursor.execute("""
-                    DELETE FROM {table_name}
-                    WHERE {condition};
-                   """.format(table_name=table_name,
-                              condition=condition))
-
-
-@database_common.connection_handler
-def search_table(cursor, search_word):
-    cursor.execute("""
-                    SELECT id, title FROM question
-                    WHERE title LIKE '%{search_word}%';
-                   """.format(search_word=search_word))
-    return cursor.fetchall()
-
-
-# -------------------- SQL FUNCTIONS -----------------
-@database_common.connection_handler
-def get_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = %s;
-                   """, [question_id])
-    return cursor.fetchall()[0]
-
-
-@database_common.connection_handler
-def get_answers_to_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE question_id = %s;
-                   """, [question_id])
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def get_comment_to_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM comment
-                    WHERE question_id = %s;
-                   """, [question_id])
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def last_five_questions(cursor):
-    cursor.execute("""
-                    SELECT id, title, message FROM question
-                    ORDER BY submission_time DESC
-                    LIMIT 5;
-                   """)
-    return cursor.fetchall()

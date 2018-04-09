@@ -1,5 +1,5 @@
 body {
-    background-color: #E7D4FF;
+    background-color: rgb(170, 200, 214);
 }
 
 .main {
@@ -9,7 +9,7 @@ body {
 /* The navigation bar */
 .navbar {
     overflow: hidden;
-    background-color: #362640;
+    background-color: #033d74;
     position: fixed;
     top: 0;
     width: 100%;
@@ -22,12 +22,12 @@ body {
     text-align: center;
     padding: 16px;
     text-decoration: none;
-    color: #C48AE5;
+    color: rgb(205, 211, 245);
 }
 
 /* Change background on mouse-over */
 .navbar a:hover {
-    background: #BE87FF;
+    background: rgb(178, 214, 248);
     color: black;
 }
 
@@ -42,7 +42,7 @@ body {
 /* FOOTER */
 footer {
     text-align: center;
-    background-color: #BE61FF;
+    background-color: rgb(78, 105, 163);
     clear: bottom;
 }
 
@@ -54,7 +54,7 @@ table {
 }
 
 td, th {
-    border: 1px solid #ddd;
+    border: 1px solid rgb(221, 221, 221);
     padding: 8px;
 }
 
@@ -62,7 +62,7 @@ th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #BE87FF;
+    background-color: rgb(5, 74, 177);
     color: white;
 }
 tr:nth-child(even){background-color: #f2f2f2;}
@@ -70,7 +70,7 @@ tr:hover {background-color: #ddd;}
 
 /* INDEX */
 h1 {
-    color: #BE87FF;
+    color: rgb(30, 74, 139);
     margin-top: 2em;
 }
 

@@ -1,0 +1,158 @@
+body {
+    background-color: rgb(170, 200, 214);
+}
+
+.main {
+    margin-top: 3em;
+}
+
+/* The navigation bar */
+.navbar {
+    overflow: hidden;
+    background-color: #033d74;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+/* Links inside the navbar */
+.navbar a {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    color: rgb(205, 211, 245);
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+    background: rgb(178, 214, 248);
+    color: black;
+}
+
+.logo {
+    float: left;
+    display: block;
+    width: 3em;
+    height: 3em;
+    margin-right: 10px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    background-color: rgb(78, 105, 163);
+    clear: bottom;
+}
+
+/* TABLE */
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid rgb(221, 221, 221);
+    padding: 8px;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(5, 74, 177);
+    color: white;
+}
+tr:nth-child(even){background-color: #f2f2f2;}
+tr:hover {background-color: #ddd;}
+
+/* INDEX */
+h1 {
+    color: rgb(30, 74, 139);
+    margin-top: 2em;
+}
+
+h2 a:link {
+    color: blue;
+}
+
+h2 a:visited {
+    color: rgb(0, 0, 151);
+}
+
+h2 * {
+    margin-left: 2em;
+}
+
+.index_question p {
+    margin-left: 5em;
+}
+
+/* QUESTION */
+.question_data {
+    float: right;
+    width: 150px;
+}
+
+.question_title {
+    margin-left: 1em;
+    clear: left;
+    margin-bottom: 3em;
+    font-size: 2em;
+}
+
+.question_message {
+    margin-left: 2em;
+    clear: left;
+    margin-bottom: 3em;
+    font-size: 1.7em;
+}
+
+/* IMG */
+
+.question_image {
+    max-width: 400px;
+    height: auto;
+}
+
+.answer_image {
+    max-width: 200px;
+    height: auto;
+}
+
+/* ANSWER */
+
+.answer {
+    margin: 15px;
+}
+
+.answer_message {
+    font-size: 1.5em;
+}
+
+.answer_data {
+    align-items: flex-end;
+    display: flex;
+    width: 150px;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+/* COMMENT */
+.comment {
+    text-align: right;
+    margin: 20px;
+    font-size: 0.9em;
+}
+
+.comment_data {
+    text-align: right;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.add_comment {
+    text-align: right;
+}

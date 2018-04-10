@@ -45,21 +45,25 @@ def edit_question(question_id):
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
-def show_question(question_id, answer_id=None, comment_id=None):
+def show_question(question_id, answer_id=None, comment_id=None, tag_id=None):
     answer_id = request.args.get("answer_id")
     comment_id = request.args.get("comment_id")
+    #tag_id = request.args.get("tag_id")
     question = persistence.get_question(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comment = persistence.get_comment_to_question(question_id)
+    tag = persistence.get_tag_to_question(question_id)
     logic.update_view_number(question_id)
-    
+
     return render_template('question.html',
                            question=question,
                            answers=answers,
                            comment=comment,
+                           tag=tag,
                            question_id=question_id,
                            answer_id=answer_id,
                            comment_id=comment_id)
+                           #tag_id=tag_id)
 
 
 @app.route('/data_handler', methods=['POST', 'GET'])
@@ -114,6 +118,13 @@ def delete_answer():
 def tags():
     return render_template('tags.html')
 
+@app.route('/question/<int:question_id>/new_tag', methods=['POST', 'GET'])
+def post_tag(question_id):
+    new_tag = logic.make_tag(request.form['name'],
+                                     question_id)
+    persistence.add_new_tag(new_tag)
+    return redirect(url_for('show_question', question_id=question_id))
+
 
 # -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])
@@ -124,7 +135,7 @@ def search():
 
 
 # -------------- COMMENTS ---------
-@app.route('/question/<int:question_id>/new-comment', methods=['POST', 'GET'])
+@app.route('/question/<int:question_id>/new_comment', methods=['POST', 'GET'])
 def post_comment(question_id):
     new_comment = logic.make_comment(request.form['message'],
                                      question_id)
@@ -135,9 +146,16 @@ def post_comment(question_id):
 @app.route('/question/<int:question_id>/edit-comment/<int:comment_id>', methods=['POST', 'GET'])
 def edit_coment(question_id, coment_id):
     new_comment = logic.make_comment(request.form['message'],
-                                     question_id)                               
+                                     question_id)
     persistence.edit_coment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
+
+# -------------- USERS -------------
+@app.route('/users')
+def users():
+    list_of_users = persistence.get_list_of_users()
+    return render_template('users.html', list_of_users=list_of_users)
+
 
 
 if __name__ == '__main__':

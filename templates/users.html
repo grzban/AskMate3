@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% set QUES_HEADER = ['user_name', 'user_reputation', 'registration_time'] %}
+
+    <div id="mentors">
+        <table>
+            <tr>
+                {% for header in QUES_HEADER %}
+                <th>
+                    {{ header }}
+                </th>
+                {% endfor%}
+            </tr>
+            {% for question in list_of_questions %}
+                <tr>
+                    <td>
+                        <form>
+                            <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
+                                name="question_id" value="{{ question.id }}">DELETE</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor%}
+        </table>
+    </div>
+
+{% endblock %}

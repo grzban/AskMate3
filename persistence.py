@@ -42,6 +42,14 @@ def get_comment_to_question(cursor, question_id):
                    """, [question_id])
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_tag_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM question_tag
+                    WHERE question_id = %s;
+                    """, [question_id])
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def last_five_questions(cursor):
@@ -176,7 +184,7 @@ def edit_answer(cursor, dictionary):
 
 
 @database_common.connection_handler
-def edit_coment(cursor, dictionary):
+def edit_comment(cursor, dictionary):
     cursor.execute("""
                     UPDATE comment
                     SET submission_time = '{submission_time}',
@@ -190,3 +198,18 @@ def edit_coment(cursor, dictionary):
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))
+
+@database_common.connection_handler
+def get_list_of_users(cursor):
+    cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def add_new_tag(cursor, new_tag):
+    value = (new_tag['id'],
+             new_tag['name'],)
+
+    cursor.execute("""
+                    INSERT INTO tag (id, name)
+                    VALUES {value};
+                   """.format(value=value))

@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    
+
+
+{% for tag in tags %}
+{% set tag_id = tag.id %}
+
+    <div class="tag">
+        <hr size="1" color="black" />
+        <div>
+            {{ tag.name }}
+        </div>
+    </div>
+{% endfor %}
+
 {% endblock %}

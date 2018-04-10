@@ -47,6 +47,24 @@ def make_question(title, message, image=""):
     }
     return result
 
+def make_tag(name, tag_id=None):
+    if tag_id is None:
+        id_ = generate_id(persistence.get_ids("tag"))
+    else:
+        id_ = tag_id
+    result = {
+        'id':id_,
+        'name': name,
+    }
+    return result
+
+def make_tag_id(question_id, id_new_tag):
+    result = {
+        'question_id':question_id,
+        'tag_id': id_new_tag,
+    }
+    return result
+
 
 def generate_id(table):
     ids = [int(dic.get('id')) for dic in table]

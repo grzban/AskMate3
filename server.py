@@ -65,14 +65,26 @@ def show_question(question_id, answer_id=None, comment_id=None):
 @app.route('/data_handler', methods=['POST', 'GET'])
 def data_handler():
     if 'id' in request.form:
-        persistence.edit_question(request.form)
+        check = logic.check_login_password(request.form.get('login'),
+                                      request.form.get('password'),
+                                      request.form.get('id'))
+        if type(check)  == int:
+            persistence.edit_question(request.form)
+        else:
+            return redirect(url_for('edit_question'))
+        
     else:
-        question = logic.make_question(request.form['title'],
+        check = logic.check_login_password(request.form.get('login'),
+                                      request.form.get('password'))
+        if type(check)  == int:
+            question = logic.make_question(request.form['title'],
                                        request.form['message'],
+                                       check,
                                        request.form['image'])
-        persistence.add_new_question(question)
-
-    return redirect(url_for('questions'))
+            persistence.add_new_question(question)
+            return redirect(url_for('questions'))
+        else:
+            return redirect(url_for('new_question'))
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])

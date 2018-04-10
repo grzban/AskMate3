@@ -128,14 +128,13 @@ INSERT INTO question_tag VALUES (2, 3);
 
 --USERS-
 DROP TABLE IF EXISTS public.users;
-DROP SEQUENCE IF EXISTS public.user_id_seq;
+
 CREATE TABLE users (
-    user_id serial NOT NULL,
+    user_id SERIAL NOT NULL
+    CONSTRAINT users_pkey
+    PRIMARY KEY,
     user_name varchar(60),
     user_password varchar(60),
     user_reputation integer,
     registration_time timestamp without time zone
 );
-
-ALTER TABLE ONLY users
-    ADD CONSTRAINT pk_user_id PRIMARY KEY (user_id);

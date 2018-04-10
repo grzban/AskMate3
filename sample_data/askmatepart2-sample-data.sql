@@ -128,6 +128,7 @@ INSERT INTO question_tag VALUES (2, 3);
 
 --USERS-
 DROP TABLE IF EXISTS public.users;
+DROP Cons
 
 CREATE TABLE users (
     user_id SERIAL NOT NULL
@@ -138,3 +139,15 @@ CREATE TABLE users (
     user_reputation integer,
     registration_time timestamp without time zone
 );
+
+ALTER TABLE question ADD user_id integer;
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+ALTER TABLE answer ADD user_id integer;
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+ALTER TABLE comment ADD user_id integer;
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);

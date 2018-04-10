@@ -128,17 +128,18 @@ INSERT INTO question_tag VALUES (2, 3);
 
 --USERS-
 DROP TABLE IF EXISTS public.users;
-DROP Cons
 
-CREATE TABLE users (
-    user_id SERIAL NOT NULL
-    CONSTRAINT users_pkey
-    PRIMARY KEY,
-    user_name varchar(60),
-    user_password varchar(60),
-    user_reputation integer,
-    registration_time timestamp without time zone
+create table users
+(
+  user_id           serial                  not null
+    constraint users_pkey
+    primary key,
+  user_name         varchar(60),
+  user_password     varchar(60),
+  user_reputation   integer,
+  registration_time timestamp default now() not null
 );
+
 
 ALTER TABLE question ADD user_id integer;
 ALTER TABLE ONLY question

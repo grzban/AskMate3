@@ -9,7 +9,7 @@ app = Flask(__name__, static_url_path='/static')
 
 
 # -------------- INDEX --------------
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     lastes_questions = persistence.last_five_questions()
 
@@ -138,6 +138,28 @@ def edit_coment(question_id, coment_id):
                                      question_id)                               
     persistence.edit_coment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
+
+
+@app.route('/registration')
+def registration():
+    return render_template('registration.html')
+
+
+@app.route('/registration/add', methods=['POST'])
+def add_user():
+    new_user = {
+        'user_name': request.form.get('user_name'),
+        'user_password': request.form.get('user_password'),
+        'user_reputation': 0
+    }
+    persistence.add_user(new_user)
+    return redirect(url_for('index'))
+
+
+@app.route('/user/<user_id>', methods=['POST'])
+def show_user(user_id):
+    user = persistence.get_user(user_id)
+    return render_template('user.html', user=user)
 
 
 if __name__ == '__main__':

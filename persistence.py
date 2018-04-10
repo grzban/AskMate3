@@ -104,7 +104,7 @@ def add_new_question(cursor, new_question):
              new_question['image'])
     cursor.execute("""
                     INSERT INTO question
-                    VALUES {value};
+                    VALUES({value});
                    """.format(value=value))
 
 
@@ -190,3 +190,36 @@ def edit_coment(cursor, dictionary):
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))
+
+
+# user
+def get_user_query(user_id):
+    return "SELECT * FROM users WHERE user_id = " + str(user_id)
+
+
+@database_common.connection_handler
+def get_user(cursor, user_id):
+    cursor.execute(get_user_query(user_id))
+
+
+def add_user_query(user):
+    user_column = []
+    user_data = []
+    for key, value in user.items():
+        user_column.append(str(key))
+        user_data.append('\'' + str(value) + '\'')
+    print((user_column, user_data))
+    return 'INSERT INTO users (' + ', '.join(user_column) + ') values (' + ', '.join(user_data) + ');'
+
+
+@database_common.connection_handler
+def add_user(cursor, user):
+    cursor.execute(add_user_query(user))
+
+
+# user = {
+#     'user_name': 'GB',
+#     'user_password': 'password',
+#     'user_reputation': 10
+#     }
+

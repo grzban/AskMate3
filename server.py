@@ -11,7 +11,7 @@ app = Flask(__name__, static_url_path='/static')
 # -------------- INDEX --------------
 @app.route('/')
 def index():
-    lastes_questions = persistence.last_five_questions()
+    lastes_questions = persistence.few_questions(5)
 
     return render_template('index.html', lastes_questions=lastes_questions,)
 

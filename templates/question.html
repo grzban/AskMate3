@@ -3,7 +3,7 @@
 {% block content %}
     <div class="question">
         <nav class="question_data">
-            <h2>Data</h2>
+            <h4>Author: <br> {{ question.user_name }}  </h4>
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}<br>
             View number: {{ question.view_number }}<br>
@@ -45,8 +45,8 @@
             </div>
 
             <nav  class="comment_data">
-                Added: {{ comment.submission_time}}
-                <br>
+                Author: {{ comment.user_name }} <br>
+                Added: {{ comment.submission_time}} <br>
                 Edited count: {{comment.edited_count}}
             </nav>
 
@@ -111,8 +111,8 @@
             </div>
             <br>
             <nav class="answer_data">
-                Added: {{ answer.submission_time}}
-                <br>
+                Author: {{ answer.user_name }} <br>
+                Added: {{ answer.submission_time}} <br>
                 Vote number: {{ answer.vote_number}}
                 <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
                     <button type="submit" name="qplus" value="+">+ vote</button>

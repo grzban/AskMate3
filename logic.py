@@ -3,6 +3,17 @@ import database_common
 import util
 
 
+def check_login_password(login, password):
+    password_from_database = persistence.login_password(login)
+    if password_from_database:  # not empty list:
+        if password_from_database[0].get('user_password') == password:
+            return 'valid'
+        else:
+            return 'invalid password'
+    else:
+        return 'registration'
+
+
 def make_answer(message, image, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))

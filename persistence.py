@@ -8,10 +8,20 @@ import util
 
 
 @database_common.connection_handler
+def login_password(cursor, login):
+    cursor.execute("""
+                    SELECT user_password FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = '{question_id}';
+                    SELECT q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
+                    LEFT JOIN users u ON (q.user_id=u.user_id)
+                    WHERE q.id = '{question_id}';
                    """.format(question_id=question_id))
     return cursor.fetchall()[0]
 
@@ -19,7 +29,8 @@ def get_question(cursor, question_id):
 @database_common.connection_handler
 def get_answer(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT a.*, u.user_name FROM answer a
+                    LEFT JOIN users u ON (a.user_id=u.user_id)
                     WHERE id = '{answer_id}';
                    """.format(answer_id=answer_id))
     return cursor.fetchall()[0]
@@ -28,7 +39,8 @@ def get_answer(cursor, answer_id):
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT a.*, u.user_name FROM answer a
+                    LEFT JOIN users u ON (a.user_id=u.user_id)
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
@@ -37,19 +49,20 @@ def get_answers_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_comment_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT c.*, u.user_name FROM comment c
+                    LEFT JOIN users u ON (c.user_id=u.user_id)
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
 
 
 @database_common.connection_handler
-def last_five_questions(cursor):
+def few_questions(cursor, limit):
     cursor.execute("""
                     SELECT id, title, message FROM question
                     ORDER BY submission_time DESC
-                    LIMIT 5;
-                   """)
+                    LIMIT {limit};
+                   """.format(limit=limit))
     return cursor.fetchall()
 
 

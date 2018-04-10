@@ -4,10 +4,10 @@ import psycopg2.extras
 
 
 def get_connection_string():
-    user_name = "matixk" # os.environ.get('PSQL_USER_NAME')
-    password = "password" # os.environ.get('PSQL_PASSWORD')
+    user_name = "mariusz" # os.environ.get('PSQL_USER_NAME')
+    password = "q12345" # os.environ.get('PSQL_PASSWORD')
     host = "localhost" # os.environ.get('PSQL_HOST')
-    database_name = "matixk" # os.environ.get('PSQL_DATABASE_NAME')
+    database_name = "mariusz" # os.environ.get('PSQL_DATABASE_NAME')
 
     env_variables_defined = user_name and password and host and database_name
 

@@ -3,10 +3,16 @@
 {% block content %}
     <div class="question">
         <nav class="question_data">
-            <h2>Data</h2>
+            <h4>Author: <br> {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}<br>
             View number: {{ question.view_number }}<br>
+            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+                <button type="submit" name="qplus" value="+">+ vote</button>
+            </form>
+            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+                <button type="submit" name="qminus" value="-">- vote</button>
+            </form>
         </nav>
 
         <div class="question_title">
@@ -16,14 +22,6 @@
         <div class="question_message">
             <p>
                 {{ question.message }}
-            </p>
-            <p>
-                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
-                    <button type="submit" name="qplus" value="+">+ vote</button>
-                </form>
-                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
-                    <button type="submit" name="qminus" value="-">- vote</button>
-                </form>
             </p>
         </div>
         {% if question.image is not in [''] %}
@@ -45,8 +43,8 @@
             </div>
 
             <nav  class="comment_data">
-                Added: {{ comment.submission_time}}
-                <br>
+                Author: {{ comment.user_name|default('Admin', True) }} <br>
+                Added: {{ comment.submission_time}} <br>
                 Edited count: {{comment.edited_count}}
             </nav>
 
@@ -63,12 +61,20 @@
             <form action="{{ url_for('edit_coment', question_id=question_id, comment_id=coment_id) }}" method="POST">
                     <h3>Comment</h3>
                     <textarea name="message" rows="1" cols="50" class="input"></textarea>
+                    Login<br>
+                    <input type="text" name="login" class="input">
+                    Password<br>
+                    <input type="password" name="password" class="input">
                     <button type="submit">Edit comment</button>
             </form>
             {% else %}
             <form action="{{ url_for('post_comment', question_id=question_id) }}" method="POST">
                     <h3>Comment</h3>
-                    <textarea name="message" rows="1" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="1" cols="50" class="input"></textarea><br>
+                    Login<br>
+                    <input type="text" name="login" class="input"><br>
+                    Password<br>
+                    <input type="password" name="password" class="input"><br>
                     <button type="submit">Post comment</button>
             </form>
             {% endif %}
@@ -86,16 +92,24 @@
             <form action="{{ url_for('edit_answer', question_id=question_id, answer_id=answer_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="4" cols="50" class="input"></textarea>
-                    <h2>Image address</h2>
-                    <input type="text" name="image" class="input">
+                    Image address
+                    <input type="text" name="image" class="input"><br>
+                    Login<br>
+                    <input type="text" name="login" class="input"><br>
+                    Password<br>
+                    <input type="password" name="password" class="input"><br>
                     <button type="submit">Edit answer</button>
             </form>
             {% else %}
             <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="4" cols="50" class="input"></textarea>
-                    <h2>Image address</h2>
-                    <input type="text" name="image" class="input">
+                    Image address
+                    <input type="text" name="image" class="input"><br>
+                    Login<br>
+                    <input type="text" name="login" class="input"><br>
+                    Password<br>
+                    <input type="password" name="password" class="input"><br>
                     <button type="submit">Post answer</button>
             </form>
             {% endif %}
@@ -111,8 +125,8 @@
             </div>
             <br>
             <nav class="answer_data">
-                Added: {{ answer.submission_time}}
-                <br>
+                Author: {{ answer.user_name|default('Admin', True) }} <br>
+                Added: {{ answer.submission_time}} <br>
                 Vote number: {{ answer.vote_number}}
                 <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
                     <button type="submit" name="qplus" value="+">+ vote</button>

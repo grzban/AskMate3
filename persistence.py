@@ -8,10 +8,30 @@ import util
 
 
 @database_common.connection_handler
+def get_user_id(cursor, login):
+    cursor.execute("""
+                    SELECT user_id FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    x = cursor.fetchall()[0].get('user_id')
+    return x
+
+
+@database_common.connection_handler
+def login_password(cursor, login):
+    cursor.execute("""
+                    SELECT user_password FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = '{question_id}';
+                    SELECT q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
+                    LEFT JOIN users u ON (q.user_id=u.user_id)
+                    WHERE q.id = '{question_id}';
                    """.format(question_id=question_id))
     return cursor.fetchall()[0]
 
@@ -19,7 +39,8 @@ def get_question(cursor, question_id):
 @database_common.connection_handler
 def get_answer(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT a.*, u.user_name FROM answer a
+                    LEFT JOIN users u ON (a.user_id=u.user_id)
                     WHERE id = '{answer_id}';
                    """.format(answer_id=answer_id))
     return cursor.fetchall()[0]
@@ -28,7 +49,8 @@ def get_answer(cursor, answer_id):
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT a.*, u.user_name FROM answer a
+                    LEFT JOIN users u ON (a.user_id=u.user_id)
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
@@ -37,19 +59,28 @@ def get_answers_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_comment_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT c.*, u.user_name FROM comment c
+                    LEFT JOIN users u ON (c.user_id=u.user_id)
                     WHERE question_id = %s;
                    """, [question_id])
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_tag_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM question_tag
+                    WHERE question_id = %s;
+                    """, [question_id])
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
-def last_five_questions(cursor):
+def few_questions(cursor, limit):
     cursor.execute("""
                     SELECT id, title, message FROM question
                     ORDER BY submission_time DESC
-                    LIMIT 5;
-                   """)
+                    LIMIT {limit};
+                   """.format(limit=limit))
     return cursor.fetchall()
 
 
@@ -190,3 +221,44 @@ def edit_coment(cursor, dictionary):
                               question_id=dictionary['question_id'],
                               id=dictionary['id']
                               ))
+
+
+# user
+def get_user_query(user_id):
+    return "SELECT * FROM users WHERE user_id = " + str(user_id)
+
+
+@database_common.connection_handler
+def get_user(cursor, user_id):
+    cursor.execute(get_user_query(user_id))
+
+
+def add_user_query(user):
+    user_column = []
+    user_data = []
+    for key, value in user.items():
+        user_column.append(str(key))
+        user_data.append('\'' + str(value) + '\'')
+    return 'INSERT INTO users (' + ', '.join(user_column) + ') values (' + ', '.join(user_data) + ');'
+
+
+@database_common.connection_handler
+def add_user(cursor, user):
+    cursor.execute(add_user_query(user))
+
+
+@database_common.connection_handler
+def get_list_of_users(cursor):
+    cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def add_new_tag(cursor, new_tag):
+    value = (new_tag['id'],
+             new_tag['name'],)
+
+    cursor.execute("""
+                    INSERT INTO tag (id, name)
+                    VALUES {value};
+                   """.format(value=value))

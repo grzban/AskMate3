@@ -3,6 +3,29 @@ import database_common
 import util
 
 
+def check_login_password(login, password, qa_id=None):
+    password_from_database = persistence.login_password(login)
+    if password_from_database:  # not empty list - login is in database:
+        print("is login")
+        if password_from_database[0].get('user_password') == password:  # if password is correct
+            print("ok pass")
+            if qa_id:  # if it's edit mode :
+                if persistence.permission_for_edit(qa_id):  # if user is editing his question\ans\com
+                    print("New q")
+                    return persistence.get_user_id(login)
+                else:
+                    return 'Its not your question'
+            else:  # creating new post:
+                print('password')
+            return persistence.get_user_id(login)
+        else:
+            print('password not')
+            return 'Incorrect password'
+    else:
+        print('Go to registration')
+        return 'Go to registration'
+
+
 def make_answer(message, image, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))
@@ -35,7 +58,7 @@ def make_comment(message, question_id, comment_id=None):
     return result
 
 
-def make_question(title, message, image=""):
+def make_question(title, message, user_id, image=""):
     result = {
         'id': generate_id(persistence.get_ids('question')),
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
@@ -44,6 +67,7 @@ def make_question(title, message, image=""):
         'title': title,
         'message': message,
         'image': image,
+        'user_id': user_id,
     }
     return result
 

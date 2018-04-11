@@ -66,6 +66,14 @@ def get_comment_to_question(cursor, question_id):
                    """, [question_id])
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_tag_to_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM question_tag
+                    WHERE question_id = %s;
+                    """, [question_id])
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def few_questions(cursor, limit):
@@ -125,11 +133,10 @@ def add_new_question(cursor, new_question):
              new_question['vote_number'],
              new_question['title'],
              new_question['message'],
-             new_question['image'],
-             new_question['user_id'])
+             new_question['image'])
     cursor.execute("""
                     INSERT INTO question
-                    VALUES({value});
+                    VALUES {value};
                    """.format(value=value))
 
 
@@ -161,8 +168,7 @@ def add_new_answer(cursor, new_answer):
              new_answer['vote_number'],
              new_answer['question_id'],
              new_answer['message'],
-             new_answer['image'],
-             new_answer['user_id'])
+             new_answer['image'])
     cursor.execute("""
                     INSERT INTO answer
                     VALUES {value};
@@ -175,8 +181,7 @@ def add_new_comment(cursor, new_comment):
              new_comment['message'],
              new_comment['submission_time'],
              new_comment['edited_count'],
-             new_comment['question_id'],
-             new_comment['user_id'])
+             new_comment['question_id'],)
 
     cursor.execute("""
                     INSERT INTO comment (id, message, submission_time, edited_count, question_id)
@@ -250,3 +255,18 @@ def add_user(cursor, user):
 #     'user_reputation': 10
 #     }
 
+
+@database_common.connection_handler
+def get_list_of_users(cursor):
+    cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def add_new_tag(cursor, new_tag):
+    value = (new_tag['id'],
+             new_tag['name'],)
+
+    cursor.execute("""
+                    INSERT INTO tag (id, name)
+                    VALUES {value};
+                   """.format(value=value))

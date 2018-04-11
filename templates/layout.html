@@ -4,27 +4,47 @@
         <meta charset="UTF-8">
         <title>Askmate2</title>
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='menu.css') }}">
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
-        <div class="navbar">
-            <img src="/static/images/logo.png" class="logo"/>
-            <a href="{{ url_for('index') }}">Main</a>
-            <a href="{{ url_for('questions') }}">Questions</a>
-            <a href="{{ url_for('tags') }}">Tags</a>
-            <a href="{{ url_for('registration') }}">Registration</a>
-            <a href="{{ url_for('users') }}">Users</a>
-            <div id="search">
-                <form action="{{ url_for('search') }}" method="POST">
-                    <input name="word" class="input">
-                    <button type="submit">SEARCH</button>
-                </form>
+        
+    <div id='float'>
+
+        <div id='header'>
+            <div id='cssmenu'>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li class='active has-sub'><a href='#'>Products</a>
+                        <ul>
+                            <li class='has-sub'><a href='#'>Product 1</a>
+                            <ul>
+                                <li><a href='#'>Sub Product</a></li>
+                                <li><a href='#'>Sub Product</a></li>
+                            </ul>
+                            </li>
+                            <li class='has-sub'><a href='#'>Product 2</a>
+                            <ul>
+                                <li><a href='#'>Sub Product</a></li>
+                                <li><a href='#'>Sub Product</a></li>
+                            </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ url_for('questions') }}">Questions</a></li>
+                    <li><a href="{{ url_for('tags') }}">Tags</a></li>
+                </ul>
             </div>
         </div>
 
-
-        <div class="main">
-            {% block content %} {% endblock %}
+        <div id='content'>
+                {% block content %} {% endblock %}
         </div>
+
+    </div>
+
+
         <footer>
             <h3>&copyTakich 3</h3>
         </footer>

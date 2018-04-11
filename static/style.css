@@ -1,58 +1,25 @@
 body {
-    background-color: rgb(170, 200, 214);
+    background-image: url("jake.jpg");
+    
+    text-align: center;
+    height: 99%;
+    width: 99%;
+    font-size: 12px;
+    font-family: tahoma, sans-serif;
+    }
+
+#content {
+
+    width: 70%;
+    margin: auto;
+    background-color: rgba(0, 0, 18, 0.8);
+    padding-right: 2em;
+    padding-left: 2em;
+    color: white;
 }
 
 .main {
     margin-top: 3em;
-}
-
-/* The navigation bar */
-.navbar {
-    overflow: hidden;
-    background-color: #033d74;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-
-/* Links inside the navbar */
-.navbar a {
-    float: left;
-    display: block;
-    text-align: center;
-    padding: 16px;
-    text-decoration: none;
-    color: rgb(205, 211, 245);
-}
-
-/* Change background on mouse-over */
-.navbar a:hover {
-    background: rgb(178, 214, 248);
-    color: black;
-}
-
-.logo {
-    float: left;
-    display: block;
-    width: 3em;
-    height: 3em;
-    margin-right: 10px;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    background-color: rgb(78, 105, 163);
-    clear: bottom;
-}
-
-/* TABLE */
-.add_qa td {
-    border: none;
-}
-
-.left {
-    width: 380px;
 }
 
 table {

@@ -21,13 +21,13 @@ def signin():
     return render_template('signin.html')
 
 
-@app.route('/signin/add', methods=['POST'])
-def add_user():
-    user_name = request.form.get('user_name')
-    user_password = request.form.get('user_password')
-
-    
-    return redirect(url_for('index'))
+# @app.route('/signin/add', methods=['POST'])
+# def add_user():
+#     user_name = request.form.get('user_name')
+#     user_password = request.form.get('user_password')
+#
+#
+#     return redirect(url_for('index'))
 
 
 # -------------- QUESTIONS ----------

@@ -36,8 +36,8 @@
                 </tr>
             {% endfor%}
         </table>
-        <form method="POST">
-            <button type="submit" formaction="{{ url_for('new_question') }}">NEW QUESTION</button>
+        <form method="POST" action="{{ url_for('new_question', info_for_user='log_in') }}">
+            <button type="submit">NEW QUESTION</button>
         </form>
 
     </div>

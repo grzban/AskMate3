@@ -256,7 +256,7 @@ def add_user():
     return redirect(url_for('index'))
 
 
-@app.route('/user/<user_id>', methods=['POST'])
+@app.route('/user/<user_id>', methods=['POST', 'GET'])
 def show_user(user_id):
     user = persistence.get_user(user_id)
     return render_template('user.html', user=user)

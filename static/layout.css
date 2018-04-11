@@ -4,39 +4,33 @@ body {
     font-family: tahoma, sans-serif;
     }
 
-a {
-    color: white;
-}
-
-hr {
-    border-width: 1px;
-    color: black;
-}
-
 #float {
     width: 85%;
-    height: 100%;
     margin: auto;
     top: 0;
     bottom: 0;
     position: relative;
     border-radius: 30px;
-    min-height: 900px;  
+    min-height: 1400px;  
 
     background-color: rgba(40, 49, 73, 0.95);
     color: white;
 }
 
 #header img {
-    padding: 1em 6em 1em 6em;
+    padding: 1em 8em 1em 8em;
 }
 
+#header {
+    background-color: white;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
 
 #content {
     padding: 2em;
   
 }
-
 
 #foot {
     position: absolute;
@@ -46,9 +40,29 @@ hr {
     text-align: center;
 }
 
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
 td, th {
-    padding: 8px;
-    
+    padding: 0.5em;
+}
+
+th {
+    text-align: left;
+    background-color: #8a25b1;
+    color: white;
+}
+
+tr {
+    background-color: white;
+    color: black;
+}
+
+tr a {
+    color: black;
 }
 
 tr:hover {
@@ -71,25 +85,17 @@ table tr:first-child th:last-child {
     border-top-right-radius: 15px;
 }
 
-tr {
-    background-color: white;
-    color: black;
-}
-
-tr a {
-    color: black;
-}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #8a25b1;
+a {
     color: white;
 }
 
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+hr {
+    border-width: 1px;
+    color: black;
+}
+
+input, label {
+    display: block;
+    float: left;
+    margin-right: 1em;
 }

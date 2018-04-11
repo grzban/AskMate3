@@ -16,6 +16,20 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions,)
 
 
+@app.route('/signin')
+def signin():
+    return render_template('signin.html')
+
+
+@app.route('/signin/add', methods=['POST'])
+def add_user():
+    user_name = request.form.get('user_name')
+    user_password = request.form.get('user_password')
+
+    
+    return redirect(url_for('index'))
+
+
 # -------------- QUESTIONS ----------
 @app.route('/data_handler', methods=['POST'])
 def data_handler():

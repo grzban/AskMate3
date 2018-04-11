@@ -53,6 +53,7 @@
         </div>
     {% endfor %}
 
+    {% if 'user_id' in session %}
     <div class="add_comment">
         <hr size="1" color="black" />
 
@@ -75,6 +76,7 @@
                     <input type="text" name="login" class="input"><br>
                     Password<br>
                     <input type="password" name="password" class="input"><br>
+                    <textarea name="message" rows="1" cols="50" class="input"></textarea><br>
                     <button type="submit">Post comment</button>
             </form>
             {% endif %}
@@ -83,6 +85,7 @@
 
 
     </div>
+    {% endif %}
 
     <div class="add_tag">
         <hr size="1" color="black" />
@@ -104,7 +107,7 @@
         </div>
     {% endfor %}
 
-
+    {% if 'user_id' in session %}
     <div class="add_answer">
         <hr size="1" color="black" />
 
@@ -119,12 +122,16 @@
                     <input type="text" name="login" class="input"><br>
                     Password<br>
                     <input type="password" name="password" class="input"><br>
+                    Image address
+                    <input type="text" name="image" class="input"><br>
                     <button type="submit">Edit answer</button>
             </form>
             {% else %}
             <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="4" cols="50" class="input"></textarea>
+                    Image address
+                    <input type="text" name="image" class="input"><br>
                     Image address
                     <input type="text" name="image" class="input"><br>
                     Login<br>
@@ -137,6 +144,7 @@
         </div>
         <hr size="2" color="black"/>
     </div>
+    {% endif %}
 
     {% for answer in answers %}
     {% set answer_id = answer.id %}
@@ -161,10 +169,10 @@
             {% if answer.image is not in [''] %}
                 <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
-
+            {% if session['user_id'] == answer.user_id %}
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
             <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>
-
+            {% endif %}
             <hr size="1" color="black" />
         </div>
     {% endfor %}

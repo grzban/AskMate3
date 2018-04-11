@@ -26,6 +26,20 @@ def check_login_password(login, password, qa_id=None):
         return 'There is no user by given login. Create your account or correctly type your login.'
 
 
+def check_sign_in(login, password):
+    password_from_database = persistence.get_user_by_name(login)
+    if password_from_database:  # not empty list - login is in database:
+        print("user is there")
+        if password_from_database[0].get('user_password') == password:  # if password is correct
+            print("ok pass")
+            return persistence.get_user_by_name(login)[0]
+        else:
+            print('password not')
+            return 'Incorrect password'
+    else:
+        print('Go to registration')
+        return 'There is no user by given login. Create new account or correctly type your login.'
+
 def make_answer(message, image, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))
@@ -86,6 +100,7 @@ def make_tag_id(question_id, id_new_tag):
     result = {
         'question_id':question_id,
         'tag_id': id_new_tag,
+        'user_id': user_id,
     }
     return result
 

@@ -3,17 +3,22 @@
 {% block content %}
 
     <div>
-        <form action="{{ url_for('signined') }}" method="post">
-            <table>
+        <form action="{{ url_for('check_user') }}" method="post">
+            <table class="add_qa">
                 <tr>
-                    <td>User:</td>
-                    <td>
+                    <td class="left">User:</td>
+                    <td class="right">
                         <input type="text" name="user_name">
+                    </td>
+                    <td class="log_alert" colspan="2">
+                        {% if alert_for_user %}
+                        {{ alert_for_user }}
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <td>Password</td>
-                    <td>
+                    <td class="left">Password</td>
+                    <td class="right">
                         <input type="password" name="user_password">
                     </td>
                 </tr>
@@ -24,7 +29,7 @@
                         </a>
                     </td>
                     <td>
-                        <input type="submit" name="signin" value="Sign in">
+                        <input type="submit" name="signin" value="Sign In">
                     </td>
                 </tr>
             </table>

@@ -1,6 +1,6 @@
 body {
     background-image: url("jake.jpg");
-    
+
     text-align: center;
     height: 99%;
     width: 99%;
@@ -22,7 +22,7 @@ a {
     background-color: rgba(0, 0, 18, 0.7);
 
     color: white;
-    
+
 }
 
 #header {
@@ -32,11 +32,24 @@ a {
 #content {
 
     padding: 2em;
-    
+
 }
 
 .main {
     margin-top: 2em;
+}
+
+/* TABLE */
+.add_qa td {
+    border: none;
+}
+
+.left {
+    width: 100px;
+}
+
+.right {
+    width: 150px;
 }
 
 table {
@@ -66,12 +79,16 @@ th {
     background-color: #009ae1;
     color: white;
 }
+tr:nth-child(even){background-color: #f2f2f2;}
 
 /* INDEX */
 h1 {
     color: rgb(255, 255, 255);
 }
 
+h2 a:visited {
+    color: rgb(0, 0, 151);
+}
 
 h2 * {
     margin-left: 2em;
@@ -150,4 +167,8 @@ h2 * {
 
 .add_comment {
     text-align: right;
+}
+
+.log_alert {
+    color: crimson;
 }

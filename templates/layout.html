@@ -9,7 +9,25 @@
         <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
-        
+        <div class="navbar">
+            <img src="/static/images/logo.png" class="logo"/>
+            <a href="{{ url_for('index') }}">Main</a>
+            <a href="{{ url_for('questions') }}">Questions</a>
+            <a href="{{ url_for('tags') }}">Tags</a>
+            <a href="{{ url_for('users') }}">Users</a>
+            {% if 'user_id' not in session %}
+            <a href="{{ url_for('registration') }}">Registration</a>
+            <a href="{{ url_for('signin') }}">Sign in</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a>
+            {% endif %}
+
+            <div id="search">
+                <form action="{{ url_for('search') }}" method="POST">
+                    <input name="word" class="input">
+                    <button type="submit">SEARCH</button>
+                </form>
+
     <div id='float'>
 
         <div id='header'>

@@ -54,9 +54,9 @@ def get_tag_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_all_tag(cursor):
     cursor.execute("""
-                    SELECT name FROM tag
+                    SELECT COUNT(name), name FROM tag
                     GROUP BY name
-                    ORDER BY name;
+                    ORDER BY COUNT(name) DESC;
                    """)
     return cursor.fetchall()
 
@@ -88,6 +88,16 @@ def search_table(cursor, search_word):  # in SEARCH feature
                    """.format(search_word=search_word))
     return cursor.fetchall()
 
+@database_common.connection_handler
+def search_table_by_tag(cursor, name):  # in SEARCH feature
+    cursor.execute("""
+                    SELECT tag.name, question.title, question.id FROM question
+                    FULL OUTER JOIN question_tag ON (question_tag.question_id=question.id)
+                    FULL OUTER JOIN tag ON (question_tag.tag_id=tag.id)
+                    WHERE tag.name='{name}';
+                   """.format(name=name))
+
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_ids(cursor, table):

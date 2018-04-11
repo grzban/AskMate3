@@ -17,6 +17,39 @@ def index():
 
 
 # -------------- QUESTIONS ----------
+@app.route('/data_handler', methods=['POST'])
+def data_handler():
+    if 'id' in request.form:  # edit mode
+        check = logic.check_login_password(request.form.get('login'),
+                                      request.form.get('password'),
+                                      request.form.get('id'))
+        if type(check)  == int:
+            persistence.edit_question(request.form)
+            # here must clear session!!!
+            return redirect(url_for('questions'))
+        else:
+            return redirect(url_for('edit_question', question_id=request.form.get('id')))
+        
+    else:  # new post
+        check = logic.check_login_password(request.form.get('login'),
+                                      request.form.get('password'))
+        if type(check)  == int:
+            question = logic.make_question(request.form['title'],
+                                       request.form['message'],
+                                       check,
+                                       request.form['image'])
+            persistence.add_new_question(question)
+            # here must clear session!!!!
+            return redirect(url_for('questions'))
+        else:
+            print(request.form.get('title') + ' ' + check + ' OOOOOOOOOO')
+            session['login'] = request.form['login']
+            session['title'] = request.form['title']
+            session['message'] = request.form['message']
+            session['image'] = request.form['image']
+            return redirect(url_for('new_question', info_for_user=check))
+
+
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
     list_of_questions = persistence.get_list_of_questions()
@@ -31,10 +64,25 @@ def delete_question(question_id):
     return redirect('/questions')
 
 
-@app.route('/new_question', methods=['POST', 'GET'])
-def new_question():
-
-    return render_template('newQuestion.html')
+@app.route('/new_question/<info_for_user>', methods=['POST', 'GET'])
+def new_question(info_for_user='log in'):
+    if 'title' in session:
+        print('session!!!')
+        print(session)
+        login = session.get('login')
+        title = session.get('title')
+        message_text = session.get('message')
+        image = session.get('image')
+        print(message_text)
+        print(info_for_user)
+        return render_template('newQuestion.html', login=login,
+                                                   title=title,
+                                                   message_text=message_text,
+                                                   image=image,
+                                                   info=info_for_user)
+    else:
+        print('no session!!!!')
+        return render_template('newQuestion.html')
 
 
 @app.route('/question/edit/<question_id>', methods=['POST', 'GET'])
@@ -60,32 +108,6 @@ def show_question(question_id, answer_id=None, comment_id=None):
                            question_id=question_id,
                            answer_id=answer_id,
                            comment_id=comment_id)
-
-
-@app.route('/data_handler', methods=['POST'])
-def data_handler():
-    if 'id' in request.form:  # edit mode
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'),
-                                      request.form.get('id'))
-        if type(check)  == int:
-            persistence.edit_question(request.form)
-            return redirect(url_for('questions'))
-        else:
-            return redirect(url_for('edit_question', question_id=request.form.get('id')))
-        
-    else:  # new post
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'))
-        if type(check)  == int:
-            question = logic.make_question(request.form['title'],
-                                       request.form['message'],
-                                       check,
-                                       request.form['image'])
-            persistence.add_new_question(question)
-            return redirect(url_for('questions'))
-        else:
-            return redirect(url_for('new_question'))
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])

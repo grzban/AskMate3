@@ -3,7 +3,7 @@
 {% block content %}
 
     <div>
-        <form action="{{ url_for('add_user') }}" method="post">
+        <form action="{{ url_for('signined') }}" method="post">
             <table>
                 <tr>
                     <td>User:</td>
@@ -24,7 +24,7 @@
                         </a>
                     </td>
                     <td>
-                        <input type="submit" name="register" value="Register">
+                        <input type="submit" name="signin" value="Sign in">
                     </td>
                 </tr>
             </table>

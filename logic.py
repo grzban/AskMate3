@@ -100,8 +100,8 @@ def generate_id(table):
 
 def update_view_number(question_id, amount=1):
     question = persistence.get_question(question_id)
-    views_number = int(question['view_number'])
-    views_number += amount
+    views_number = int(question[0]['view_number'])
+    views_number += int(amount)
     persistence.update('question', question_id, 'view_number', views_number)
 
 

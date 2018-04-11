@@ -16,25 +16,10 @@
             <div id='cssmenu'>
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li class='active has-sub'><a href='#'>Products</a>
-                        <ul>
-                            <li class='has-sub'><a href='#'>Product 1</a>
-                            <ul>
-                                <li><a href='#'>Sub Product</a></li>
-                                <li><a href='#'>Sub Product</a></li>
-                            </ul>
-                            </li>
-                            <li class='has-sub'><a href='#'>Product 2</a>
-                            <ul>
-                                <li><a href='#'>Sub Product</a></li>
-                                <li><a href='#'>Sub Product</a></li>
-                            </ul>
-                            </li>
-                        </ul>
-                    </li>
                     <li><a href="{{ url_for('questions') }}">Questions</a></li>
                     <li><a href="{{ url_for('tags') }}">Tags</a></li>
-                    <li><a href="#">Sign in</a></li>
+                    <li><a href="{{ url_for('users') }}">Users</a></li>
+                    <li><a href="{{ url_for('signin') }}">Sign in</a></li>
                     <li><a href="{{ url_for('registration') }}">Sign up</a></li>
                 </ul>
             </div>

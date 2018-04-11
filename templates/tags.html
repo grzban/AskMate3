@@ -4,12 +4,14 @@
 
 
 {% for tag in tags %}
-{% set tag_id = tag.id %}
+
 
     <div class="tag">
         <hr size="1" color="black" />
         <div>
-            {{ tag.name }}
+            {{ tag.count }}
+            <a href="{{ url_for('select', name=tag.name) }}" method="POST">{{ '#' + tag.name }}<a>
+
         </div>
     </div>
 {% endfor %}

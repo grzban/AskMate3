@@ -16,6 +16,7 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions,)
 
 
+
 # -------------- QUESTIONS ----------
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
@@ -165,6 +166,36 @@ def edit_coment(question_id, coment_id):
 
 
 # -------------- USERS -------------
+@app.route('/signin/')
+@app.route('/signin/<alert_for_user>')
+def signin(alert_for_user=None):
+    return render_template('signin.html', alert_for_user=alert_for_user)
+
+
+@app.route('/signin/check', methods=['POST'])
+def check_user():
+    login = request.form.get('user_name')
+    password = request.form.get('user_password')
+    validate = logic.check_sign_in(login, password)
+    if type(validate) == str:
+        return redirect(url_for('signin', alert_for_user=validate))
+    else:
+        session['user_id'] = validate['user_id']
+        session['user_name'] = validate['user_name']
+        print('USER ID from session : ' + str(session['user_id']))
+    
+    return redirect(url_for('index'))
+
+
+@app.route('/logout/')
+def logout():
+    if 'user_id' in session:
+        del session['user_id']
+    if 'user_name' in session:
+        del session['user_name']
+    return redirect(url_for('index'))
+
+
 @app.route('/users')
 def users():
     list_of_users = persistence.get_list_of_users()

@@ -52,7 +52,11 @@ footer {
 }
 
 .left {
-    width: 380px;
+    width: 100px;
+}
+
+.right {
+    width: 150px;
 }
 
 table {
@@ -162,4 +166,8 @@ h2 * {
 
 .add_comment {
     text-align: right;
+}
+
+.log_alert {
+    color: crimson;
 }

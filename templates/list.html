@@ -25,20 +25,28 @@
                         </td>
                         {% endif %}
                     {% endfor %}
+                    {% if 'user_id' in session %}
                     <td>
+                        {% if session['user_id'] == question.user_id %}
                         <form>
                             <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
                                 name="question_id" value="{{ question.id }}">DELETE</button>
                             <button type="submit" formaction="{{ url_for('edit_question', question_id=question.id) }}"
                                 name="question_id" value="{{ question.id }}">EDIT</button>
                         </form>
+                        {% endif %}
                     </td>
+                    {% endif %}
                 </tr>
             {% endfor%}
         </table>
+        {% if 'user_id' in session %}
         <form method="POST">
             <button type="submit" formaction="{{ url_for('new_question') }}">NEW QUESTION</button>
         </form>
+        {% else %}
+        <p>Sign in to add new question</p>
+        {% endif %}
 
     </div>
 

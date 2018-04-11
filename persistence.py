@@ -6,6 +6,53 @@ import psycopg2.extras
 import database_common
 import util
 
+@database_common.connection_handler
+def permission_for_edit(cursor, question_comment_answer, qa_id, user_id):
+    '''Return ques or ans or com ID or None'''
+    cursor.execute("""
+                    SELECT id FROM {question_comment_answer}
+                    WHERE id = '{qa_id}' AND user_id = '{user_id}';
+                   """.format(question_comment_answer=question_comment_answer, qa_id=qa_id, user_id=user_id))
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def get_user_by_name(cursor, login):
+    cursor.execute("""
+                    SELECT user_id, user_name, user_password FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def permission_for_edit(cursor, question_comment_answer, qa_id, login):
+    cursor.execute("""
+                    SELECT {question_comment_answer}.id FROM {question_comment_answer}
+                    JOIN users ON ({question_comment_answer}.user_id=users.user_id)
+                    WHERE {question_comment_answer}.id = '{qa_id}' AND users.user_name = '{login}';
+                   """.format(question_comment_answer=question_comment_answer, qa_id=qa_id, login=login))
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def get_user_id(cursor, login):
+    cursor.execute("""
+                    SELECT user_id FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    x = cursor.fetchall()[0].get('user_id')
+    return x
+
+
+@database_common.connection_handler
+def login_password(cursor, login):
+    cursor.execute("""
+                    SELECT user_password FROM users
+                    WHERE user_name = '{login}';
+                   """.format(login=login))
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def permission_for_edit(cursor, question_comment_answer, qa_id, login):

@@ -12,15 +12,12 @@
                 </th>
                 {% endfor%}
             </tr>
-            {% for question in list_of_questions %}
-                <tr>
-                    <td>
-                        <form>
-                            <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
-                                name="question_id" value="{{ question.id }}">DELETE</button>
-                        </form>
-                    </td>
-                </tr>
+            {% for user in list_of_users %}
+               <tr>
+                 {% for header in QUES_HEADER %}
+                    <td>{{ user[header] }}</td>
+                 {% endfor%}
+               </tr>
             {% endfor%}
         </table>
     </div>

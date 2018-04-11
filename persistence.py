@@ -14,7 +14,6 @@ def get_user_id(cursor, login):
                     WHERE user_name = '{login}';
                    """.format(login=login))
     x = cursor.fetchall()[0].get('user_id')
-    print(x)
     return x
 
 
@@ -240,7 +239,6 @@ def add_user_query(user):
     for key, value in user.items():
         user_column.append(str(key))
         user_data.append('\'' + str(value) + '\'')
-    print((user_column, user_data))
     return 'INSERT INTO users (' + ', '.join(user_column) + ') values (' + ', '.join(user_data) + ');'
 
 
@@ -249,17 +247,11 @@ def add_user(cursor, user):
     cursor.execute(add_user_query(user))
 
 
-# user = {
-#     'user_name': 'GB',
-#     'user_password': 'password',
-#     'user_reputation': 10
-#     }
-
-
 @database_common.connection_handler
 def get_list_of_users(cursor):
     cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def add_new_tag(cursor, new_tag):

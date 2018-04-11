@@ -162,12 +162,12 @@ def edit_coment(question_id, coment_id):
     persistence.edit_coment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
 
+
 # -------------- USERS -------------
 @app.route('/users')
 def users():
     list_of_users = persistence.get_list_of_users()
     return render_template('users.html', list_of_users=list_of_users)
-
 
 
 @app.route('/registration')

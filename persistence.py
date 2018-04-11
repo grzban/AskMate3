@@ -8,6 +8,16 @@ import util
 
 
 @database_common.connection_handler
+def permission_for_edit(cursor, question_comment_answer, qa_id, login):
+    cursor.execute("""
+                    SELECT {question_comment_answer}.id FROM {question_comment_answer}
+                    JOIN users ON ({question_comment_answer}.user_id=users.user_id)
+                    WHERE {question_comment_answer}.id = '{qa_id}' AND users.user_name = '{login}';
+                   """.format(question_comment_answer=question_comment_answer, qa_id=qa_id, login=login))
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
 def get_user_id(cursor, login):
     cursor.execute("""
                     SELECT user_id FROM users
@@ -30,7 +40,7 @@ def login_password(cursor, login):
 @database_common.connection_handler
 def get_question(cursor, question_id):
     cursor.execute("""
-                    SELECT q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
+                    SELECT q.id, q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
                     LEFT JOIN users u ON (q.user_id=u.user_id)
                     WHERE q.id = '{question_id}';
                    """.format(question_id=question_id))

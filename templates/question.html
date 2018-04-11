@@ -3,10 +3,16 @@
 {% block content %}
     <div class="question">
         <nav class="question_data">
-            <h2>Data</h2>
+            <h4>Author: <br> {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}<br>
             View number: {{ question.view_number }}<br>
+            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+                <button type="submit" name="qplus" value="+">+ vote</button>
+            </form>
+            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+                <button type="submit" name="qminus" value="-">- vote</button>
+            </form>
         </nav>
 
         <div class="question_title">
@@ -16,14 +22,6 @@
         <div class="question_message">
             <p>
                 {{ question.message }}
-            </p>
-            <p>
-                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
-                    <button type="submit" name="qplus" value="+">+ vote</button>
-                </form>
-                <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
-                    <button type="submit" name="qminus" value="-">- vote</button>
-                </form>
             </p>
         </div>
         {% if question.image is not in [''] %}
@@ -45,8 +43,8 @@
             </div>
 
             <nav  class="comment_data">
-                Added: {{ comment.submission_time}}
-                <br>
+                Author: {{ comment.user_name|default('Admin', True) }} <br>
+                Added: {{ comment.submission_time}} <br>
                 Edited count: {{comment.edited_count}}
             </nav>
 
@@ -54,7 +52,8 @@
 
         </div>
     {% endfor %}
-
+    
+    {% if 'user_id' in session %}
     <div class="add_comment">
         <hr size="1" color="black" />
 
@@ -68,16 +67,17 @@
             {% else %}
             <form action="{{ url_for('post_comment', question_id=question_id) }}" method="POST">
                     <h3>Comment</h3>
-                    <textarea name="message" rows="1" cols="50" class="input"></textarea>
+                    <textarea name="message" rows="1" cols="50" class="input"></textarea><br>
                     <button type="submit">Post comment</button>
             </form>
             {% endif %}
         </div>
 
     </div>
+    {% endif %}
 
 
-
+    {% if 'user_id' in session %}
     <div class="add_answer">
         <hr size="1" color="black" />
 
@@ -86,22 +86,23 @@
             <form action="{{ url_for('edit_answer', question_id=question_id, answer_id=answer_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="4" cols="50" class="input"></textarea>
-                    <h2>Image address</h2>
-                    <input type="text" name="image" class="input">
+                    Image address
+                    <input type="text" name="image" class="input"><br>
                     <button type="submit">Edit answer</button>
             </form>
             {% else %}
             <form action="{{ url_for('post_answer', question_id=question_id) }}" method="POST">
                     <h2>Answer</h2>
                     <textarea name="message" rows="4" cols="50" class="input"></textarea>
-                    <h2>Image address</h2>
-                    <input type="text" name="image" class="input">
+                    Image address
+                    <input type="text" name="image" class="input"><br>
                     <button type="submit">Post answer</button>
             </form>
             {% endif %}
         </div>
         <hr size="2" color="black"/>
     </div>
+    {% endif %}
 
     {% for answer in answers %}
     {% set answer_id = answer.id %}
@@ -111,8 +112,8 @@
             </div>
             <br>
             <nav class="answer_data">
-                Added: {{ answer.submission_time}}
-                <br>
+                Author: {{ answer.user_name|default('Admin', True) }} <br>
+                Added: {{ answer.submission_time}} <br>
                 Vote number: {{ answer.vote_number}}
                 <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
                     <button type="submit" name="qplus" value="+">+ vote</button>
@@ -126,10 +127,10 @@
             {% if answer.image is not in [''] %}
                 <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
-
+            {% if session['user_id'] == answer.user_id %}
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
             <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>
-
+            {% endif %}
             <hr size="1" color="black" />
         </div>
     {% endfor %}

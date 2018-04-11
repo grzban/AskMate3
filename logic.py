@@ -3,6 +3,20 @@ import database_common
 import util
 
 
+def check_sign_in(login, password):
+    password_from_database = persistence.get_user_by_name(login)
+    if password_from_database:  # not empty list - login is in database:
+        print("user is there")
+        if password_from_database[0].get('user_password') == password:  # if password is correct
+            print("ok pass")
+            return persistence.get_user_by_name(login)[0]
+        else:
+            print('password not')
+            return 'Incorrect password'
+    else:
+        print('Go to registration')
+        return 'There is no user by given login. Create new account or correctly type your login.'
+
 def make_answer(message, image, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))
@@ -35,7 +49,7 @@ def make_comment(message, question_id, comment_id=None):
     return result
 
 
-def make_question(title, message, image=""):
+def make_question(title, message, user_id, image=""):
     result = {
         'id': generate_id(persistence.get_ids('question')),
         'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
@@ -44,6 +58,7 @@ def make_question(title, message, image=""):
         'title': title,
         'message': message,
         'image': image,
+        'user_id': user_id,
     }
     return result
 

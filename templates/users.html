@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% set QUES_HEADER = ['user_name', 'user_reputation', 'registration_time'] %}
+
+    <div id="mentors">
+        <table>
+            <tr>
+                {% for header in QUES_HEADER %}
+                <th>
+                    {{ header }}
+                </th>
+                {% endfor%}
+            </tr>
+            {% for user in list_of_users %}
+               <tr>
+                 {% for header in QUES_HEADER %}
+                    <td>{{ user[header] }}</td>
+                 {% endfor%}
+               </tr>
+            {% endfor%}
+        </table>
+    </div>
+
+{% endblock %}

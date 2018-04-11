@@ -125,3 +125,30 @@ SELECT pg_catalog.setval('tag_id_seq', 3, true);
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);
 INSERT INTO question_tag VALUES (2, 3);
+
+--USERS-
+DROP TABLE IF EXISTS public.users;
+
+create table users
+(
+  user_id           serial                  not null
+    constraint users_pkey
+    primary key,
+  user_name         varchar(60),
+  user_password     varchar(60),
+  user_reputation   integer,
+  registration_time timestamp default now() not null
+);
+
+
+ALTER TABLE question ADD user_id integer;
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+ALTER TABLE answer ADD user_id integer;
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+ALTER TABLE comment ADD user_id integer;
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id);

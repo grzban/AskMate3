@@ -18,7 +18,7 @@ body {
 }
 
 #header img {
-    padding: 1em 8em 1em 8em;
+    padding: 1em 4em 1em 4em;
 }
 
 #header {
@@ -38,6 +38,21 @@ body {
     bottom: 0.5em;
     width: 100%;
     text-align: center;
+}
+
+
+.sign {
+    width: 30%;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    text-align: left;
+}
+
+label {
+    
+
 }
 
 table {
@@ -94,8 +109,6 @@ hr {
     color: black;
 }
 
-input, label {
-    display: block;
-    float: left;
-    margin-right: 1em;
-}
+
+
+

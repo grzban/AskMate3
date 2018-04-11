@@ -9,8 +9,10 @@
         <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
-        <div id='content'>
+        
+    <div id='float'>
 
+        <div id='header'>
             <div id='cssmenu'>
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
@@ -34,12 +36,14 @@
                     <li><a href="{{ url_for('tags') }}">Tags</a></li>
                 </ul>
             </div>
-
-            <div class="main">
-                {% block content %} {% endblock %}
-            </div>
-
         </div>
+
+        <div id='content'>
+                {% block content %} {% endblock %}
+        </div>
+
+    </div>
+
 
         <footer>
             <h3>&copyTakich 3</h3>

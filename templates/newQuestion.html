@@ -13,9 +13,10 @@
                 <br>
                 <h2>Image address</h2>
                 <input type="text" name="image" class="input" value="{{ question.image }}">
-                <input type="value" name="view_number" style="display: none" value="{{ question.view_number }}">
-                <input type="value" name="vote_number" style="display: none" value="{{ question.vote_number }}">
-                <input type="value" name="id" style="display: none" value="{{ question.id }}">
+                <!-- checking value --> <br>view num, vote num, question id: <br>
+                <input type="value" name="view_number" style="display: block" value="{{ question.view_number }}">
+                <input type="value" name="vote_number" style="display: block" value="{{ question.vote_number }}">
+                <input type="value" name="id" style="display: block" value="{{ question.id }}">
                 <button type="submit">Update</button>
             </td>
             <td class="right">

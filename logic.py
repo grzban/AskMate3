@@ -10,20 +10,20 @@ def check_login_password(login, password, qa_id=None):
         if password_from_database[0].get('user_password') == password:  # if password is correct
             print("ok pass")
             if qa_id:  # if it's edit mode :
-                if persistence.permission_for_edit(qa_id):  # if user is editing his question\ans\com
-                    print("New q")
+                if persistence.permission_for_edit('question', qa_id, login):  # if user is editing his question\ans\com
+                    print("permission ok")
                     return persistence.get_user_id(login)
                 else:
                     return 'Its not your question'
             else:  # creating new post:
-                print('password')
+                print('new post')
             return persistence.get_user_id(login)
         else:
             print('password not')
             return 'Incorrect password'
     else:
         print('Go to registration')
-        return 'Go to registration'
+        return 'There is no user by given login. Create your account or correctly type your login.'
 
 
 def make_answer(message, image, question_id, answer_id=None):

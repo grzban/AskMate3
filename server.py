@@ -2,7 +2,7 @@ import persistence
 import logic
 import time
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -66,18 +66,19 @@ def show_question(question_id, answer_id=None, comment_id=None, tag_id=None):
                            #tag_id=tag_id)
 
 
-@app.route('/data_handler', methods=['POST', 'GET'])
+@app.route('/data_handler', methods=['POST'])
 def data_handler():
-    if 'id' in request.form:
+    if 'id' in request.form:  # edit mode
         check = logic.check_login_password(request.form.get('login'),
                                       request.form.get('password'),
                                       request.form.get('id'))
         if type(check)  == int:
             persistence.edit_question(request.form)
+            return redirect(url_for('questions'))
         else:
-            return redirect(url_for('edit_question'))
+            return redirect(url_for('edit_question', question_id=request.form.get('id')))
         
-    else:
+    else:  # new post
         check = logic.check_login_password(request.form.get('login'),
                                       request.form.get('password'))
         if type(check)  == int:
@@ -193,6 +194,7 @@ def show_user(user_id):
 
 
 if __name__ == '__main__':
+    app.secret_key = 'secret_key'
     app.run(
         host='0.0.0.0',
         port=5000,

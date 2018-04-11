@@ -45,25 +45,23 @@ def edit_question(question_id):
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
-def show_question(question_id, answer_id=None, comment_id=None, tag_id=None):
+def show_question(question_id, answer_id=None, comment_id=None):
     answer_id = request.args.get("answer_id")
     comment_id = request.args.get("comment_id")
-    #tag_id = request.args.get("tag_id")
     question = persistence.get_question(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comment = persistence.get_comment_to_question(question_id)
-    tag = persistence.get_tag_to_question(question_id)
+    tags = persistence.get_tag_to_question(question_id)
     logic.update_view_number(question_id)
 
     return render_template('question.html',
                            question=question,
                            answers=answers,
                            comment=comment,
-                           tag=tag,
+                           tags=tags,
                            question_id=question_id,
                            answer_id=answer_id,
                            comment_id=comment_id)
-                           #tag_id=tag_id)
 
 
 @app.route('/data_handler', methods=['POST'])
@@ -129,13 +127,19 @@ def delete_answer():
 # -------------- TAGS -------------
 @app.route('/tags')
 def tags():
-    return render_template('tags.html')
+    tags = persistence.get_all_tag()
+    return render_template('tags.html', tags=tags)
 
 @app.route('/question/<int:question_id>/new_tag', methods=['POST', 'GET'])
 def post_tag(question_id):
-    new_tag = logic.make_tag(request.form['name'],
-                                     question_id)
+    new_tag = logic.make_tag(request.form['name'])
+    id_new_tag=new_tag['id']
+    new_tag_id = logic.make_tag_id(question_id, id_new_tag)
+
+
     persistence.add_new_tag(new_tag)
+    persistence.add_new_tags(new_tag_id)
+
     return redirect(url_for('show_question', question_id=question_id))
 
 

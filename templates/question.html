@@ -80,8 +80,29 @@
             {% endif %}
         </div>
 
+
+
     </div>
 
+    <div class="add_tag">
+        <hr size="1" color="black" />
+        <form action="{{ url_for('post_tag', question_id=question_id) }}" method="POST">
+                <h3>TAGS</h3>
+                <textarea name="name" rows="1" cols="20" class="input"></textarea>
+                <button type="submit">Add TAG</button>
+        </form>
+    </div>
+
+    {% for tag in tags %}
+    {% set tag_id = tag.id %}
+
+        <div class="tag">
+            <hr size="1" color="black" />
+            <div>
+                {{ tag.name }}
+            </div>
+        </div>
+    {% endfor %}
 
 
     <div class="add_answer">

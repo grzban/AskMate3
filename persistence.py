@@ -72,15 +72,27 @@ def get_comment_to_question(cursor, question_id):
                     SELECT c.*, u.user_name FROM comment c
                     LEFT JOIN users u ON (c.user_id=u.user_id)
                     WHERE question_id = %s;
+                    SELECT * FROM comment
+                    WHERE id = %s;
                    """, [question_id])
     return cursor.fetchall()
 
 @database_common.connection_handler
 def get_tag_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM question_tag
-                    WHERE question_id = %s;
-                    """, [question_id])
+                    SELECT name
+                    FROM tag JOIN question_tag ON (id=tag_id)
+                    WHERE question_id = '{question_id}';
+                   """.format(question_id=question_id))
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    GROUP BY name
+                    ORDER BY name;
+                   """)
     return cursor.fetchall()
 
 
@@ -270,5 +282,15 @@ def add_new_tag(cursor, new_tag):
 
     cursor.execute("""
                     INSERT INTO tag (id, name)
+                    VALUES {value};
+                   """.format(value=value))
+
+@database_common.connection_handler
+def add_new_tags(cursor, new_tag_id):
+    value = (new_tag_id['question_id'],
+             new_tag_id['tag_id'],)
+
+    cursor.execute("""
+                    INSERT INTO question_tag (question_id, tag_id)
                     VALUES {value};
                    """.format(value=value))

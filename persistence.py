@@ -85,12 +85,12 @@ def login_password(cursor, login):
 
 @database_common.connection_handler
 def get_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT q.id, q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
-                    LEFT JOIN users u ON (q.user_id=u.user_id)
-                    WHERE q.id = '{question_id}';
-                   """.format(question_id=question_id))
-    return cursor.fetchall()[0]
+    query = """SELECT *
+              FROM question q
+              LEFT JOIN users u ON (q.user_id=u.user_id)
+              WHERE q.id = '{question_id}';
+            """.format(question_id=question_id)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -105,11 +105,11 @@ def get_answer(cursor, answer_id):
 
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT a.*, u.user_name FROM answer a
-                    LEFT JOIN users u ON (a.user_id=u.user_id)
-                    WHERE question_id = %s;
-                   """, [question_id])
+    query = """SELECT * FROM answer a
+            LEFT JOIN users u ON (a.user_id=u.user_id)
+            WHERE a.question_id = '{question_id}';
+            """.format(question_id=question_id)
+    cursor.execute(query)
     return cursor.fetchall()
 
 
@@ -118,16 +118,28 @@ def get_comment_to_question(cursor, question_id):
     cursor.execute("""
                     SELECT c.*, u.user_name FROM comment c
                     LEFT JOIN users u ON (c.user_id=u.user_id)
-                    WHERE question_id = %s;
-                   """, [question_id])
+                    WHERE question_id = '{question_id}';
+                   """.format(question_id=question_id))
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_tag_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM question_tag
-                    WHERE question_id = %s;
-                    """, [question_id])
+                    SELECT name
+                    FROM tag JOIN question_tag ON (id=tag_id)
+                    WHERE question_id = '{question_id}';
+                   """.format(question_id=question_id))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    GROUP BY name
+                    ORDER BY name;
+                   """)
     return cursor.fetchall()
 
 
@@ -317,5 +329,15 @@ def add_new_tag(cursor, new_tag):
 
     cursor.execute("""
                     INSERT INTO tag (id, name)
+                    VALUES {value};
+                   """.format(value=value))
+
+@database_common.connection_handler
+def add_new_tags(cursor, new_tag_id):
+    value = (new_tag_id['question_id'],
+             new_tag_id['tag_id'],)
+
+    cursor.execute("""
+                    INSERT INTO question_tag (question_id, tag_id)
                     VALUES {value};
                    """.format(value=value))

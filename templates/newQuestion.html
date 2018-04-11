@@ -39,6 +39,11 @@
             <button type="submit">Ask</button>
             </td>
             <td class="right">
+                <p class="logerror">
+                {% if title %}
+                 {{ info.replace('log_in', '') }}
+                {% endif %}
+                </p>
                 <h3>Login</h3>
                 <input type="text" name="login" class="input">
                 <h3>Password</h3>

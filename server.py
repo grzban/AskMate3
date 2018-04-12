@@ -105,14 +105,14 @@ def edit_question(question_id):
 def show_question(question_id, answer_id=None, comment_id=None):
     answer_id = request.args.get("answer_id")
     comment_id = request.args.get("comment_id")
-    question = persistence.get_question(question_id)
+    questions = persistence.get_question(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comment = persistence.get_comment_to_question(question_id)
     tags = persistence.get_tag_to_question(question_id)
     logic.update_view_number(question_id)
 
     return render_template('question.html',
-                           question=question,
+                           questions=questions,
                            answers=answers,
                            comment=comment,
                            tags=tags,

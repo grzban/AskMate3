@@ -10,10 +10,6 @@
                     <td class="right">
                         <input type="text" name="user_name">
                     </td>
-                    <td class="log_alert" colspan="2">
-                        {% if alert_for_user %}
-                        {{ alert_for_user }}
-                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -30,6 +26,13 @@
                     </td>
                     <td>
                         <input type="submit" name="signin" value="Sign in">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="logerror" colspan="2">
+                    {% if alert_for_user %}
+                    {{ alert_for_user }}
+                    {% endif %}
                     </td>
                 </tr>
             </table>

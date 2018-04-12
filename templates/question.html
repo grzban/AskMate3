@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
+{% for question in questions %}
     <div class="question">
         <nav class="question_data">
             <h4>Author: <br> {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
@@ -31,6 +32,7 @@
         {% endif %}
 
     </div>
+    {% endfor %}
 
 
     {% for comment in comment %}

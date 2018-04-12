@@ -3,7 +3,7 @@
 {% block content %}
     <div class="index_question">
         <h1>Latest questions</h1>
-        <hr size="2" color="black" />
+        <hr>
         {% for question in lastes_questions %}
         <div class="five_questions">
             <h2>
@@ -12,7 +12,7 @@
             <p>
                 {{ question.message }}
             </p>
-            <hr size="1" color="black" />
+            <hr>
         </div>
         
         {% endfor %}

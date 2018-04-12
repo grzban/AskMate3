@@ -13,22 +13,21 @@
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}
             View number: {{ question.view_number }}<br>
-            <form action={{ url_for('vote', question_id=question_id, vote='plus')}} method="POST">
-                <button type="submit" name="qplus" value="+">+ vote</button>
-            </form>
-            <form action={{ url_for('vote', question_id=question_id, vote='minus')}} method="POST">
-                <button type="submit" name="qminus" value="-">- vote</button>
-            </form>
+            <a href={{ url_for('vote', question_id=question_id, vote='plus')}}>
+                <img src="{{ url_for('static', filename='images/thumb_up.png') }}">
+            </a>
+            <a href={{ url_for('vote', question_id=question_id, vote='minus')}}>
+                <img align="right" src="{{ url_for('static', filename='images/thumb_down.png') }}">
+            </a>
         </div>
 
         <div class="q_message">
-                <h2>{{ question.title }}</h2>
+                <h2>{{ question.title }}</h2><hr>
             <p>{{ question.message }}</p>
-            
-        </div>
-        {% if question.image != '' %}
+            {% if question.image != '' %}
             <img src="{{ question['image'] }}" class="question_image" alt="" width="50em" height="50em">
         {% endif %}
+        </div>
 
 </div>
 

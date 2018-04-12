@@ -4,15 +4,17 @@
 {{ form }}
 <div id='search_result'>
 <table>
-    <tr>
+    
         {% for title in list_of_titles %}
+        <tr>
         <td>
             <a href="{{ url_for('show_question', question_id=title.id) }}">
             {{ title.title }}
         </a>
         </td>
-        {% endfor %}
     </tr>
+        {% endfor %}
+    
 </table>
 </div>
 {% endblock %}

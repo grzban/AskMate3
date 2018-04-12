@@ -118,15 +118,30 @@ hr {
 
 
 .q {
-
-    height: 500px;
+    height: 100%;
     width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    border-radius: 20px;
     
 }
 
 .q_data {
+    display: block;
     float: left;
-    width: 170px;
+    max-width: 15%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+    margin: 15px;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+.q_data img {
+    width: 15%;
+    margin: 3px 25px 0 25px;
 }
 
 .q_data form {
@@ -134,11 +149,15 @@ hr {
 }
 
 .q_message {
-    float: left;
-    margin-left: 100px;
+    display: block;
+    margin-top: 10px;
+    float: right;
+    max-width: 80%;
 }
 
-
+hr {
+    margin-right: 20px;
+}
 
 
 
@@ -159,8 +178,8 @@ h1 {
     color: rgb(255, 255, 255);
 }
 
-h2 * {
-    margin-left: 2em;
+h2 {
+    margin: 0;
 }
 
 .index_question p {

@@ -97,8 +97,8 @@ def show_question(question_id, answer_id=None, comment_id=None):
                            question_id=question_id)
 
 
-@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
-@app.route('/question/<question_id>/<vote>', methods=["POST"])
+@app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST", "GET"])
+@app.route('/question/<question_id>/<vote>', methods=["POST", "GET"])
 def vote(question_id, vote, answer_id=None):
     logic.voting(question_id, vote, answer_id, )
     logic.update_view_number(int(question_id), -1)

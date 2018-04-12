@@ -72,7 +72,7 @@ def new_question():
 
 @app.route('/question/edit/<question_id>', methods=['POST', 'GET'])
 def edit_question(question_id):
-    question = persistence.get_question(question_id)
+    question = persistence.get_question(question_id)[0]
 
     return render_template('newQuestion.html', question=question, question_id=question_id)
 
@@ -239,6 +239,7 @@ def add_user():
 @app.route('/user/<user_id>', methods=['POST', 'GET'])
 def show_user(user_id):
     user = persistence.get_user(user_id)
+    print(user)
     return render_template('user.html', user=user)
 
 

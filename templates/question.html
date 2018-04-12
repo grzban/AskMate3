@@ -4,14 +4,18 @@
 {% for question in questions %}
     <div class="question">
         <nav class="question_data">
-            <h4>Author: <br> {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
+            {%set user_id=question.user_id%}
+            {%for user in users if user.user_id == user_id%}
+            <h4>Author: {{user.user_name}} <!--jinja filter--> </h4>
+            <h4>Reputation: {{user.user_reputation}}  <!--jinja filter--> </h4>
+            {%endfor%}
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}<br>
             View number: {{ question.view_number }}<br>
-            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+            <form action={{ url_for('vote', question_id=question_id, vote='plus')}} method="POST">
                 <button type="submit" name="qplus" value="+">+ vote</button>
             </form>
-            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+            <form action={{ url_for('vote', question_id=question_id, vote='minus')}} method="POST">
                 <button type="submit" name="qminus" value="-">- vote</button>
             </form>
         </nav>

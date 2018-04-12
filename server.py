@@ -103,27 +103,28 @@ def edit_question(question_id):
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
 def show_question(question_id, answer_id=None, comment_id=None):
-    answer_id = request.args.get("answer_id")
-    comment_id = request.args.get("comment_id")
-    questions = persistence.get_question(question_id)
+    #answer_id = request.args.get("answer_id")
+    #comment_id = request.args.get("comment_id")
+    questions = persistence.get_question_by_id(question_id)
     answers = persistence.get_answers_to_question(question_id)
-    comment = persistence.get_comment_to_question(question_id)
+    comments = persistence.get_comment_to_question(question_id)
     tags = persistence.get_tag_to_question(question_id)
+    users = persistence.get_all_users()
     logic.update_view_number(question_id)
-
+    
     return render_template('question.html',
                            questions=questions,
                            answers=answers,
-                           comment=comment,
+                           comments=comments,
                            tags=tags,
-                           question_id=question_id,
-                           answer_id=answer_id,
-                           comment_id=comment_id)
+                           users=users,
+                           question_id=question_id)
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
-def vote(question_id, answer_id, vote):
-    logic.voting(question_id, answer_id, vote)
+@app.route('/question/<question_id>/<vote>', methods=["POST"])
+def vote(question_id, vote, answer_id=None):
+    logic.voting(question_id, vote, answer_id, )
     logic.update_view_number(int(question_id), -1)
     return redirect('/question/{}'.format(question_id))
 

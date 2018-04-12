@@ -40,6 +40,17 @@ body {
     text-align: center;
 }
 
+.tag ul {
+    background-color: transparent;
+}
+
+.tag li {
+    width: 100px;
+    background-color: #ab88b9;
+    margin: 0.5em;
+
+}
+
 
 .sign {
     width: 30%;

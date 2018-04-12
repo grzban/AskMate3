@@ -37,7 +37,7 @@ def check_sign_in(login, password):
         return 'There is no user by given login. Create new account or correctly type your login.'
 
 
-def make_answer(message, image, question_id, answer_id=None):
+def make_answer(message, image, user_id, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))
     else:
@@ -48,12 +48,13 @@ def make_answer(message, image, question_id, answer_id=None):
         'vote_number': 0,
         'message': message,
         'question_id': question_id,
-        'image': image
+        'image': image,
+        'user_id': user_id
     }
     return result
 
 
-def make_comment(message, question_id, comment_id=None):
+def make_comment(message, question_id, user_id, comment_id=None):
     if comment_id is None:
         id_ = generate_id(persistence.get_ids("comment"))
     else:
@@ -65,6 +66,7 @@ def make_comment(message, question_id, comment_id=None):
         'message': message,
         'question_id': question_id,
         'answer_id': 0,
+        'user_id': user_id
     }
     return result
 
@@ -116,15 +118,41 @@ def update_view_number(question_id, amount=1):
     persistence.update('question', question_id, 'view_number', views_number)
 
 
-def voting(question_id, answer_id, vote):
-    if answer_id == 'None':  # if voting on question:
-        questions = persistence.get_question(question_id)
+def voting(question_id, vote, answer_id):
+    if answer_id == None:  # if voting on question:
+        questions = persistence.get_question_by_id(question_id)[0]
+        user_id = questions.get('user_id')
         votes = int(questions.get('vote_number'))
         votes += 1 if vote == 'plus' else -1
+        if user_id is None:
+            print("user does not exist")
+        else:
+            user = persistence.get_user(user_id)[0]
+            user_reputation = int(persistence.get_reputation(user_id).get('user_reputation'))
+            user_reputation = change_user_reputation(user_reputation, 'question', vote)
+            persistence.update_user_reputation('users', user_id, 'user_reputation', user_reputation)
         persistence.update('question', question_id, 'vote_number', votes)
-
     else:  # if voting on answer:
         answer = persistence.get_answer(answer_id)
+        user_id = answer.get('user_id')
         votes = int(answer.get('vote_number'))
         votes += 1 if vote == 'plus' else -1
+        if user_id is None:
+            print("user does not exist")
+        else:
+            user = persistence.get_user(user_id)[0]
+            user_reputation = int(persistence.get_reputation(user_id).get('user_reputation'))
+            user_reputation = change_user_reputation(user_reputation, 'answer', vote)
+            persistence.update_user_reputation('users', user_id, 'user_reputation', user_reputation)
         persistence.update('answer', int(answer_id), 'vote_number', votes)
+
+
+def change_user_reputation(user_reputation, event, kind_of_vote):
+    if kind_of_vote == 'plus':
+        if event == 'question':
+            user_reputation += 5
+        else:
+            user_reputation += 10
+    else:
+        user_reputation -= 2
+    return user_reputation

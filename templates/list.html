@@ -2,14 +2,11 @@
 
 {% block content %}
     {% set QUES_HEADER = ['view_number', 'vote_number', 'title', 'submission_time'] %}
-    
     <div id="mentors">
         <table>
             <tr>
                 {% for header in QUES_HEADER %}
-                <th>
-                    {{ header }}
-                </th>
+                <th>{{ header }}</th>
                 {% endfor%}
             </tr>
             {% for question in list_of_questions %}
@@ -20,14 +17,12 @@
                             <a href="{{ url_for('show_question', question_id=question.id) }}">{{ question[header] }}</a>
                         </td>
                         {% else %}
-                        <td>
-                            {{ question[header] }}
-                        </td>
+                        <td>{{ question[header] }}</td>
                         {% endif %}
                     {% endfor %}
                     {% if 'user_id' in session %}
-                   
-                        {% if session['user_id'] == question.user_id %}
+                    
+                        {% if session_flag %}
                         <td>
                         <form>
                             <button class="glyphicon glyphicon-trash" type="submit" formaction="{{ url_for('delete_question', question_id=question.id) }}"
@@ -41,7 +36,7 @@
                     {% endif %}
                 </tr>
             {% endfor%}
-        </table>
+        </table><br>
         {% if 'user_id' in session %}
         <form method="POST">
             <button type="submit" formaction="{{ url_for('new_question',info_for_user='You have to sign in') }}">NEW QUESTION</button>
@@ -49,7 +44,6 @@
         {% else %}
         <p>Sign in to add new question</p>
         {% endif %}
-
     </div>
 
 {% endblock %}

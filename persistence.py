@@ -180,6 +180,7 @@ def search_table(cursor, search_word):  # in SEARCH feature
                    """.format(search_word=search_word))
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def search_table_by_tag(cursor, name):  # in SEARCH feature
     cursor.execute("""
@@ -221,7 +222,8 @@ def add_new_question(cursor, new_question):
              new_question['vote_number'],
              new_question['title'],
              new_question['message'],
-             new_question['image'])
+             new_question['image'],
+             new_question['user_id'])
     cursor.execute("""
                     INSERT INTO question
                     VALUES {value};
@@ -230,24 +232,21 @@ def add_new_question(cursor, new_question):
 
 @database_common.connection_handler
 def edit_question(cursor, dictionary):
-    cursor.execute("""
-                    UPDATE question
-                    SET submission_time = '{submission_time}',
-                        view_number = {view_number},
-                        vote_number = {vote_number},
-                        title = '{title}',
-                        message = '{message}',
-                        image = '{image}'
-                    WHERE id = {id};
-                   """.format(submission_time=util.decode_time_for_human(util.get_current_timestamp()),
-                              view_number=dictionary['view_number'],
-                              vote_number=dictionary['vote_number'],
-                              title=dictionary['title'],
-                              message=dictionary['message'],
-                              image=dictionary['image'],
-                              id=dictionary['id']
-                              ))
-
+   query = """
+              UPDATE question
+              SET submission_time = '{submission_time}',
+                  title = '{title}',
+                  message = '{message}',
+                  image = '{image}',
+                  user_id = '{user_id}'
+              WHERE id = {id};
+            """.format(submission_time=dictionary['submission_time'],
+                       title=dictionary['title'],
+                       message=dictionary['message'],
+                       image=dictionary['image'],
+                       user_id=dictionary['user_id'],
+                       id=dictionary['id'])
+   cursor.execute(query)
 
 @database_common.connection_handler
 def add_new_answer(cursor, new_answer):
@@ -256,7 +255,8 @@ def add_new_answer(cursor, new_answer):
              new_answer['vote_number'],
              new_answer['question_id'],
              new_answer['message'],
-             new_answer['image'])
+             new_answer['image'],
+             new_answer['user_id'])
     cursor.execute("""
                     INSERT INTO answer
                     VALUES {value};
@@ -269,10 +269,11 @@ def add_new_comment(cursor, new_comment):
              new_comment['message'],
              new_comment['submission_time'],
              new_comment['edited_count'],
-             new_comment['question_id'],)
+             new_comment['question_id'],
+             new_comment['user_id'])
 
     cursor.execute("""
-                    INSERT INTO comment (id, message, submission_time, edited_count, question_id)
+                    INSERT INTO comment (id, message, submission_time, edited_count, question_id, user_id)
                     VALUES {value};
                    """.format(value=value))
 
@@ -317,11 +318,6 @@ def get_user_query(user_id):
     return "SELECT * FROM users WHERE user_id = " + str(user_id)
 
 
-@database_common.connection_handler
-def get_user(cursor, user_id):
-    cursor.execute(get_user_query(user_id))
-
-
 def add_user_query(user):
     user_column = []
     user_data = []
@@ -342,13 +338,14 @@ def get_list_of_users(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_user(cursor):
-    cursor.execute("""SELECT users.user_name, question.title FROM users
-                    JOIN question ON user.user_id=question.user_id
-                    JOIN answer ON question.id=answer.question_id
-                    JOIN comment ON question.id=comment.question_id
-                    WHERE question.user_id = {user_id} OR answer.user_id = {user_id} OR comment.user_id = {user_id};
-                    """)
+def get_user(cursor, user_id):
+    cursor.execute("""
+                    SELECT DISTINCT q.title, q.id FROM question q
+                    FULL JOIN answer a ON a.question_id=q.id
+                    FULL JOIN comment c ON c.question_id=q.id
+                    WHERE a.user_id = '{user_id}' OR  q.user_id = '{user_id}' OR c.user_id = '{user_id}';
+                    """.format(user_id=user_id)
+    )
     return cursor.fetchall()
 
 
@@ -378,11 +375,6 @@ def get_user_query(user_id):
     return "SELECT * FROM users WHERE user_id = " + str(user_id)
 
 
-@database_common.connection_handler
-def get_user(cursor, user_id):
-    cursor.execute(get_user_query(user_id))
-
-
 def add_user_query(user):
     user_column = []
     user_data = []
@@ -412,3 +404,47 @@ def add_new_tag(cursor, new_tag):
                     INSERT INTO tag (id, name)
                     VALUES {value};
                    """.format(value=value))
+
+
+@database_common.connection_handler
+def get_user_id_by_question_id(cursor, question_id):
+    query = ("""SELECT user_id FROM question 
+                      WHERE id = {question_id};
+                   """.format(question_id=question_id))
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_reputation(cursor, user_id):
+    query = ("""SELECT user_reputation FROM users 
+                      WHERE user_id = {user_id};
+                   """.format(user_id=user_id))
+    cursor.execute(query)
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def update_user_reputation(cursor, table, id_row, column, new_value):
+    query = """UPDATE {}
+              SET {}='{}'
+              WHERE user_id = '{}';""".format(table, column, new_value, id_row)
+    cursor.execute(query)     
+
+
+@database_common.connection_handler
+def get_question_by_id(cursor, question_id):
+    query = """SELECT *
+              FROM question q
+              WHERE q.id = '{question_id}';
+            """.format(question_id=question_id)
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    query = """SELECT *
+              FROM users"""
+    cursor.execute(query)
+    return cursor.fetchall()

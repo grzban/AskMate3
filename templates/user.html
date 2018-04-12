@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-
-{% for users in list_of_users %}
+<div>Your activities in questions:</div>
+{% for activity in user %}
 
     <div class="users">
         <hr size="1" color="black" />
         <div>
-            {{ user }}
+            <a href="{{ url_for('show_question', question_id=activity.id) }}" > 
+               {{ activity.title }}
+            </a>
 
         </div>
     </div>

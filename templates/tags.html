@@ -2,18 +2,14 @@
 
 {% block content %}
 
-
+<div class="tag">
+    <ul>
 {% for tag in tags %}
 
-
-    <div class="tag">
-        <hr size="1" color="black" />
-        <div>
-            {{ tag.count }}
-            <a href="{{ url_for('select', name=tag.name) }}" method="POST">{{ '#' + tag.name }}<a>
-
-        </div>
-    </div>
+    <li><a href="{{ url_for('select', name=tag.name) }}" method="POST">{{ '#' + tag.name }}</a> {{ tag.count }}</li>     
+       
 {% endfor %}
+</ul>
+</div>
 
 {% endblock %}

@@ -7,9 +7,7 @@
     <tr>
         {% for title in list_of_titles %}
         <td>
-            <a href="{{ url_for('show_question', question_id=title.id) }}">
-            {{ title.title }}
-        </a>
+        {{ title.title }}
         </td>
         {% endfor %}
     </tr>

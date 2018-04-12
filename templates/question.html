@@ -2,32 +2,32 @@
 
 {% block content %}
 {% for question in questions %}
+
     <div class="q">
         <div class="q_data">
-            <h4>Author: {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
+            {%set user_id=question.user_id%}
+            {%for user in users if user.user_id == user_id%}
+                <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
+            {%endfor%}
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}
             View number: {{ question.view_number }}<br>
-
-            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
+            <form action={{ url_for('vote', question_id=question_id, vote='plus')}} method="POST">
                 <button type="submit" name="qplus" value="+">+ vote</button>
             </form>
-            <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
+            <form action={{ url_for('vote', question_id=question_id, vote='minus')}} method="POST">
                 <button type="submit" name="qminus" value="-">- vote</button>
             </form>
         </div>
 
         <div class="q_message">
-            <h1>{{ question.title }}</h1>
-            <p>
-                {{ question.message }}
-            </p>
+                <h2>{{ question.title }}</h2>
+            <p>{{ question.message }}</p>
+            
         </div>
-        <br>
-        {% if question.image is not in [''] %}
-            {% if question.image %}
-                <img src="{{ question.image }}" class="question_image" alt="">
-            {% endif %}
+        {% if question.image != '' %}
+            <img src="{{ question['image'] }}" class="question_image" alt="" width="50em" height="50em">
         {% endif %}
 
 </div>
@@ -36,17 +36,20 @@
     {% endfor %}
 
 
-    {% for comment in comment %}
-    {% set comment_id = comment.id %}
+    {% for comment in comments %}
+    {% set comment_id = comments.id %}
 
         <div class="comment">
             <hr size="1" color="black" />
             <div>
                 {{ comment.message }}
             </div>
-
             <nav  class="comment_data">
-                Author: {{ comment.user_name|default('Admin', True) }} <br>
+                {%set user_id=comment.user_id%}
+                {%for user in users if user.user_id == user_id%}
+                    <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                    <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
+                {%endfor%}
                 Added: {{ comment.submission_time}} <br>
                 Edited count: {{comment.edited_count}}
             </nav>
@@ -56,7 +59,7 @@
         </div>
     {% endfor %}
 
-    {% if 'user_id' in session %}
+    {% if session_flag %}
     <div class="add_comment">
         <hr size="1" color="black" />
 
@@ -65,10 +68,6 @@
             <form action="{{ url_for('edit_coment', question_id=question_id, comment_id=coment_id) }}" method="POST">
                     <h3>Comment</h3>
                     <textarea name="message" rows="1" cols="50" class="input"></textarea>
-                    Login<br>
-                    <input type="text" name="login" class="input">
-                    Password<br>
-                    <input type="password" name="password" class="input">
                     <button type="submit">Edit comment</button>
             </form>
             {% else %}
@@ -79,33 +78,30 @@
             </form>
             {% endif %}
         </div>
-
-
-
     </div>
     {% endif %}
 
     <div class="add_tag">
         <hr size="1" color="black" />
+        {% if session_flag %}
         <form action="{{ url_for('post_tag', question_id=question_id) }}" method="POST">
-                <h3>TAGS</h3>
-                <textarea name="name" rows="1" cols="20" class="input"></textarea>
-                <button type="submit">Add TAG</button>
+            <h3>TAGS</h3>
+            <textarea name="name" rows="1" cols="20" class="input"></textarea>
+            <button type="submit">Add TAG</button>
         </form>
+        {% endif %}
     </div>
-
     {% for tag in tags %}
     {% set tag_id = tag.id %}
-
         <div class="tag">
             <hr size="1" color="black" />
             <div>
-                {{ '#'+tag.name }}
+                {{ '#'+tag }}
             </div>
         </div>
     {% endfor %}
 
-    {% if 'user_id' in session %}
+    {% if session_flag %}
     <div class="add_answer">
         <hr size="1" color="black" />
 
@@ -140,7 +136,11 @@
             </div>
             <br>
             <nav class="answer_data">
-                Author: {{ answer.user_name|default('Admin', True) }} <br>
+                {%set user_id=answer.user_id%}
+                {%for user in users if user.user_id == user_id%}
+                    <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                    <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
+                {%endfor%}
                 Added: {{ answer.submission_time}} <br>
                 Vote number: {{ answer.vote_number}}
                 <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">
@@ -155,7 +155,7 @@
             {% if answer.image is not in [''] %}
                 <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
-            {% if session['user_id'] == answer.user_id %}
+            {% if session_flag %}
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
             <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>
             {% endif %}

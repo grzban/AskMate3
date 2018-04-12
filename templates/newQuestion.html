@@ -2,56 +2,31 @@
 
 {% block content %}
     <div id="newQuestion">
-        <form action="{{ url_for('data_handler') }}" method="POST">
-            {% if question %}
-            <table class="add_qa"><tr><td class="left">
-                <h2>Title</h2>
-                <input type="text" name="title" class="input" value="{{ question.title }}">
-                <br>
-                <h2>Message</h2>
-                <textarea name="message" rows="5" cols="30" class="input">{{ question.message }}</textarea>
-                <br>
-                <h2>Image address</h2>
-                <input type="text" name="image" class="input" value="{{ question.image }}">
-                <!-- checking value --> <br>view num, vote num, question id: <br>
-                <input type="value" name="view_number" style="display: block" value="{{ question.view_number }}">
-                <input type="value" name="vote_number" style="display: block" value="{{ question.vote_number }}">
-                <input type="value" name="id" style="display: block" value="{{ question.id }}">
-                <button type="submit">Update</button>
-            </td>
-            <td class="right">
-                <h3>Login</h3>
-                <input type="text" name="login" class="input" value="{{ question.user_name }}">
-                <h3>Password</h3>
-                <input type="password" name="password" class="input">
-            </td>
-            </table></tr>
-            {% else %}
-            <table class="add_qa"><tr><td class="left">
-            <h2>Title</h2>
-            <input type="text" name="title" class="input">
-            <br>
-            <h2>Message</h2>
-            <textarea name="message" rows="5" cols="30" class="input"></textarea>
-            <br>
-            <h2>Image address</h2>
-            <input type="text" name="image" class="input">
-            <button type="submit">Ask</button>
-            </td>
-            <td class="right">
-                <p class="logerror">
-                {% if title %}
-                 {{ info.replace('log_in', '') }}
-                {% endif %}
-                </p>
-                <h3>Login</h3>
-                <input type="text" name="login" class="input">
-                <h3>Password</h3>
-                <input type="password" name="password" class="input">
-            </td>
-            </table></tr>
-            {% endif %}
-        </form>
+        {% if question %}
+            <form action="{{ url_for('edit_question_save', question_id=question.id) }}" method="POST">
+                <table class="add_qa"><tr>
+                    <tr><h2>Title</h2></tr>
+                    <tr><input type="text" name="title" class="input" value="{{ question.title }}"/></tr>
+                    <tr><h2>Message</h2></tr>
+                    <tr><textarea name="message" rows="5" cols="30" class="input">{{ question.message }}</textarea></tr>
+                    <tr><h2>Image address</h2></tr>
+                    <tr><input type="text" name="image" class="input" value="{{ question.image }}"/></tr>
+                    <tr><input type="submit" name="update" value="Update"/></tr>
+                </table>
+            </form>
+        {% else %}
+            <form action="{{ url_for('data_handler') }}" method="POST">
+                <table class="add_qa"><tr>
+                    <tr><h2>Title</h2></tr>
+                    <tr><input type="text" name="title" class="input" /></tr>
+                    <tr><h2>Message</h2></tr>
+                    <tr><textarea name="message" rows="5" cols="30" class="input"></textarea></tr>
+                    <tr><h2>Image address</h2></tr>
+                    <tr><input type="text" name="image" class="input" /></tr>
+                    <tr><button type="submit">Ask</button></tr>
+                </table>
+            </form>
+        {% endif %}
     </div>
 
 {% endblock %}

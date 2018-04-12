@@ -3,35 +3,37 @@
 {% block content %}
 {% for question in questions %}
     <div class="question">
-        <nav class="question_data">
-            <h4>Author: <br> {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
+
+        <div class="question_data">
+            <h4>Author: {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
             Submission time: {{ question.submission_time }}<br>
-            Vote number: {{ question.vote_number }}<br>
+            Vote number: {{ question.vote_number }}
             View number: {{ question.view_number }}<br>
+
             <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='plus')}} method="POST">
                 <button type="submit" name="qplus" value="+">+ vote</button>
             </form>
             <form action={{ url_for('vote', question_id=question_id, answer_id='None', vote='minus')}} method="POST">
                 <button type="submit" name="qminus" value="-">- vote</button>
             </form>
-        </nav>
-
-        <div class="question_title">
-            <h1>{{ question.title }}</h1>
         </div>
 
         <div class="question_message">
+            <h1>{{ question.title }}</h1>
             <p>
                 {{ question.message }}
             </p>
         </div>
+        <br>
         {% if question.image is not in [''] %}
             {% if question.image %}
                 <img src="{{ question.image }}" class="question_image" alt="">
             {% endif %}
         {% endif %}
 
-    </div>
+</div>
+
+    
     {% endfor %}
 
 

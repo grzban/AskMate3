@@ -50,10 +50,6 @@ body {
     text-align: left;
 }
 
-label {
-    
-
-}
 
 table {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -110,5 +106,113 @@ hr {
 }
 
 
+.question {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.question_data {
+    float: left;
+    width: 150px;
+}
+
+.question_data form {
+    display: inline;
+}
+
+.question_message {
+    float: left;
+    margin-left: 100px;
+    position: relative;
+}
 
 
+
+
+
+.left {
+    width: 100px;
+}
+
+.right {
+    width: 150px;
+}
+
+.main {
+    margin-top: 2em;
+}
+
+/* INDEX */
+h1 {
+    color: rgb(255, 255, 255);
+}
+
+h2 * {
+    margin-left: 2em;
+}
+
+.index_question p {
+    margin-left: 5em;
+}
+
+/* QUESTION */
+
+
+
+
+.logerror {
+    color: crimson;
+}
+
+/* IMG */
+
+.question_image {
+    max-width: 400px;
+    height: auto;
+}
+
+.answer_image {
+    max-width: 200px;
+    height: auto;
+}
+
+/* ANSWER */
+
+.answer {
+    margin: 15px;
+}
+
+.answer_message {
+    font-size: 1.5em;
+}
+
+.answer_data {
+    align-items: flex-end;
+    display: flex;
+    width: 150px;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+/* COMMENT */
+.comment {
+    text-align: right;
+    margin: 20px;
+    font-size: 0.9em;
+}
+
+.comment_data {
+    text-align: right;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.add_comment {
+    text-align: right;
+}
+
+.log_alert {
+    color: crimson;
+}

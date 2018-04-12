@@ -87,3 +87,9 @@ hr {
     border-width: 1px;
     color: black;
 }
+
+input, label {
+    display: block;
+    float: left;
+    margin-right: 1em;
+}

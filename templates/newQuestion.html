@@ -1,31 +1,38 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div id="newQuestion">
+
+    <div class="sign">
         {% if question %}
+
             <form action="{{ url_for('edit_question_save', question_id=question.id) }}" method="POST">
-                <table class="add_qa"><tr>
-                    <tr><h2>Title</h2></tr>
-                    <tr><input type="text" name="title" class="input" value="{{ question.title }}"/></tr>
-                    <tr><h2>Message</h2></tr>
-                    <tr><textarea name="message" rows="5" cols="30" class="input">{{ question.message }}</textarea></tr>
-                    <tr><h2>Image address</h2></tr>
-                    <tr><input type="text" name="image" class="input" value="{{ question.image }}"/></tr>
-                    <tr><input type="submit" name="update" value="Update"/></tr>
-                </table>
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title" value="{{ question.title }}">
+                <br>
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="5" cols="30" class="input">{{ question.message }}</textarea><br>
+                <br>
+                <label for="image">Image address:</label>
+                <input type="text" id="image" name="image" class="input" value="{{ question.image }}"/>
+                <br>
+                <input type="submit" name="update" value="Update">
             </form>
+
         {% else %}
+            
             <form action="{{ url_for('data_handler') }}" method="POST">
-                <table class="add_qa"><tr>
-                    <tr><h2>Title</h2></tr>
-                    <tr><input type="text" name="title" class="input" /></tr>
-                    <tr><h2>Message</h2></tr>
-                    <tr><textarea name="message" rows="5" cols="30" class="input"></textarea></tr>
-                    <tr><h2>Image address</h2></tr>
-                    <tr><input type="text" name="image" class="input" /></tr>
-                    <tr><button type="submit">Ask</button></tr>
-                </table>
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title">
+                <br>
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="5" cols="30" class="input"></textarea><br>
+                <br>
+                <label for="image">Image address:</label>
+                <input type="text" id="image" name="image" class="input"/>
+                <br>
+                <input type="submit" name="ask" value="Ask">
             </form>
+
         {% endif %}
     </div>
 

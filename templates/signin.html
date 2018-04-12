@@ -2,22 +2,18 @@
 
 {% block content %}
 
-    <div>
+<div class="sign">
         {% if alert_for_user %}
         {{ alert_for_user }}
         {% endif %}
-
+        
         <form action="{{ url_for('check_user') }}" method="post">
 
-            <label for="user_name">User:</label>
+            <label for="user_name">User:</label><br>
             <input type="text" id="user_name" name="user_name">
-            
-            <label for="password">Password:</label>
-            <input id="password" type="password" name="user_password">
-
-            <a href="{{ url_for('index') }}">
-                <button type="button">Cancel</button>
-            </a>
+            <br>
+            <label for="password">Password:</label><br>
+            <input id="password" type="password" name="user_password"><br>
 
             <input type="submit" name="signin" value="Sign in">
           

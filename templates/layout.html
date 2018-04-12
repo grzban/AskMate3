@@ -17,6 +17,12 @@
 
             <div id='menubar'>
                     <ul>
+                        <li style="float:right" class="active">
+                            <form action="{{ url_for('search') }}" method="POST">
+                                <input name="word" class="input">
+                                <button type="submit">SEARCH</button>
+                            </form>
+                        </li>
                         <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('questions') }}">Questions</a></li>
                         <li><a href="{{ url_for('tags') }}">Tags</a></li>
@@ -26,15 +32,10 @@
                         <li><a href="{{ url_for('registration') }}">Sign up</a></li>
                         <li><a href="{{ url_for('signin') }}">Sign in</a></li>
                         {% else %}
-                       <li> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
+                       <li style="float:right" class="active"> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
                        
                         {% endif %}
-                        <li style="float:right" class="active">
-                            <form action="{{ url_for('search') }}" method="POST">
-                                <input name="word" class="input">
-                                <button type="submit">SEARCH</button>
-                            </form>
-                        </li>
+                        
                     </ul>
             </div>
 

@@ -10,20 +10,23 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #2592b0;
+    background-color: white;
+    
 }
 
 li {
     display: inline;
     float: left;
+
 }
 
 
 li a {
     display: block;
     text-align: center;
-    padding: 0.75em 4em;
+    padding: 0.75em 2em;
     text-decoration: none;
+    color: black;
 }
 
 
@@ -32,5 +35,5 @@ li a:hover {
 }
 
 .active {
-    background-color: #8a25b1;
+    background-color: #8925b1;
 }

@@ -1,41 +1,3 @@
-body {
-    background-image: url("jake.jpg");
-    font-size: 18px;
-    font-family: tahoma, sans-serif;
-    }
-
-a {
-    color: #DBEDF3;
-}
-
-hr {
-    border-width: 1px;
-    color: white;
-}
-
-#float {
-    width: 85%;
-    margin: auto;
-    position: relative;
-    border-radius: 30px;
-    min-height: 900px;  
-
-    background-color: rgba(40, 49, 73, 0.95);
-    color: white;
-}
-
-#header img {
-    padding: 1em 0 1em 2em;
-    width: 15%;
-}
-
-
-
-#content {
-    padding: 2em;
-  
-}
-
 .left {
     width: 100px;
 }
@@ -44,52 +6,14 @@ hr {
     width: 150px;
 }
 
-#foot {
-    position: absolute;
-    font-size: 18px;
-    bottom: 0.5em;
-    width: 100%;
-    text-align: center;
-}
-
-
 .main {
     margin-top: 2em;
-}
-
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    border-radius: 1em;
-}
-
-td, th {
-    padding: 8px;
-}
-
-tr {
-    background-color: white;
-    color: black;
-}
-
-tr a {
-    color: black;
-}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #009ae1;
-    color: white;
 }
 
 /* INDEX */
 h1 {
     color: rgb(255, 255, 255);
 }
-
 
 h2 * {
     margin-left: 2em;

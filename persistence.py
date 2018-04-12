@@ -344,6 +344,16 @@ def get_list_of_users(cursor):
     cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_user(cursor):
+    cursor.execute("""SELECT users.user_name, question.title FROM users
+                    JOIN question ON user.user_id=question.user_id
+                    JOIN answer ON question.id=answer.question_id
+                    JOIN comment ON question.id=comment.question_id
+                    WHERE question.user_id = {user_id} OR answer.user_id = {user_id} OR comment.user_id = {user_id};
+                    """)
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def add_new_tag(cursor, new_tag):
@@ -374,6 +384,7 @@ def get_user_query(user_id):
 @database_common.connection_handler
 def get_user(cursor, user_id):
     cursor.execute(get_user_query(user_id))
+    return cursor.fetchall()
 
 
 def add_user_query(user):
@@ -405,3 +416,47 @@ def add_new_tag(cursor, new_tag):
                     INSERT INTO tag (id, name)
                     VALUES {value};
                    """.format(value=value))
+
+
+@database_common.connection_handler
+def get_user_id_by_question_id(cursor, question_id):
+    query = ("""SELECT user_id FROM question 
+                      WHERE id = {question_id};
+                   """.format(question_id=question_id))
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_reputation(cursor, user_id):
+    query = ("""SELECT user_reputation FROM users 
+                      WHERE user_id = {user_id};
+                   """.format(user_id=user_id))
+    cursor.execute(query)
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def update_user_reputation(cursor, table, id_row, column, new_value):
+    query = """UPDATE {}
+              SET {}='{}'
+              WHERE user_id = '{}';""".format(table, column, new_value, id_row)
+    cursor.execute(query)     
+
+
+@database_common.connection_handler
+def get_question_by_id(cursor, question_id):
+    query = """SELECT *
+              FROM question q
+              WHERE q.id = '{question_id}';
+            """.format(question_id=question_id)
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    query = """SELECT *
+              FROM users"""
+    cursor.execute(query)
+    return cursor.fetchall()

@@ -21,6 +21,12 @@ body {
     padding: 1em 8em 1em 8em;
 }
 
+#header {
+    background-color: white;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
 #content {
     padding: 2em;
   

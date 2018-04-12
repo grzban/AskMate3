@@ -24,12 +24,12 @@
                         <li><a href="#">User page</a></li>
                         {% if 'user_id' not in session %}
                         <li><a href="{{ url_for('registration') }}">Sign up</a></li>
-                        <li style="float:right"><a class="active" href="{{ url_for('signin') }}">Sign in</a></li>
+                        <li><a href="{{ url_for('signin') }}">Sign in</a></li>
                         {% else %}
                        <li> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
                        
                         {% endif %}
-                        <li id="search">
+                        <li style="float:right" class="active">
                             <form action="{{ url_for('search') }}" method="POST">
                                 <input name="word" class="input">
                                 <button type="submit">SEARCH</button>

@@ -1,6 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    
+{% for users in list_of_users %}
+
+    <div class="users">
+        <hr size="1" color="black" />
+        <div>
+            {{ user }}
+
+        </div>
+    </div>
+{% endfor %}
 
 {% endblock %}

@@ -16,11 +16,6 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions,)
 
 
-@app.route('/signin')
-def signin():
-    return render_template('signin.html')
-
-
 @app.route('/signined', methods=['POST'])
 def signined():
     user_name = request.form.get('user_name')
@@ -125,30 +120,6 @@ def show_question(question_id, answer_id=None, comment_id=None):
                            answer_id=answer_id,
                            comment_id=comment_id)
 
-@app.route('/data_handler', methods=['POST'])
-def data_handler():
-    if 'id' in request.form:  # edit mode
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'),
-                                      request.form.get('id'))
-        if type(check)  == int:
-            persistence.edit_question(request.form)
-            return redirect(url_for('questions'))
-        else:
-            return redirect(url_for('edit_question', question_id=request.form.get('id')))
-
-    else:  # new post
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'))
-        if type(check)  == int:
-            question = logic.make_question(request.form['title'],
-                                       request.form['message'],
-                                       check,
-                                       request.form['image'])
-            persistence.add_new_question(question)
-            return redirect(url_for('questions'))
-        else:
-            return redirect(url_for('new_question'))
 
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
 def vote(question_id, answer_id, vote):
@@ -208,13 +179,6 @@ def select(name):
     print(list_of_titles)
 
     return render_template('selected_tag.html', list_of_titles=list_of_titles)
-
-@app.route('/question/<int:question_id>/new_tag', methods=['POST', 'GET'])
-def post_tag(question_id):
-    new_tag = logic.make_tag(request.form['name'],
-                                     question_id)
-    persistence.add_new_tag(new_tag)
-    return redirect(url_for('show_question', question_id=question_id))
 
 
 # -------------- SEARCH -----------

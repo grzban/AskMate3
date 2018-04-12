@@ -99,6 +99,7 @@ def get_question(cursor, question_id):
               LEFT JOIN users u ON (q.user_id=u.user_id)
               WHERE q.id = '{question_id}';
             """.format(question_id=question_id)
+    cursor.execute(query)
     return cursor.fetchall()
 
 

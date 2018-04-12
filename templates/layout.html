@@ -33,7 +33,7 @@
                         <li><a href="{{ url_for('registration') }}">Sign up</a></li>
                         <li><a href="{{ url_for('signin') }}">Sign in</a></li>
                         {% else %}
-                        <li><a href="#">User page</a></li>
+                        <li><a href="{{ url_for('show_user', user_id=session['user_id']) }}">User page</a></li>
 
                        <li style="float:right" class="active"> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
 

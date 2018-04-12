@@ -1,0 +1,95 @@
+body {
+    background-image: url("jake.jpg");
+    font-size: 18px;
+    font-family: tahoma, sans-serif;
+    }
+
+a {
+    color: white;
+}
+
+hr {
+    border-width: 1px;
+    color: black;
+}
+
+#float {
+    width: 85%;
+    height: 100%;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    position: relative;
+    border-radius: 30px;
+    min-height: 900px;  
+
+    background-color: rgba(40, 49, 73, 0.95);
+    color: white;
+}
+
+#header img {
+    padding: 1em 6em 1em 6em;
+}
+
+
+#content {
+    padding: 2em;
+  
+}
+
+
+#foot {
+    position: absolute;
+    font-size: 18px;
+    bottom: 0.5em;
+    width: 100%;
+    text-align: center;
+}
+
+td, th {
+    padding: 8px;
+    
+}
+
+tr:hover {
+    background-color: #e78200;
+}
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 15px;
+}
+
+table tr:first-child th:first-child {
+    border-top-left-radius: 15px;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 15px;
+}
+
+tr {
+    background-color: white;
+    color: black;
+}
+
+tr a {
+    color: black;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #8a25b1;
+    color: white;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}

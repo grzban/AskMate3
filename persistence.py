@@ -125,10 +125,6 @@ def get_answers_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_comment_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT a.*, u.user_name FROM answer a
-                    LEFT JOIN users u ON (a.user_id=u.user_id)
-                    WHERE question_id = %s;
-                   """, [question_id])
                     SELECT c.*, u.user_name FROM comment c
                     LEFT JOIN users u ON (c.user_id=u.user_id)
                     WHERE question_id = '{question_id}';
@@ -149,24 +145,10 @@ def get_tag_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_all_tag(cursor):
     cursor.execute("""
-                    SELECT c.*, u.user_name FROM comment c
-                    LEFT JOIN users u ON (c.user_id=u.user_id)
-                    WHERE question_id = %s;
-                   """, [question_id])
-                    SELECT COUNT(name), name FROM tag
+                    SELECT name FROM tag
                     GROUP BY name
-                    ORDER BY COUNT(name) DESC;
+                    ORDER BY name;
                    """)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def few_questions(cursor, limit):
-def get_tag_to_question(cursor, question_id):
-    cursor.execute("""
-                    SELECT * FROM question_tag
-                    WHERE question_id = %s;
-                    """, [question_id])
     return cursor.fetchall()
 
 

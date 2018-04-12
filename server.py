@@ -107,14 +107,12 @@ def edit_question(question_id):
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
-def show_question(question_id, answer_id=None, comment_id=None, tag_id=None):
+def show_question(question_id, answer_id=None, comment_id=None):
     answer_id = request.args.get("answer_id")
     comment_id = request.args.get("comment_id")
-    #tag_id = request.args.get("tag_id")
     question = persistence.get_question(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comment = persistence.get_comment_to_question(question_id)
-    tag = persistence.get_tag_to_question(question_id)
     tags = persistence.get_tag_to_question(question_id)
     logic.update_view_number(question_id)
 
@@ -126,8 +124,6 @@ def show_question(question_id, answer_id=None, comment_id=None, tag_id=None):
                            question_id=question_id,
                            answer_id=answer_id,
                            comment_id=comment_id)
-                           #tag_id=tag_id)
-
 
 @app.route('/data_handler', methods=['POST'])
 def data_handler():
@@ -153,7 +149,6 @@ def data_handler():
             return redirect(url_for('questions'))
         else:
             return redirect(url_for('new_question'))
-
 
 @app.route('/question/<question_id>/<answer_id>/<vote>', methods=["POST"])
 def vote(question_id, answer_id, vote):
@@ -200,6 +195,8 @@ def post_tag(question_id):
     new_tag = logic.make_tag(request.form['name'])
     id_new_tag=new_tag['id']
     new_tag_id = logic.make_tag_id(question_id, id_new_tag)
+
+
     persistence.add_new_tag(new_tag)
     persistence.add_new_tags(new_tag_id)
 
@@ -276,35 +273,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/users')
-def users():
-    list_of_users = persistence.get_list_of_users()
-    return render_template('users.html', list_of_users=list_of_users)
-
-
-@app.route('/registration')
-def registration():
-    return render_template('registration.html')
-
-
-@app.route('/registration/add', methods=['POST'])
-def add_user():
-    new_user = {
-        'user_name': request.form.get('user_name'),
-        'user_password': request.form.get('user_password'),
-        'user_reputation': 0
-    }
-    persistence.add_user(new_user)
-    return redirect(url_for('index'))
-
-
-@app.route('/user/<user_id>', methods=['POST'])
-def show_user(user_id):
-    user = persistence.get_user(user_id)
-    return render_template('user.html', user=user)
-
-
-# -------------- USERS -------------
 @app.route('/users')
 def users():
     list_of_users = persistence.get_list_of_users()

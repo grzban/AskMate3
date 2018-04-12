@@ -1,49 +1,3 @@
-body {
-    background-image: url("jake.jpg");
-
-    text-align: center;
-    height: 99%;
-    width: 99%;
-    font-size: 12px;
-    font-family: tahoma, sans-serif;
-    }
-
-a {
-    color: rgb(255, 255, 255);
-}
-
-#float, #header {
-    border-radius: 30px;
-}
-
-#float {
-    width: 80%;
-    margin: auto;
-    background-color: rgba(0, 0, 18, 0.7);
-
-    color: white;
-
-}
-
-#header {
-    padding: 0;
-}
-
-#content {
-
-    padding: 2em;
-
-}
-
-.main {
-    margin-top: 2em;
-}
-
-/* TABLE */
-.add_qa td {
-    border: none;
-}
-
 .left {
     width: 100px;
 }
@@ -52,42 +6,13 @@ a {
     width: 150px;
 }
 
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    border-radius: 1em;
+.main {
+    margin-top: 2em;
 }
-
-td, th {
-    padding: 8px;
-}
-
-tr {
-    background-color: white;
-    color: black;
-}
-
-tr a {
-    color: black;
-}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #009ae1;
-    color: white;
-}
-tr:nth-child(even){background-color: #f2f2f2;}
 
 /* INDEX */
 h1 {
     color: rgb(255, 255, 255);
-}
-
-h2 a:visited {
-    color: rgb(0, 0, 151);
 }
 
 h2 * {

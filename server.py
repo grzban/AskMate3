@@ -28,35 +28,17 @@ def signined():
 # -------------- QUESTIONS ----------
 @app.route('/data_handler', methods=['POST'])
 def data_handler():
-    if 'id' in request.form:  # edit mode
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'),
-                                      request.form.get('id'))
-        if type(check)  == int:
-            persistence.edit_question(request.form)
-            # here must clear session!!!
-            return redirect(url_for('questions'))
-        else:
-            return redirect(url_for('edit_question', question_id=request.form.get('id')))
-
-    else:  # new post
-        check = logic.check_login_password(request.form.get('login'),
-                                      request.form.get('password'))
-        if type(check)  == int:
-            question = logic.make_question(request.form['title'],
+    if 'id' in request.form:
+        persistence.edit_question(request.form)
+    else:
+        question = logic.make_question(request.form['title'],
                                        request.form['message'],
-                                       check,
-                                       request.form['image'])
-            persistence.add_new_question(question)
-            # here must clear session!!!!
-            return redirect(url_for('questions'))
-        else:
-            print(request.form.get('title') + ' ' + check + ' OOOOOOOOOO')
-            session['login'] = request.form['login']
-            session['title'] = request.form['title']
-            session['message'] = request.form['message']
-            session['image'] = request.form['image']
-            return redirect(url_for('new_question', info_for_user=check))
+                                       session['user_id'],
+                                       request.form['image']
+                                       )
+        persistence.add_new_question(question)
+
+    return redirect(url_for('questions'))
 
 
 @app.route('/questions', methods=['GET', 'POST'])
@@ -73,25 +55,10 @@ def delete_question(question_id):
     return redirect('/questions')
 
 
-@app.route('/new_question/<info_for_user>', methods=['POST', 'GET'])
-def new_question(info_for_user='log in'):
-    if 'title' in session:
-        print('session!!!')
-        print(session)
-        login = session.get('login')
-        title = session.get('title')
-        message_text = session.get('message')
-        image = session.get('image')
-        print(message_text)
-        print(info_for_user)
-        return render_template('newQuestion.html', login=login,
-                                                   title=title,
-                                                   message_text=message_text,
-                                                   image=image,
-                                                   info=info_for_user)
-    else:
-        print('no session!!!!')
-        return render_template('newQuestion.html')
+@app.route('/new_question/', methods=['POST', 'GET'])
+def new_question():
+ 
+    return render_template('newQuestion.html')
 
 
 @app.route('/question/edit/<question_id>', methods=['POST', 'GET'])
@@ -133,6 +100,7 @@ def vote(question_id, answer_id, vote):
 def post_answer(question_id):
     new_answer = logic.make_answer(request.form['message'],
                                    request.form['image'],
+                                   session['user_id'],
                                    question_id)
     persistence.add_new_answer(new_answer)
     return redirect(url_for('show_question', question_id=question_id))
@@ -193,7 +161,8 @@ def search():
 @app.route('/question/<int:question_id>/new_comment', methods=['POST', 'GET'])
 def post_comment(question_id):
     new_comment = logic.make_comment(request.form['message'],
-                                     question_id)
+                                     question_id,
+                                     session['user_id'])
     persistence.add_new_comment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
 
@@ -201,7 +170,8 @@ def post_comment(question_id):
 @app.route('/question/<int:question_id>/edit-comment/<int:comment_id>', methods=['POST', 'GET'])
 def edit_coment(question_id, coment_id):
     new_comment = logic.make_comment(request.form['message'],
-                                     question_id)
+                                     question_id,
+                                     session['user_id'])
     persistence.edit_coment(new_comment)
     return redirect(url_for('show_question', question_id=question_id))
 

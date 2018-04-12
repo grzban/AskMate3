@@ -37,7 +37,7 @@ def check_sign_in(login, password):
         return 'There is no user by given login. Create new account or correctly type your login.'
 
 
-def make_answer(message, image, question_id, answer_id=None):
+def make_answer(message, image, user_id, question_id, answer_id=None):
     if answer_id is None:
         id_ = generate_id(persistence.get_ids("answer"))
     else:
@@ -48,12 +48,13 @@ def make_answer(message, image, question_id, answer_id=None):
         'vote_number': 0,
         'message': message,
         'question_id': question_id,
-        'image': image
+        'image': image,
+        'user_id': user_id
     }
     return result
 
 
-def make_comment(message, question_id, comment_id=None):
+def make_comment(message, question_id, user_id, comment_id=None):
     if comment_id is None:
         id_ = generate_id(persistence.get_ids("comment"))
     else:
@@ -65,6 +66,7 @@ def make_comment(message, question_id, comment_id=None):
         'message': message,
         'question_id': question_id,
         'answer_id': 0,
+        'user_id': user_id
     }
     return result
 
@@ -118,7 +120,7 @@ def update_view_number(question_id, amount=1):
 
 def voting(question_id, answer_id, vote):
     if answer_id == 'None':  # if voting on question:
-        questions = persistence.get_question(question_id)
+        questions = persistence.get_question(question_id)[0]
         votes = int(questions.get('vote_number'))
         votes += 1 if vote == 'plus' else -1
         persistence.update('question', question_id, 'vote_number', votes)

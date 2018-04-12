@@ -221,7 +221,8 @@ def add_new_question(cursor, new_question):
              new_question['vote_number'],
              new_question['title'],
              new_question['message'],
-             new_question['image'])
+             new_question['image'],
+             new_question['user_id'])
     cursor.execute("""
                     INSERT INTO question
                     VALUES {value};
@@ -256,7 +257,8 @@ def add_new_answer(cursor, new_answer):
              new_answer['vote_number'],
              new_answer['question_id'],
              new_answer['message'],
-             new_answer['image'])
+             new_answer['image'],
+             new_answer['user_id'])
     cursor.execute("""
                     INSERT INTO answer
                     VALUES {value};
@@ -269,7 +271,8 @@ def add_new_comment(cursor, new_comment):
              new_comment['message'],
              new_comment['submission_time'],
              new_comment['edited_count'],
-             new_comment['question_id'],)
+             new_comment['question_id'],
+             new_comment['user_id'])
 
     cursor.execute("""
                     INSERT INTO comment (id, message, submission_time, edited_count, question_id)

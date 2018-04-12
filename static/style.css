@@ -1,39 +1,51 @@
 body {
     background-image: url("jake.jpg");
-    
-    text-align: center;
-    height: 99%;
-    width: 99%;
-    font-size: 12px;
+    font-size: 18px;
     font-family: tahoma, sans-serif;
     }
 
 a {
-    color: rgb(255, 255, 255);
+    color: #DBEDF3;
 }
 
-#float, #header {
-    border-radius: 30px;
+hr {
+    border-width: 1px;
+    color: white;
 }
 
 #float {
-    width: 80%;
+    width: 85%;
     margin: auto;
-    background-color: rgba(0, 0, 18, 0.7);
+    position: relative;
+    border-radius: 30px;
+    min-height: 900px;  
 
+    background-color: rgba(40, 49, 73, 0.95);
     color: white;
-    
 }
 
-#header {
-    padding: 0;
+#header img {
+    padding: 1em 0 1em 2em;
+    width: 15%;
 }
+
+
 
 #content {
-
     padding: 2em;
-    
+  
 }
+
+#foot {
+    position: absolute;
+    font-size: 18px;
+    bottom: 0.5em;
+    width: 100%;
+    text-align: center;
+}
+
+
+
 
 .main {
     margin-top: 2em;

@@ -63,7 +63,7 @@ def new_question():
 
 @app.route('/question/edit/<question_id>', methods=['POST', 'GET'])
 def edit_question(question_id):
-    question = persistence.get_question(question_id)
+    question = persistence.get_question(question_id)[0]
 
     return render_template('newQuestion.html', question=question)
 

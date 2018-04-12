@@ -4,10 +4,10 @@ import psycopg2.extras
 
 
 def get_connection_string():
-    user_name = 'mat'
-    password = '12345'
+    user_name = 'mariusz'
+    password = 'q12345'
     host = 'localhost'
-    database_name = 'AskMate'
+    database_name = 'mariusz'
 
     env_variables_defined = user_name and password and host and database_name
 

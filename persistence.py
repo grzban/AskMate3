@@ -275,7 +275,7 @@ def add_new_comment(cursor, new_comment):
              new_comment['user_id'])
 
     cursor.execute("""
-                    INSERT INTO comment (id, message, submission_time, edited_count, question_id)
+                    INSERT INTO comment (id, message, submission_time, edited_count, question_id, user_id)
                     VALUES {value};
                    """.format(value=value))
 
@@ -320,11 +320,6 @@ def get_user_query(user_id):
     return "SELECT * FROM users WHERE user_id = " + str(user_id)
 
 
-@database_common.connection_handler
-def get_user(cursor, user_id):
-    cursor.execute(get_user_query(user_id))
-
-
 def add_user_query(user):
     user_column = []
     user_data = []
@@ -345,13 +340,14 @@ def get_list_of_users(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_user(cursor):
-    cursor.execute("""SELECT users.user_name, question.title FROM users
-                    JOIN question ON user.user_id=question.user_id
-                    JOIN answer ON question.id=answer.question_id
-                    JOIN comment ON question.id=comment.question_id
-                    WHERE question.user_id = {user_id} OR answer.user_id = {user_id} OR comment.user_id = {user_id};
-                    """)
+def get_user(cursor, user_id):
+    cursor.execute("""
+                    SELECT DISTINCT q.title, q.id FROM question q
+                    FULL JOIN answer a ON a.question_id=q.id
+                    FULL JOIN comment c ON c.question_id=q.id
+                    WHERE a.user_id = '{user_id}' OR  q.user_id = '{user_id}' OR c.user_id = '{user_id}';
+                    """.format(user_id=user_id)
+    )
     return cursor.fetchall()
 
 
@@ -379,12 +375,6 @@ def add_new_tags(cursor, new_tag_id):
 # user
 def get_user_query(user_id):
     return "SELECT * FROM users WHERE user_id = " + str(user_id)
-
-
-@database_common.connection_handler
-def get_user(cursor, user_id):
-    cursor.execute(get_user_query(user_id))
-    return cursor.fetchall()
 
 
 def add_user_query(user):

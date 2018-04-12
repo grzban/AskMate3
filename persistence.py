@@ -180,6 +180,7 @@ def search_table(cursor, search_word):  # in SEARCH feature
                    """.format(search_word=search_word))
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def search_table_by_tag(cursor, name):  # in SEARCH feature
     cursor.execute("""

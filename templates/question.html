@@ -25,14 +25,10 @@
         </div>
 
         <div class="question_message">
-            <p>
-                {{ question.message }}
-            </p>
+            <p>{{ question.message }}</p>
         </div>
-        {% if question.image is not in [''] %}
-            {% if question.image %}
-                <img src="{{ question.image }}" class="question_image" alt="">
-            {% endif %}
+        {% if question.image != '' %}
+            <img src="{{ question['image'] }}" class="question_image" alt="" width="50em" height="50em">
         {% endif %}
 
     </div>
@@ -62,7 +58,7 @@
         </div>
     {% endfor %}
 
-    {% if 'user_id' in session %}
+    {% if session_flag %}
     <div class="add_comment">
         <hr size="1" color="black" />
 
@@ -81,33 +77,30 @@
             </form>
             {% endif %}
         </div>
-
-
-
     </div>
     {% endif %}
 
     <div class="add_tag">
         <hr size="1" color="black" />
+        {% if session_flag %}
         <form action="{{ url_for('post_tag', question_id=question_id) }}" method="POST">
-                <h3>TAGS</h3>
-                <textarea name="name" rows="1" cols="20" class="input"></textarea>
-                <button type="submit">Add TAG</button>
+            <h3>TAGS</h3>
+            <textarea name="name" rows="1" cols="20" class="input"></textarea>
+            <button type="submit">Add TAG</button>
         </form>
+        {% endif %}
     </div>
-
     {% for tag in tags %}
     {% set tag_id = tag.id %}
-
         <div class="tag">
             <hr size="1" color="black" />
             <div>
-                {{ '#'+tag.name }}
+                {{ '#'+tag }}
             </div>
         </div>
     {% endfor %}
 
-    {% if 'user_id' in session %}
+    {% if session_flag %}
     <div class="add_answer">
         <hr size="1" color="black" />
 
@@ -161,7 +154,7 @@
             {% if answer.image is not in [''] %}
                 <img src="{{ answer.image }}" class="answer_image" alt="">
             {% endif %}
-            {% if session['user_id'] == answer.user_id %}
+            {% if session_flag %}
             <button><a href="{{ url_for('show_question', question_id=question_id, answer_id=answer_id) }}" >EDIT</a></button>
             <button><a href="{{ url_for('delete_answer', question_id=question_id, answer_id=answer_id) }}" >DELETE</a></button>
             {% endif %}

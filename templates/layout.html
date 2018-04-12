@@ -9,13 +9,13 @@
     <body>
 
         <div id='float'>
-
             <div id='header'>
                 <img width="40%"  src="{{ url_for('static', filename='images/askmate.png') }}">
                 <img width="15%" align="right" src="{{ url_for('static', filename='images/takich5.png') }}">
             </div>
 
             <div id='menubar'>
+
                     <ul>
                         <li style="float:right" class="active">
                             <form action="{{ url_for('search') }}" method="POST">
@@ -26,19 +26,16 @@
                         <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('questions') }}">Questions</a></li>
                         <li><a href="{{ url_for('tags') }}">Tags</a></li>
-                       <!--<li><a href="{{ url_for('show_user', user_id=1) }}">User page</a></li>-->
-
-                        {% if 'user_id' not in session %}
-                        <li><a href="{{ url_for('users') }}">Users list</a></li>
-                        <li><a href="{{ url_for('registration') }}">Sign up</a></li>
-                        <li><a href="{{ url_for('signin') }}">Sign in</a></li>
+                        {% if session == {} %}
+                            <li><a href="{{ url_for('users') }}">Users list</a></li>
+                            <li><a href="{{ url_for('registration') }}">Sign up</a></li>
+                            <li><a href="{{ url_for('signin') }}">Sign in</a></li>
+                             {% set session_flag = false %}
                         {% else %}
-                        <li><a href="{{ url_for('show_user', user_id=session['user_id']) }}">User page</a></li>
-
-                       <li style="float:right" class="active"> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
-
+                            <li><a href="{{ url_for('show_user', user_id=session['user_id']) }}">User page</a></li>
+                            <li style="float:right" class="active"> <a href="{{ url_for('logout') }}">Log Out ({{session.user_name}})</a></li>
+                             {% set session_flag = true %}
                         {% endif %}
-
                     </ul>
             </div>
 

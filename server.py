@@ -79,12 +79,12 @@ def edit_question(question_id):
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
 def show_question(question_id, answer_id=None, comment_id=None):
-    #answer_id = request.args.get("answer_id")
-    #comment_id = request.args.get("comment_id")
+    answer_id = request.args.get("answer_id")
+    comment_id = request.args.get("comment_id")
     questions = persistence.get_question_by_id(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comments = persistence.get_comment_to_question(question_id)
-    tags = persistence.get_tag_to_question(question_id)
+    tag = persistence.get_tag_to_question(question_id)
     users = persistence.get_all_users()
     logic.update_view_number(question_id)
     
@@ -92,7 +92,7 @@ def show_question(question_id, answer_id=None, comment_id=None):
                            questions=questions,
                            answers=answers,
                            comments=comments,
-                           tags=tags,
+                           tag=tag,
                            users=users,
                            question_id=question_id)
 
@@ -139,6 +139,7 @@ def tags():
     tags = persistence.get_all_tag()
     return render_template('tags.html', tags=tags)
 
+
 @app.route('/question/<int:question_id>/new_tag', methods=['POST', 'GET'])
 def post_tag(question_id):
     new_tag = logic.make_tag(request.form['name'])
@@ -155,6 +156,7 @@ def select(name):
     list_of_titles = persistence.search_table_by_tag(name)
 
     return render_template('selected_tag.html', list_of_titles=list_of_titles)
+
 
 # -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])
@@ -207,10 +209,7 @@ def check_user():
 
 @app.route('/logout/')
 def logout():
-    if 'user_id' in session:
-        del session['user_id']
-    if 'user_name' in session:
-        del session['user_name']
+    session.clear()
     return redirect(url_for('index'))
 
 

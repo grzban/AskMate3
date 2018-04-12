@@ -3,7 +3,6 @@
 {% block content %}
     <div id="newQuestion">
         {% if question %}
-            {%  set question = question[0] %}
             <form action="{{ url_for('edit_question_save', question_id=question.id) }}" method="POST">
                 <table class="add_qa"><tr>
                     <tr><h2>Title</h2></tr>

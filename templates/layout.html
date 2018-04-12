@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Askmate2</title>
+        <title>AskMate3</title>
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='layout.css') }}">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='menubar.css') }}">
     </head>
@@ -11,7 +11,7 @@
         <div id='float'>
 
             <div id='header'>
-                <img width="40%" src="{{ url_for('static', filename='images/askmate.png') }}">
+                <img width="40%"  src="{{ url_for('static', filename='images/askmate.png') }}">
                 <img width="15%" align="right" src="{{ url_for('static', filename='images/takich5.png') }}">
             </div>
 
@@ -20,7 +20,7 @@
                         <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('questions') }}">Questions</a></li>
                         <li><a href="{{ url_for('tags') }}">Tags</a></li>
-                        <li><a href="#">User page</a></li>
+                        <li><a href="{{ url_for('show_user', user_id=1) }}">User page</a></li>
                         <li><a href="{{ url_for('registration') }}">Sign up</a></li>
                         <li style="float:right"><a class="active" href="{{ url_for('signin') }}">Sign in</a></li>
                     </ul>

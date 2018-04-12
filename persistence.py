@@ -55,6 +55,15 @@ def login_password(cursor, login):
 
 
 @database_common.connection_handler
+def get_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT q.id, q.submission_time, q.view_number, q.vote_number, q.title, q.message, u.user_name, q.image FROM question q
+                    LEFT JOIN users u ON (q.user_id=u.user_id)
+                    WHERE q.id = '{question_id}';
+                   """.format(question_id=question_id))
+    return cursor.fetchall()[0]
+
+@database_common.connection_handler
 def permission_for_edit(cursor, question_comment_answer, qa_id, login):
     cursor.execute("""
                     SELECT {question_comment_answer}.id FROM {question_comment_answer}
@@ -171,6 +180,16 @@ def search_table(cursor, search_word):  # in SEARCH feature
                    """.format(search_word=search_word))
     return cursor.fetchall()
 
+@database_common.connection_handler
+def search_table_by_tag(cursor, name):  # in SEARCH feature
+    cursor.execute("""
+                    SELECT tag.name, question.title, question.id FROM question
+                    FULL OUTER JOIN question_tag ON (question_tag.question_id=question.id)
+                    FULL OUTER JOIN tag ON (question_tag.tag_id=tag.id)
+                    WHERE tag.name='{name}';
+                   """.format(name=name))
+
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_ids(cursor, table):
@@ -340,5 +359,46 @@ def add_new_tags(cursor, new_tag_id):
 
     cursor.execute("""
                     INSERT INTO question_tag (question_id, tag_id)
+                    VALUES {value};
+                   """.format(value=value))
+
+
+# user
+def get_user_query(user_id):
+    return "SELECT * FROM users WHERE user_id = " + str(user_id)
+
+
+@database_common.connection_handler
+def get_user(cursor, user_id):
+    cursor.execute(get_user_query(user_id))
+
+
+def add_user_query(user):
+    user_column = []
+    user_data = []
+    for key, value in user.items():
+        user_column.append(str(key))
+        user_data.append('\'' + str(value) + '\'')
+    return 'INSERT INTO users (' + ', '.join(user_column) + ') values (' + ', '.join(user_data) + ');'
+
+
+@database_common.connection_handler
+def add_user(cursor, user):
+    cursor.execute(add_user_query(user))
+
+
+@database_common.connection_handler
+def get_list_of_users(cursor):
+    cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def add_new_tag(cursor, new_tag):
+    value = (new_tag['id'],
+             new_tag['name'],)
+
+    cursor.execute("""
+                    INSERT INTO tag (id, name)
                     VALUES {value};
                    """.format(value=value))

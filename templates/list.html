@@ -42,7 +42,7 @@
         </table>
         {% if 'user_id' in session %}
         <form method="POST">
-            <button type="submit" formaction="{{ url_for('new_question') }}">NEW QUESTION</button>
+            <button type="submit" formaction="{{ url_for('new_question',info_for_user='You have to sign in') }}">NEW QUESTION</button>
         </form>
         {% else %}
         <p>Sign in to add new question</p>

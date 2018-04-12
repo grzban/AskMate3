@@ -16,6 +16,15 @@ def index():
     return render_template('index.html', lastes_questions=lastes_questions,)
 
 
+@app.route('/signined', methods=['POST'])
+def signined():
+    user_name = request.form.get('user_name')
+    user_password = request.form.get('user_password')
+
+
+    return redirect(url_for('index'))
+
+
 # -------------- QUESTIONS ----------
 @app.route('/data_handler', methods=['POST'])
 def data_handler():
@@ -29,7 +38,7 @@ def data_handler():
             return redirect(url_for('questions'))
         else:
             return redirect(url_for('edit_question', question_id=request.form.get('id')))
-        
+
     else:  # new post
         check = logic.check_login_password(request.form.get('login'),
                                       request.form.get('password'))
@@ -96,14 +105,14 @@ def edit_question(question_id):
 def show_question(question_id, answer_id=None, comment_id=None):
     answer_id = request.args.get("answer_id")
     comment_id = request.args.get("comment_id")
-    question = persistence.get_question(question_id)
+    questions = persistence.get_question(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comment = persistence.get_comment_to_question(question_id)
     tags = persistence.get_tag_to_question(question_id)
     logic.update_view_number(question_id)
 
     return render_template('question.html',
-                           question=question,
+                           questions=questions,
                            answers=answers,
                            comment=comment,
                            tags=tags,
@@ -164,6 +173,13 @@ def post_tag(question_id):
 
     return redirect(url_for('show_question', question_id=question_id))
 
+@app.route('/selected_tag/<name>', methods=['GET', 'POST'])
+def select(name):
+    list_of_titles = persistence.search_table_by_tag(name)
+    print(list_of_titles)
+
+    return render_template('selected_tag.html', list_of_titles=list_of_titles)
+
 
 # -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])
@@ -208,7 +224,7 @@ def check_user():
         session['user_id'] = validate['user_id']
         session['user_name'] = validate['user_name']
         print('USER ID from session : ' + str(session['user_id']))
-    
+
     return redirect(url_for('index'))
 
 

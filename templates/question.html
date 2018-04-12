@@ -6,8 +6,8 @@
         <nav class="question_data">
             {%set user_id=question.user_id%}
             {%for user in users if user.user_id == user_id%}
-            <h4>Author: {{user.user_name}} <!--jinja filter--> </h4>
-            <h4>Reputation: {{user.user_reputation}}  <!--jinja filter--> </h4>
+                <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
             {%endfor%}
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}<br>
@@ -47,9 +47,12 @@
             <div>
                 {{ comment.message }}
             </div>
-
             <nav  class="comment_data">
-                Author: {{ comment.user_name|default('Admin', True) }} <br>
+                {%set user_id=comment.user_id%}
+                {%for user in users if user.user_id == user_id%}
+                    <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                    <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
+                {%endfor%}
                 Added: {{ comment.submission_time}} <br>
                 Edited count: {{comment.edited_count}}
             </nav>
@@ -68,10 +71,6 @@
             <form action="{{ url_for('edit_coment', question_id=question_id, comment_id=coment_id) }}" method="POST">
                     <h3>Comment</h3>
                     <textarea name="message" rows="1" cols="50" class="input"></textarea>
-                    Login<br>
-                    <input type="text" name="login" class="input">
-                    Password<br>
-                    <input type="password" name="password" class="input">
                     <button type="submit">Edit comment</button>
             </form>
             {% else %}
@@ -143,7 +142,11 @@
             </div>
             <br>
             <nav class="answer_data">
-                Author: {{ answer.user_name|default('Admin', True) }} <br>
+                {%set user_id=answer.user_id%}
+                {%for user in users if user.user_id == user_id%}
+                    <h4>Author: {{user.user_name|default('Unknown', True)}} <!--jinja filter--> </h4>
+                    <h4>Reputation: {{user.user_reputation|default('0', True)}}  <!--jinja filter--> </h4>
+                {%endfor%}
                 Added: {{ answer.submission_time}} <br>
                 Vote number: {{ answer.vote_number}}
                 <form action={{ url_for('vote', question_id=question_id, answer_id=answer_id, vote='plus')}} method="POST">

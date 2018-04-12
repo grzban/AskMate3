@@ -1,6 +1,6 @@
 import persistence
 import logic
-import time
+import util
 
 from flask import Flask, render_template, request, redirect, url_for, session
 
@@ -28,16 +28,26 @@ def signined():
 # -------------- QUESTIONS ----------
 @app.route('/data_handler', methods=['POST'])
 def data_handler():
-    if 'id' in request.form:
-        persistence.edit_question(request.form)
-    else:
-        question = logic.make_question(request.form['title'],
-                                       request.form['message'],
-                                       session['user_id'],
-                                       request.form['image']
-                                       )
-        persistence.add_new_question(question)
+    question = logic.make_question(request.form['title'],
+                                   request.form['message'],
+                                   session['user_id'],
+                                   request.form['image'])
+    persistence.add_new_question(question)
 
+    return redirect(url_for('questions'))
+
+
+@app.route('/question/edit/<question_id>/save', methods=['POST'])
+def edit_question_save(question_id):
+    updated_question = {
+        'submission_time': util.decode_time_for_human(util.get_current_timestamp()),
+        'title': request.form.get('title'),
+        'message': request.form.get('message'),
+        'image': request.form.get('image'),
+        'user_id': session['user_id'],
+        'id': question_id
+    }
+    persistence.edit_question(updated_question)
     return redirect(url_for('questions'))
 
 
@@ -50,7 +60,6 @@ def questions():
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def delete_question(question_id):
     persistence.delete_table('question', 'id = {question_id}'.format(question_id=question_id))
-    logic.update_view_number(question_id, -1)
 
     return redirect('/questions')
 
@@ -65,7 +74,7 @@ def new_question():
 def edit_question(question_id):
     question = persistence.get_question(question_id)
 
-    return render_template('newQuestion.html', question=question)
+    return render_template('newQuestion.html', question=question, question_id=question_id)
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])

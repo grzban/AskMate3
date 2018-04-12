@@ -231,24 +231,21 @@ def add_new_question(cursor, new_question):
 
 @database_common.connection_handler
 def edit_question(cursor, dictionary):
-    cursor.execute("""
-                    UPDATE question
-                    SET submission_time = '{submission_time}',
-                        view_number = {view_number},
-                        vote_number = {vote_number},
-                        title = '{title}',
-                        message = '{message}',
-                        image = '{image}'
-                    WHERE id = {id};
-                   """.format(submission_time=util.decode_time_for_human(util.get_current_timestamp()),
-                              view_number=dictionary['view_number'],
-                              vote_number=dictionary['vote_number'],
-                              title=dictionary['title'],
-                              message=dictionary['message'],
-                              image=dictionary['image'],
-                              id=dictionary['id']
-                              ))
-
+   query = """
+              UPDATE question
+              SET submission_time = '{submission_time}',
+                  title = '{title}',
+                  message = '{message}',
+                  image = '{image}',
+                  user_id = '{user_id}'
+              WHERE id = {id};
+            """.format(submission_time=dictionary['submission_time'],
+                       title=dictionary['title'],
+                       message=dictionary['message'],
+                       image=dictionary['image'],
+                       user_id=dictionary['user_id'],
+                       id=dictionary['id'])
+   cursor.execute(query)
 
 @database_common.connection_handler
 def add_new_answer(cursor, new_answer):

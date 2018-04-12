@@ -341,6 +341,16 @@ def get_list_of_users(cursor):
     cursor.execute("SELECT user_name, user_reputation, registration_time FROM users;")
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_user(cursor):
+    cursor.execute("""SELECT users.user_name, question.title FROM users
+                    JOIN question ON user.user_id=question.user_id
+                    JOIN answer ON question.id=answer.question_id
+                    JOIN comment ON question.id=comment.question_id
+                    WHERE question.user_id = {user_id} OR answer.user_id = {user_id} OR comment.user_id = {user_id};
+                    """)
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def add_new_tag(cursor, new_tag):

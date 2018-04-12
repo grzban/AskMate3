@@ -2,33 +2,23 @@
 
 {% block content %}
 
-    <div>
-        <form action="{{ url_for('add_user') }}" method="post">
-            <table>
-                <tr>
-                    <td>User:</td>
-                    <td>
-                        <input type="text" name="user_name">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td>
-                        <input type="password" name="user_password">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="{{ url_for('index') }}">
-                           <button type="button">Cancel</button>
-                        </a>
-                    </td>
-                    <td>
-                        <input type="submit" name="register" value="Register">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
+    <div class="sign">
+            {% if alert_for_user %}
+            {{ alert_for_user }}
+            {% endif %}
+            
+            <form action="{{ url_for('add_user') }}" method="post">
+    
+                <label for="user_name">User:</label><br>
+                <input type="text" id="user_name" name="user_name">
+                <br>
+                <label for="password">Password:</label><br>
+                <input id="password" type="password" name="user_password"><br>
+    
+                <input type="submit" name="register" value="Register">
+              
+            </form>
+        </div>
+
 
 {% endblock %}

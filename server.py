@@ -167,20 +167,17 @@ def post_tag(question_id):
     new_tag = logic.make_tag(request.form['name'])
     id_new_tag=new_tag['id']
     new_tag_id = logic.make_tag_id(question_id, id_new_tag)
-
-
     persistence.add_new_tag(new_tag)
     persistence.add_new_tags(new_tag_id)
 
     return redirect(url_for('show_question', question_id=question_id))
 
+
 @app.route('/selected_tag/<name>', methods=['GET', 'POST'])
 def select(name):
     list_of_titles = persistence.search_table_by_tag(name)
-    print(list_of_titles)
 
     return render_template('selected_tag.html', list_of_titles=list_of_titles)
-
 
 # -------------- SEARCH -----------
 @app.route('/search', methods=['GET', 'POST'])

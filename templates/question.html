@@ -2,9 +2,8 @@
 
 {% block content %}
 {% for question in questions %}
-    <div class="question">
-
-        <div class="question_data">
+    <div class="q">
+        <div class="q_data">
             <h4>Author: {{ question.user_name|default('Admin', True) }} <!--jinja filter--> </h4>
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}
@@ -18,7 +17,7 @@
             </form>
         </div>
 
-        <div class="question_message">
+        <div class="q_message">
             <h1>{{ question.title }}</h1>
             <p>
                 {{ question.message }}

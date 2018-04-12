@@ -106,26 +106,25 @@ hr {
 }
 
 
-.question {
-    position: relative;
-    height: 100%;
+.q {
+
+    height: 500px;
     width: 100%;
     
 }
 
-.question_data {
+.q_data {
     float: left;
-    width: 150px;
+    width: 170px;
 }
 
-.question_data form {
+.q_data form {
     display: inline;
 }
 
-.question_message {
+.q_message {
     float: left;
     margin-left: 100px;
-    position: relative;
 }
 
 

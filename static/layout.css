@@ -123,6 +123,8 @@ hr {
     background-color: rgba(0,0,0,0.4);
     color: white;
     border-radius: 20px;
+    display: block;
+    overflow: auto;
     
 }
 
@@ -150,9 +152,9 @@ hr {
 
 .q_message {
     display: block;
-    margin-top: 10px;
-    float: right;
-    max-width: 80%;
+    margin: 15px 0 0 10px;
+    float: left;
+    max-width: 75%;
 }
 
 hr {

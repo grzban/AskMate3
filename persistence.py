@@ -136,7 +136,7 @@ def get_comment_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_tag_to_question(cursor, question_id):
     cursor.execute("""
-                    SELECT name
+                    SELECT name, id
                     FROM tag JOIN question_tag ON (id=tag_id)
                     WHERE question_id = '{question_id}';
                    """.format(question_id=question_id))

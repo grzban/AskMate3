@@ -84,7 +84,7 @@ def show_question(question_id, answer_id=None, comment_id=None):
     questions = persistence.get_question_by_id(question_id)
     answers = persistence.get_answers_to_question(question_id)
     comments = persistence.get_comment_to_question(question_id)
-    tag = persistence.get_tag_to_question(question_id)
+    tags = persistence.get_tag_to_question(question_id)
     users = persistence.get_all_users()
     logic.update_view_number(question_id)
     
@@ -92,7 +92,7 @@ def show_question(question_id, answer_id=None, comment_id=None):
                            questions=questions,
                            answers=answers,
                            comments=comments,
-                           tag=tag,
+                           tags=tags,
                            users=users,
                            question_id=question_id)
 

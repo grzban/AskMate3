@@ -13,6 +13,13 @@
             Submission time: {{ question.submission_time }}<br>
             Vote number: {{ question.vote_number }}
             View number: {{ question.view_number }}<br>
+            {% for tag in tags %}
+            <div class="tag">
+                <div>
+                <a href="{{ url_for('select', name=tag.name) }}"> {{ '#'+tag.name }} <
+                </div>
+            </div>
+        {% endfor %}
             <a href={{ url_for('vote', question_id=question_id, vote='plus')}}>
                 <img src="{{ url_for('static', filename='images/thumb_up.png') }}">
             </a>
@@ -90,15 +97,7 @@
         </form>
         {% endif %}
     </div>
-    {% for tag in tags %}
-    {% set tag_id = tag.id %}
-        <div class="tag">
-            <hr size="1" color="black" />
-            <div>
-                {{ '#'+tag }}
-            </div>
-        </div>
-    {% endfor %}
+
 
     {% if session_flag %}
     <div class="add_answer">

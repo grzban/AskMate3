@@ -66,6 +66,7 @@ table {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    text-align: center;
 }
 
 td, th {
@@ -73,7 +74,7 @@ td, th {
 }
 
 th {
-    text-align: left;
+    text-align: center;
     background-color: #8a25b1;
     color: white;
 }
